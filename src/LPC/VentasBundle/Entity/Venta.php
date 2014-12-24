@@ -67,9 +67,9 @@ class Venta
     * @var integer
     *
     * @ORM\OneToMany(targetEntity="LPC\VentasBundle\Entity\DetVenta",mappedBy="venta")
-    * @ORM\OrderBy({"id" = "DSC"})
+    * @ORM\OrderBy({"id" = "DESC"})
     */
-    private $detVentas   ;
+    private $detVentas;
 
     /**
      * Get id

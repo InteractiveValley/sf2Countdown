@@ -31,14 +31,14 @@ class Usuario
     /**
      * @var string
      *
-     * @ORM\Column(name="e-mail", type="string", length=255)
+     * @ORM\Column(name="e_mail", type="string", length=255)
      */
-    private $e_mail;
+    private $email;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechaNacimiento", type="date")
+     * @ORM\Column(name="fecha_nacimiento", type="date", nullable=true)
      */
     private $fechaNacimiento;
 
@@ -69,13 +69,6 @@ class Usuario
      * @ORM\Column(name="salt", type="string", length=255)
      */
     private $salt;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="venta", type="integer")
-     */
-    private $venta;
 
 
     /**
@@ -112,26 +105,26 @@ class Usuario
     }
 
     /**
-     * Set e_mail
+     * Set email
      *
      * @param string $eMail
      * @return Usuario
      */
-    public function setEMail($eMail)
+    public function setEmail($eMail)
     {
-        $this->e_mail = $eMail;
+        $this->email = $eMail;
 
         return $this;
     }
 
     /**
-     * Get e_mail
+     * Get email
      *
      * @return string 
      */
-    public function getEMail()
+    public function getEmail()
     {
-        return $this->e_mail;
+        return $this->email;
     }
 
     /**
@@ -247,28 +240,5 @@ class Usuario
     public function getSalt()
     {
         return $this->salt;
-    }
-
-    /**
-     * Set venta
-     *
-     * @param integer $venta
-     * @return Usuario
-     */
-    public function setVenta($venta)
-    {
-        $this->venta = $venta;
-
-        return $this;
-    }
-
-    /**
-     * Get venta
-     *
-     * @return integer 
-     */
-    public function getVenta()
-    {
-        return $this->venta;
     }
 }
