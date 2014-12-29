@@ -34,7 +34,7 @@ class DetVenta
     /**
      * @var integer
      *
-     * @ORM\@OneToOne(targetEntity="LPC\ProductosBundle\Entity\Producto")
+     * @ORM\OneToOne(targetEntity="LPC\ProductosBundle\Entity\Producto")
      */
     private $producto;
 

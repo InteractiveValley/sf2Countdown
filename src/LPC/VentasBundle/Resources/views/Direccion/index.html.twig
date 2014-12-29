@@ -1,0 +1,61 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Direccion list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Usuario</th>
+                <th>Tipodireccion</th>
+                <th>Calle</th>
+                <th>Numexterior</th>
+                <th>Numinterior</th>
+                <th>Cp</th>
+                <th>Municipio</th>
+                <th>Colonia</th>
+                <th>Estado</th>
+                <th>Contacto</th>
+                <th>Paqueteria</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('direccion_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.usuario }}</td>
+                <td>{{ entity.tipoDireccion }}</td>
+                <td>{{ entity.calle }}</td>
+                <td>{{ entity.numExterior }}</td>
+                <td>{{ entity.numInterior }}</td>
+                <td>{{ entity.cp }}</td>
+                <td>{{ entity.municipio }}</td>
+                <td>{{ entity.colonia }}</td>
+                <td>{{ entity.estado }}</td>
+                <td>{{ entity.contacto }}</td>
+                <td>{{ entity.paqueteria }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('direccion_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('direccion_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('direccion_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

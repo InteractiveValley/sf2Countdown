@@ -1,0 +1,72 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Direccion</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Usuario</th>
+                <td>{{ entity.usuario }}</td>
+            </tr>
+            <tr>
+                <th>Tipodireccion</th>
+                <td>{{ entity.tipoDireccion }}</td>
+            </tr>
+            <tr>
+                <th>Calle</th>
+                <td>{{ entity.calle }}</td>
+            </tr>
+            <tr>
+                <th>Numexterior</th>
+                <td>{{ entity.numExterior }}</td>
+            </tr>
+            <tr>
+                <th>Numinterior</th>
+                <td>{{ entity.numInterior }}</td>
+            </tr>
+            <tr>
+                <th>Cp</th>
+                <td>{{ entity.cp }}</td>
+            </tr>
+            <tr>
+                <th>Municipio</th>
+                <td>{{ entity.municipio }}</td>
+            </tr>
+            <tr>
+                <th>Colonia</th>
+                <td>{{ entity.colonia }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ entity.estado }}</td>
+            </tr>
+            <tr>
+                <th>Contacto</th>
+                <td>{{ entity.contacto }}</td>
+            </tr>
+            <tr>
+                <th>Paqueteria</th>
+                <td>{{ entity.paqueteria }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('direccion') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('direccion_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

@@ -31,9 +31,9 @@ class Usuario
     /**
      * @var string
      *
-     * @ORM\Column(name="e-mail", type="string", length=255)
+     * @ORM\Column(name="eMail", type="string", length=255)
      */
-    private $e_mail;
+    private $eMail;
 
     /**
      * @var \DateTime
@@ -112,26 +112,26 @@ class Usuario
     }
 
     /**
-     * Set e_mail
+     * Set eMail
      *
      * @param string $eMail
      * @return Usuario
      */
     public function setEMail($eMail)
     {
-        $this->e_mail = $eMail;
+        $this->eMmail = $eMail;
 
         return $this;
     }
 
     /**
-     * Get e_mail
+     * Get eMail
      *
      * @return string 
      */
     public function getEMail()
     {
-        return $this->e_mail;
+        return $this->eMail;
     }
 
     /**
