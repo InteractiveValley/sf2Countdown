@@ -13,7 +13,7 @@ use LPC\ProductosBundle\Form\CategoriaType;
 /**
  * Categoria controller.
  *
- * @Route("/categoria")
+ * @Route("/categorias")
  */
 class CategoriaController extends Controller
 {
@@ -21,7 +21,7 @@ class CategoriaController extends Controller
     /**
      * Lists all Categoria entities.
      *
-     * @Route("/", name="categoria")
+     * @Route("/", name="categorias")
      * @Method("GET")
      * @Template()
      */
@@ -38,7 +38,7 @@ class CategoriaController extends Controller
     /**
      * Creates a new Categoria entity.
      *
-     * @Route("/", name="categoria_create")
+     * @Route("/", name="categorias_create")
      * @Method("POST")
      * @Template("ProductosBundle:Categoria:new.html.twig")
      */
@@ -53,7 +53,7 @@ class CategoriaController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('categoria_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('categorias_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -72,7 +72,7 @@ class CategoriaController extends Controller
     private function createCreateForm(Categoria $entity)
     {
         $form = $this->createForm(new CategoriaType(), $entity, array(
-            'action' => $this->generateUrl('categoria_create'),
+            'action' => $this->generateUrl('categorias_create'),
             'method' => 'POST',
         ));
 
@@ -84,7 +84,7 @@ class CategoriaController extends Controller
     /**
      * Displays a form to create a new Categoria entity.
      *
-     * @Route("/new", name="categoria_new")
+     * @Route("/new", name="categorias_new")
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +102,7 @@ class CategoriaController extends Controller
     /**
      * Finds and displays a Categoria entity.
      *
-     * @Route("/{id}", name="categoria_show")
+     * @Route("/{id}", name="categorias_show")
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +127,7 @@ class CategoriaController extends Controller
     /**
      * Displays a form to edit an existing Categoria entity.
      *
-     * @Route("/{id}/edit", name="categoria_edit")
+     * @Route("/{id}/edit", name="categorias_edit")
      * @Method("GET")
      * @Template()
      */
@@ -161,7 +161,7 @@ class CategoriaController extends Controller
     private function createEditForm(Categoria $entity)
     {
         $form = $this->createForm(new CategoriaType(), $entity, array(
-            'action' => $this->generateUrl('categoria_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('categorias_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -172,7 +172,7 @@ class CategoriaController extends Controller
     /**
      * Edits an existing Categoria entity.
      *
-     * @Route("/{id}", name="categoria_update")
+     * @Route("/{id}", name="categorias_update")
      * @Method("PUT")
      * @Template("ProductosBundle:Categoria:edit.html.twig")
      */
@@ -193,7 +193,7 @@ class CategoriaController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('categoria_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('categorias_edit', array('id' => $id)));
         }
 
         return array(
@@ -205,7 +205,7 @@ class CategoriaController extends Controller
     /**
      * Deletes a Categoria entity.
      *
-     * @Route("/{id}", name="categoria_delete")
+     * @Route("/{id}", name="categorias_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +225,7 @@ class CategoriaController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('categoria'));
+        return $this->redirect($this->generateUrl('categorias'));
     }
 
     /**
@@ -238,7 +238,7 @@ class CategoriaController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('categoria_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('categorias_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

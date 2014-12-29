@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Producto
  *
- * @ORM\Table()
+ * @ORM\Table(name="productos")
  * @ORM\Entity(repositoryClass="LPC\ProductosBundle\Entity\ProductoRepository")
  */
 class Producto
@@ -24,7 +24,7 @@ class Producto
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Categoria", inversedBy="producto")
+     * @ORM\ManyToOne(targetEntity="Categoria", inversedBy="productos")
      * @ORM\JoinColumns({
      * @ORM\JoinColumn(name="categoria_id", referencedColumnName="id")
      * })

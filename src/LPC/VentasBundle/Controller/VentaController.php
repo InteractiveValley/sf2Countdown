@@ -13,7 +13,7 @@ use LPC\VentasBundle\Form\VentaType;
 /**
  * Venta controller.
  *
- * @Route("/venta")
+ * @Route("/ventas")
  */
 class VentaController extends Controller
 {

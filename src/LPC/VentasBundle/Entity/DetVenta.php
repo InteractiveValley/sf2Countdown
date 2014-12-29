@@ -25,8 +25,8 @@ class DetVenta
      * @var integer
      *
      * @ORM\ManyToOne(targetEntity="Venta", inversedBy="detVentas")
-     * @ORM\JoinColumns({
-     * @ORM\JoinColumn(name="venta_id", referencedColumnName="id")
+     *  @ORM\JoinColumns({
+     *  @ORM\JoinColumn(name="venta_id", referencedColumnName="id")
      * })
      */
     private $venta;

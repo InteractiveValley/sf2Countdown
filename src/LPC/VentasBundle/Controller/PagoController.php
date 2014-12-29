@@ -13,7 +13,7 @@ use LPC\VentasBundle\Form\PagoType;
 /**
  * Pago controller.
  *
- * @Route("/pago")
+ * @Route("/pagos")
  */
 class PagoController extends Controller
 {

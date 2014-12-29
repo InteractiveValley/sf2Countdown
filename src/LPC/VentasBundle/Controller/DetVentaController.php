@@ -13,7 +13,7 @@ use LPC\VentasBundle\Form\DetVentaType;
 /**
  * DetVenta controller.
  *
- * @Route("/detventa")
+ * @Route("/detventas")
  */
 class DetVentaController extends Controller
 {

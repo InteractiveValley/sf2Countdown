@@ -13,7 +13,7 @@ use LPC\ProductosBundle\Form\ProductoType;
 /**
  * Producto controller.
  *
- * @Route("/producto")
+ * @Route("/productos")
  */
 class ProductoController extends Controller
 {

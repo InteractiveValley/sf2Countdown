@@ -13,7 +13,7 @@ use LPC\BackendBundle\Form\UsuarioType;
 /**
  * Usuario controller.
  *
- * @Route("/usuario")
+ * @Route("/usuarios")
  */
 class UsuarioController extends Controller
 {

@@ -13,7 +13,7 @@ use LPC\VentasBundle\Form\EnvioType;
 /**
  * Envio controller.
  *
- * @Route("/envio")
+ * @Route("/envios")
  */
 class EnvioController extends Controller
 {

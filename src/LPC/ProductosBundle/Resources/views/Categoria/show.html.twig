@@ -26,12 +26,13 @@
 
         <ul class="record_actions">
     <li>
+        <a href="{{ path('categorias') }}">
         <a href="{{ path('categoria') }}">
             Back to the list
         </a>
     </li>
     <li>
-        <a href="{{ path('categoria_edit', { 'id': entity.id }) }}">
+        <a href="{{ path('categorias_edit', { 'id': entity.id }) }}">
             Edit
         </a>
     </li>

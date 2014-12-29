@@ -13,7 +13,7 @@ use LPC\VentasBundle\Form\DireccionType;
 /**
  * Direccion controller.
  *
- * @Route("/direccion")
+ * @Route("/direcciones")
  */
 class DireccionController extends Controller
 {
