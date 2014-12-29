@@ -3,29 +3,31 @@
 namespace LPC\BackendBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use LPC\BackendBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use LPC\BackendBundle\Entity\Usuario;
 use LPC\BackendBundle\Form\UsuarioType;
 
+use LPC\BackendBundle\Utils\Richsys as RpsStms;
+
 /**
  * Usuario controller.
  *
  * @Route("/usuarios")
  */
-class UsuarioController extends Controller
+class UsuarioController extends BaseController
 {
 
     /**
      * Lists all Usuario entities.
      *
-     * @Route("/", name="usuario")
+     * @Route("/", name="usuarios")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request) 
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -35,10 +37,11 @@ class UsuarioController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Usuario entity.
      *
-     * @Route("/", name="usuario_create")
+     * @Route("/", name="usuarios_create")
      * @Method("POST")
      * @Template("BackendBundle:Usuario:new.html.twig")
      */
@@ -47,18 +50,21 @@ class UsuarioController extends Controller
         $entity = new Usuario();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
+        $data = $form->getData();
+        $password = $data->getPassword();
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $this->setSecurePassword($entity);
             $em->persist($entity);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('usuario_show', array('id' => $entity->getId())));
+            //$this->enviarUsuarioCreado($data->getEmail(), $password, $entity);
+            return $this->redirect($this->generateUrl('usuarios_show', array('id' => $entity->getId())));
         }
 
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'errores' => RpsStms::getErrorMessages($form),
         );
     }
 
@@ -72,11 +78,12 @@ class UsuarioController extends Controller
     private function createCreateForm(Usuario $entity)
     {
         $form = $this->createForm(new UsuarioType(), $entity, array(
-            'action' => $this->generateUrl('usuario_create'),
+            'action' => $this->generateUrl('usuarios_create'),
             'method' => 'POST',
+            'em'=>$this->getDoctrine()->getManager(),
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        ////$form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -84,25 +91,28 @@ class UsuarioController extends Controller
     /**
      * Displays a form to create a new Usuario entity.
      *
-     * @Route("/new", name="usuario_new")
+     * @Route("/new", name="usuarios_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
         $entity = new Usuario();
+        $entity->setEdificio($this->getEdificioActual());
+        $entity->setGrupo(Usuario::GRUPO_USUARIOS);
         $form   = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'errores' => RpsStms::getErrorMessages($form),
         );
     }
 
     /**
      * Finds and displays a Usuario entity.
      *
-     * @Route("/{id}", name="usuario_show")
+     * @Route("/{id}", name="usuarios_show",requirements= {"id":"\d+"})
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +137,7 @@ class UsuarioController extends Controller
     /**
      * Displays a form to edit an existing Usuario entity.
      *
-     * @Route("/{id}/edit", name="usuario_edit")
+     * @Route("/{id}/edit", name="usuarios_edit")
      * @Method("GET")
      * @Template()
      */
@@ -148,6 +158,7 @@ class UsuarioController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'errores' => RpsStms::getErrorMessages($editForm),
         );
     }
 
@@ -161,18 +172,20 @@ class UsuarioController extends Controller
     private function createEditForm(Usuario $entity)
     {
         $form = $this->createForm(new UsuarioType(), $entity, array(
-            'action' => $this->generateUrl('usuario_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('usuarios_update', array('id' => $entity->getId())),
             'method' => 'PUT',
+            'em'=>$this->getDoctrine()->getManager()
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        ////$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
+    
     /**
      * Edits an existing Usuario entity.
      *
-     * @Route("/{id}", name="usuario_update")
+     * @Route("/{id}", name="usuarios_update")
      * @Method("PUT")
      * @Template("BackendBundle:Usuario:edit.html.twig")
      */
@@ -188,24 +201,34 @@ class UsuarioController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
+        //obtiene la contraseña actual
+        $current_pass = $entity->getPassword();
         $editForm->handleRequest($request);
-
+        
         if ($editForm->isValid()) {
+            if (null == $entity->getPassword()) {
+                // El usuario no cambia su contraseña.
+                $entity->setPassword($current_pass);
+            } else {
+                // actualizamos la contraseña.
+                $this->setSecurePassword($entity);
+            }
             $em->flush();
-
-            return $this->redirect($this->generateUrl('usuario_edit', array('id' => $id)));
+            //$this->enviarUsuarioUpdate($entity->getEmail(), $current_pass, $entity);
+            return $this->redirect($this->generateUrl('usuarios_show', array('id' => $id)));
         }
 
         return array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'errores' => RpsStms::getErrorMessages($editForm),
         );
     }
     /**
      * Deletes a Usuario entity.
      *
-     * @Route("/{id}", name="usuario_delete")
+     * @Route("/{id}", name="usuarios_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +248,7 @@ class UsuarioController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('usuario'));
+        return $this->redirect($this->generateUrl('usuarios'));
     }
 
     /**
@@ -238,10 +261,32 @@ class UsuarioController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('usuario_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('usuarios_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ////->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }
+
+    
+    
+    /**
+     * Exportar los usuarios.
+     *
+     * @Route("/exportar", name="usuarios_exportar")
+     */
+    public function exportarAction(Request $request)
+    {
+        $usuarios = $this->getDoctrine()->getRepository('BackendBundle:Usuario')
+                         ->findBy(array('grupo' => Usuario::GRUPO_USUARIOS));
+
+        $response = $this->render(
+                'BackendBundle:Usuario:list.xls.twig', array('entities' => $usuarios)
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export-usuarios.xls"');
+        return $response;
+    }
+    
+    
 }

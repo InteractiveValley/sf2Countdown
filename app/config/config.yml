@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: services.yml }
 
 framework:
     #esi:             ~
@@ -70,3 +71,77 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+knp_paginator:
+    page_range: 10  # número de páginas que se muestran en el paginador
+    default_options:
+        # los siguientes tres parámetros permiten "traducir" el paginador
+        # puedes utilizar por ejemplo: 'pagina', 'ordenar' y 'direccion'
+        page_name:           page
+        sort_field_name:     sort
+        sort_direction_name: direction
+        # sólo incluir resultados diferentes (útil cuando haces consultas GROUP BY)
+        distinct: true
+
+    template:
+        # estas opciones configuran la plantilla utilizada para la paginación
+        # y para los controles que premiten reordenar los resultados
+        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig
+        sortable:   KnpPaginatorBundle:Pagination:sortable_link.html.twig
+
+liip_imagine:
+    resolvers:
+        default:
+            web_path: 
+                web_root:  %kernel.root_dir%/../html
+                cache_prefix:  media/cache
+    loaders:
+        default:
+            filesystem:
+                data_root:  %kernel.root_dir%/../html/
+    driver:               gd
+    cache:                default
+    data_loader:          default
+    controller:
+        filter_action:         liip_imagine.controller:filterAction
+        filter_runtime_action: liip_imagine.controller:filterRuntimeAction
+    filter_sets:
+        imagen_grande:
+            filters:
+                thumbnail: { size: [616, 411], mode: outbound }
+        imagen_302_126:
+            filters:
+                thumbnail: { size: [302, 126], mode: outbound }
+        imagen_222_94:
+            filters:
+                thumbnail: { size: [222, 94], mode: outbound }
+        imagen_246_76:
+            filters:
+                thumbnail: { size: [246, 76], mode: outbound }
+        imagen_200_200:
+            filters:
+                thumbnail: { size: [200, 200], mode: outbound }
+        imagen_120_90:
+            filters:
+                thumbnail: { size: [120, 90], mode: outbound }
+        imagen_90_60:
+            filters:
+                thumbnail: { size: [90, 60], mode: outbound }
+
+ps_pdf:
+    nodes_file: ~
+    fonts_file: ~
+    complex_attributes_file: ~
+    colors_file: ~
+    use_cache_in_stylesheet: ~
+    cache:
+      type: ~
+      options: ~
+    markdown_stylesheet_filepath: ~
+    markdown_document_template_filepath: ~
+    document_parser_type: ~
+
+parameters:
+    # dirección de correo electrónico
+    richpolis.emails.to_email: richpolis@gmail.com
+    richpolis.uploads: %kernel.root_dir%/../web/uploads

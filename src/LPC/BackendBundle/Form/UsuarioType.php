@@ -5,24 +5,35 @@ namespace LPC\BackendBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use LPC\BackendBundle\Entity\Usuario;
+use LPC\BackendBundle\Form\DataTransformer\EdificioToNumberTransformer;
 
 class UsuarioType extends AbstractType
 {
-    /**
+        /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $em = $options['em'];
+        //$is_super_admin = $options['is_super_admin'];
+        $edificioTransformer = new EdificioToNumberTransformer($em);
+        
         $builder
-            ->add('nombre')
-            ->add('eMail')
-            ->add('fechaNacimiento')
-            ->add('rfc')
-            ->add('telefono')
-            ->add('password')
-            ->add('salt')
-            ->add('venta')
+            ->add('email','email',array('attr'=>array('class'=>'form-control')))
+            ->add('password','password',array('attr'=>array('class'=>'form-control')))
+            ->add('salt','hidden')
+            ->add('nombre','text',array('attr'=>array('class'=>'form-control')))
+            ->add('telefono','text',array('attr'=>array('class'=>'form-control')))
+            ->add('imagen','hidden')
+            ->add('numero','text',array('label'=>'Departamento','attr'=>array('class'=>'form-control')))
+            ->add('isActive',null,array('label'=>'Activo?','attr'=>array(
+                'class'=>'checkbox-inline',
+                'placeholder'=>'Es activo',
+                'data-bind'=>'value: isActive'
+                )))
+            ->add('grupo','hidden')    
         ;
     }
     
@@ -33,7 +44,10 @@ class UsuarioType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'LPC\BackendBundle\Entity\Usuario'
-        ));
+        ))
+        ->setRequired(array('em'))
+        ->setAllowedTypes(array('em'=>'Doctrine\Common\Persistence\ObjectManager'))
+        ;
     }
 
     /**
@@ -41,6 +55,6 @@ class UsuarioType extends AbstractType
      */
     public function getName()
     {
-        return 'lpc_backendbundle_usuario';
+        return 'richpolis_backendbundle_usuario';
     }
 }

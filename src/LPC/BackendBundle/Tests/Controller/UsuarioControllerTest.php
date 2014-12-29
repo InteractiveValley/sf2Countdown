@@ -13,13 +13,13 @@ class UsuarioControllerTest extends WebTestCase
         $client = static::createClient();
 
         // Create a new entry in the database
-        $crawler = $client->request('GET', '/usuario/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /usuario/");
+        $crawler = $client->request('GET', '/usuarios/');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /usuarios/");
         $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
 
         // Fill in the form and submit it
         $form = $crawler->selectButton('Create')->form(array(
-            'lpc_backendbundle_usuario[field_name]'  => 'Test',
+            'richpolis_backendbundle_usuario[field_name]'  => 'Test',
             // ... other fields to fill
         ));
 
@@ -33,7 +33,7 @@ class UsuarioControllerTest extends WebTestCase
         $crawler = $client->click($crawler->selectLink('Edit')->link());
 
         $form = $crawler->selectButton('Update')->form(array(
-            'lpc_backendbundle_usuario[field_name]'  => 'Foo',
+            'richpolis_backendbundle_usuario[field_name]'  => 'Foo',
             // ... other fields to fill
         ));
 

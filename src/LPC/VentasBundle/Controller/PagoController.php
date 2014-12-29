@@ -21,7 +21,7 @@ class PagoController extends Controller
     /**
      * Lists all Pago entities.
      *
-     * @Route("/", name="pago")
+     * @Route("/", name="pagos")
      * @Method("GET")
      * @Template()
      */
@@ -38,7 +38,7 @@ class PagoController extends Controller
     /**
      * Creates a new Pago entity.
      *
-     * @Route("/", name="pago_create")
+     * @Route("/", name="pagos_create")
      * @Method("POST")
      * @Template("VentasBundle:Pago:new.html.twig")
      */
@@ -53,7 +53,7 @@ class PagoController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('pago_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('pagos_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -72,7 +72,7 @@ class PagoController extends Controller
     private function createCreateForm(Pago $entity)
     {
         $form = $this->createForm(new PagoType(), $entity, array(
-            'action' => $this->generateUrl('pago_create'),
+            'action' => $this->generateUrl('pagos_create'),
             'method' => 'POST',
         ));
 
@@ -84,7 +84,7 @@ class PagoController extends Controller
     /**
      * Displays a form to create a new Pago entity.
      *
-     * @Route("/new", name="pago_new")
+     * @Route("/new", name="pagos_new")
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +102,7 @@ class PagoController extends Controller
     /**
      * Finds and displays a Pago entity.
      *
-     * @Route("/{id}", name="pago_show")
+     * @Route("/{id}", name="pagos_show")
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +127,7 @@ class PagoController extends Controller
     /**
      * Displays a form to edit an existing Pago entity.
      *
-     * @Route("/{id}/edit", name="pago_edit")
+     * @Route("/{id}/edit", name="pagos_edit")
      * @Method("GET")
      * @Template()
      */
@@ -161,7 +161,7 @@ class PagoController extends Controller
     private function createEditForm(Pago $entity)
     {
         $form = $this->createForm(new PagoType(), $entity, array(
-            'action' => $this->generateUrl('pago_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('pagos_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -172,7 +172,7 @@ class PagoController extends Controller
     /**
      * Edits an existing Pago entity.
      *
-     * @Route("/{id}", name="pago_update")
+     * @Route("/{id}", name="pagos_update")
      * @Method("PUT")
      * @Template("VentasBundle:Pago:edit.html.twig")
      */
@@ -193,7 +193,7 @@ class PagoController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('pago_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('pagos_edit', array('id' => $id)));
         }
 
         return array(
@@ -205,7 +205,7 @@ class PagoController extends Controller
     /**
      * Deletes a Pago entity.
      *
-     * @Route("/{id}", name="pago_delete")
+     * @Route("/{id}", name="pagos_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +225,7 @@ class PagoController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('pago'));
+        return $this->redirect($this->generateUrl('pagos'));
     }
 
     /**
@@ -238,7 +238,7 @@ class PagoController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('pago_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('pagos_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

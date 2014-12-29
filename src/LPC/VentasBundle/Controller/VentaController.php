@@ -21,7 +21,7 @@ class VentaController extends Controller
     /**
      * Lists all Venta entities.
      *
-     * @Route("/", name="venta")
+     * @Route("/", name="ventas")
      * @Method("GET")
      * @Template()
      */
@@ -38,7 +38,7 @@ class VentaController extends Controller
     /**
      * Creates a new Venta entity.
      *
-     * @Route("/", name="venta_create")
+     * @Route("/", name="ventas_create")
      * @Method("POST")
      * @Template("VentasBundle:Venta:new.html.twig")
      */
@@ -53,7 +53,7 @@ class VentaController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('venta_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('ventas_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -72,7 +72,7 @@ class VentaController extends Controller
     private function createCreateForm(Venta $entity)
     {
         $form = $this->createForm(new VentaType(), $entity, array(
-            'action' => $this->generateUrl('venta_create'),
+            'action' => $this->generateUrl('ventas_create'),
             'method' => 'POST',
         ));
 
@@ -84,7 +84,7 @@ class VentaController extends Controller
     /**
      * Displays a form to create a new Venta entity.
      *
-     * @Route("/new", name="venta_new")
+     * @Route("/new", name="ventas_new")
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +102,7 @@ class VentaController extends Controller
     /**
      * Finds and displays a Venta entity.
      *
-     * @Route("/{id}", name="venta_show")
+     * @Route("/{id}", name="ventas_show")
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +127,7 @@ class VentaController extends Controller
     /**
      * Displays a form to edit an existing Venta entity.
      *
-     * @Route("/{id}/edit", name="venta_edit")
+     * @Route("/{id}/edit", name="ventas_edit")
      * @Method("GET")
      * @Template()
      */
@@ -161,7 +161,7 @@ class VentaController extends Controller
     private function createEditForm(Venta $entity)
     {
         $form = $this->createForm(new VentaType(), $entity, array(
-            'action' => $this->generateUrl('venta_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('ventas_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -172,7 +172,7 @@ class VentaController extends Controller
     /**
      * Edits an existing Venta entity.
      *
-     * @Route("/{id}", name="venta_update")
+     * @Route("/{id}", name="ventas_update")
      * @Method("PUT")
      * @Template("VentasBundle:Venta:edit.html.twig")
      */
@@ -193,7 +193,7 @@ class VentaController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('venta_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('ventas_edit', array('id' => $id)));
         }
 
         return array(
@@ -205,7 +205,7 @@ class VentaController extends Controller
     /**
      * Deletes a Venta entity.
      *
-     * @Route("/{id}", name="venta_delete")
+     * @Route("/{id}", name="ventas_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +225,7 @@ class VentaController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('venta'));
+        return $this->redirect($this->generateUrl('ventas'));
     }
 
     /**
@@ -238,7 +238,7 @@ class VentaController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('venta_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('ventas_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

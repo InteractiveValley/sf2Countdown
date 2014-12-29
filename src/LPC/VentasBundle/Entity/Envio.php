@@ -7,8 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Envio
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="LPC\VentasBundle\Entity\EnvioRepository")
+ * @ORM\Table(name="envios")
+ * @ORM\Entity(repositoryClass="LPC\VentasBundle\Repository\EnvioRepository")
  */
 class Envio
 {

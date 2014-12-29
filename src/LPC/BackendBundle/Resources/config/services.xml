@@ -1,16 +1,52 @@
 <?xml version="1.0" ?>
-
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
+
+    <parameters>
+        <parameter key="richpolis_backend.usuario.handler.class">LPC\BackendBundle\Handler\UsuarioHandler</parameter>
+        <parameter key="richpolis_backend.usuario.class">LPC\BackendBundle\Entity\Usuario</parameter>
+        <parameter key="richpolis.isactive.extension.class">LPC\BackendBundle\Twig\IsActiveExtension</parameter>
+        <parameter key="richpolis.twitterTime.extension.class">LPC\BackendBundle\Twig\TwitterTimeExtension</parameter>
+        <parameter key="richpolis.translate_date.extension.class">LPC\BackendBundle\Twig\TranslateDateExtension</parameter>
+        <parameter key="richpolis.reservacion_status.extension.class">LPC\BackendBundle\Twig\ReservacionStatusExtension</parameter>
+        <parameter key="richpolis.pago_status.extension.class">LPC\BackendBundle\Twig\PagoStatusExtension</parameter>
+    </parameters>
+
     <services>
-        <service id="backend.example" class="LPC\BackendBundle\Example">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+        <service id="richpolis_backend.usuario.handler" class="%richpolis_backend.usuario.handler.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%richpolis_backend.usuario.class%</argument>
+            <argument type="service" id="form.factory"></argument>
+            <argument type="service" id="security.encoder_factory"></argument>
+        </service>
+        
+        <!-- "isActive" twig.extension -->
+        <service id="richpolis.twig.is_active_extension" class="%richpolis.isactive.extension.class%">
+            <tag name="twig.extension" />
+        </service>
+        
+        <!-- "twitterTime" twig.extension -->
+        <service id="richpolis.twig.twitter_time_extension" class="%richpolis.twitterTime.extension.class%">
+            <tag name="twig.extension" />
+        </service>
+        
+        <!-- "translateDate" twig.extension -->
+        <service id="richpolis.twig.translate_date_extension" class="%richpolis.translate_date.extension.class%">
+            <tag name="twig.extension" />
+        </service>
+        
+        <!-- "reservacionStatus" twig.extension -->
+        <service id="richpolis.twig.reservacion_status_extension" class="%richpolis.reservacion_status.extension.class%">
+            <tag name="twig.extension" />
+        </service>
+        
+        <!-- "pagoStatus" twig.extension -->
+        <service id="richpolis.twig.pago_status_extension" class="%richpolis.pago_status.extension.class%">
+            <tag name="twig.extension" />
         </service>
     </services>
-    -->
+
 </container>
+

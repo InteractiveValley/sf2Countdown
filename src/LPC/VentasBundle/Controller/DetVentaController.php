@@ -21,7 +21,7 @@ class DetVentaController extends Controller
     /**
      * Lists all DetVenta entities.
      *
-     * @Route("/", name="detventa")
+     * @Route("/", name="detventas")
      * @Method("GET")
      * @Template()
      */
@@ -38,7 +38,7 @@ class DetVentaController extends Controller
     /**
      * Creates a new DetVenta entity.
      *
-     * @Route("/", name="detventa_create")
+     * @Route("/", name="detventas_create")
      * @Method("POST")
      * @Template("VentasBundle:DetVenta:new.html.twig")
      */
@@ -53,7 +53,7 @@ class DetVentaController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('detventa_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('detventas_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -72,7 +72,7 @@ class DetVentaController extends Controller
     private function createCreateForm(DetVenta $entity)
     {
         $form = $this->createForm(new DetVentaType(), $entity, array(
-            'action' => $this->generateUrl('detventa_create'),
+            'action' => $this->generateUrl('detventas_create'),
             'method' => 'POST',
         ));
 
@@ -84,7 +84,7 @@ class DetVentaController extends Controller
     /**
      * Displays a form to create a new DetVenta entity.
      *
-     * @Route("/new", name="detventa_new")
+     * @Route("/new", name="detventas_new")
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +102,7 @@ class DetVentaController extends Controller
     /**
      * Finds and displays a DetVenta entity.
      *
-     * @Route("/{id}", name="detventa_show")
+     * @Route("/{id}", name="detventas_show")
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +127,7 @@ class DetVentaController extends Controller
     /**
      * Displays a form to edit an existing DetVenta entity.
      *
-     * @Route("/{id}/edit", name="detventa_edit")
+     * @Route("/{id}/edit", name="detventas_edit")
      * @Method("GET")
      * @Template()
      */
@@ -161,7 +161,7 @@ class DetVentaController extends Controller
     private function createEditForm(DetVenta $entity)
     {
         $form = $this->createForm(new DetVentaType(), $entity, array(
-            'action' => $this->generateUrl('detventa_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('detventas_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -172,7 +172,7 @@ class DetVentaController extends Controller
     /**
      * Edits an existing DetVenta entity.
      *
-     * @Route("/{id}", name="detventa_update")
+     * @Route("/{id}", name="detventas_update")
      * @Method("PUT")
      * @Template("VentasBundle:DetVenta:edit.html.twig")
      */
@@ -193,7 +193,7 @@ class DetVentaController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('detventa_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('detventas_edit', array('id' => $id)));
         }
 
         return array(
@@ -205,7 +205,7 @@ class DetVentaController extends Controller
     /**
      * Deletes a DetVenta entity.
      *
-     * @Route("/{id}", name="detventa_delete")
+     * @Route("/{id}", name="detventas_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +225,7 @@ class DetVentaController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('detventa'));
+        return $this->redirect($this->generateUrl('detventas'));
     }
 
     /**
@@ -238,7 +238,7 @@ class DetVentaController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('detventa_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('detventas_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

@@ -21,7 +21,7 @@ class EnvioController extends Controller
     /**
      * Lists all Envio entities.
      *
-     * @Route("/", name="envio")
+     * @Route("/", name="envios")
      * @Method("GET")
      * @Template()
      */
@@ -38,7 +38,7 @@ class EnvioController extends Controller
     /**
      * Creates a new Envio entity.
      *
-     * @Route("/", name="envio_create")
+     * @Route("/", name="envios_create")
      * @Method("POST")
      * @Template("VentasBundle:Envio:new.html.twig")
      */
@@ -53,7 +53,7 @@ class EnvioController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('envio_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('envios_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -72,7 +72,7 @@ class EnvioController extends Controller
     private function createCreateForm(Envio $entity)
     {
         $form = $this->createForm(new EnvioType(), $entity, array(
-            'action' => $this->generateUrl('envio_create'),
+            'action' => $this->generateUrl('envios_create'),
             'method' => 'POST',
         ));
 
@@ -84,7 +84,7 @@ class EnvioController extends Controller
     /**
      * Displays a form to create a new Envio entity.
      *
-     * @Route("/new", name="envio_new")
+     * @Route("/new", name="envios_new")
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +102,7 @@ class EnvioController extends Controller
     /**
      * Finds and displays a Envio entity.
      *
-     * @Route("/{id}", name="envio_show")
+     * @Route("/{id}", name="envios_show")
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +127,7 @@ class EnvioController extends Controller
     /**
      * Displays a form to edit an existing Envio entity.
      *
-     * @Route("/{id}/edit", name="envio_edit")
+     * @Route("/{id}/edit", name="envios_edit")
      * @Method("GET")
      * @Template()
      */
@@ -161,7 +161,7 @@ class EnvioController extends Controller
     private function createEditForm(Envio $entity)
     {
         $form = $this->createForm(new EnvioType(), $entity, array(
-            'action' => $this->generateUrl('envio_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('envios_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -172,7 +172,7 @@ class EnvioController extends Controller
     /**
      * Edits an existing Envio entity.
      *
-     * @Route("/{id}", name="envio_update")
+     * @Route("/{id}", name="envios_update")
      * @Method("PUT")
      * @Template("VentasBundle:Envio:edit.html.twig")
      */
@@ -193,7 +193,7 @@ class EnvioController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('envio_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('envios_edit', array('id' => $id)));
         }
 
         return array(
@@ -205,7 +205,7 @@ class EnvioController extends Controller
     /**
      * Deletes a Envio entity.
      *
-     * @Route("/{id}", name="envio_delete")
+     * @Route("/{id}", name="envios_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +225,7 @@ class EnvioController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('envio'));
+        return $this->redirect($this->generateUrl('envios'));
     }
 
     /**
@@ -238,7 +238,7 @@ class EnvioController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('envio_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('envios_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

@@ -21,7 +21,7 @@ class DireccionController extends Controller
     /**
      * Lists all Direccion entities.
      *
-     * @Route("/", name="direccion")
+     * @Route("/", name="direcciones")
      * @Method("GET")
      * @Template()
      */
@@ -38,7 +38,7 @@ class DireccionController extends Controller
     /**
      * Creates a new Direccion entity.
      *
-     * @Route("/", name="direccion_create")
+     * @Route("/", name="direcciones_create")
      * @Method("POST")
      * @Template("VentasBundle:Direccion:new.html.twig")
      */
@@ -53,7 +53,7 @@ class DireccionController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('direccion_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('direcciones_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -72,7 +72,7 @@ class DireccionController extends Controller
     private function createCreateForm(Direccion $entity)
     {
         $form = $this->createForm(new DireccionType(), $entity, array(
-            'action' => $this->generateUrl('direccion_create'),
+            'action' => $this->generateUrl('direcciones_create'),
             'method' => 'POST',
         ));
 
@@ -84,7 +84,7 @@ class DireccionController extends Controller
     /**
      * Displays a form to create a new Direccion entity.
      *
-     * @Route("/new", name="direccion_new")
+     * @Route("/new", name="direcciones_new")
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +102,7 @@ class DireccionController extends Controller
     /**
      * Finds and displays a Direccion entity.
      *
-     * @Route("/{id}", name="direccion_show")
+     * @Route("/{id}", name="direcciones_show")
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +127,7 @@ class DireccionController extends Controller
     /**
      * Displays a form to edit an existing Direccion entity.
      *
-     * @Route("/{id}/edit", name="direccion_edit")
+     * @Route("/{id}/edit", name="direcciones_edit")
      * @Method("GET")
      * @Template()
      */
@@ -161,7 +161,7 @@ class DireccionController extends Controller
     private function createEditForm(Direccion $entity)
     {
         $form = $this->createForm(new DireccionType(), $entity, array(
-            'action' => $this->generateUrl('direccion_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('direcciones_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -172,7 +172,7 @@ class DireccionController extends Controller
     /**
      * Edits an existing Direccion entity.
      *
-     * @Route("/{id}", name="direccion_update")
+     * @Route("/{id}", name="direcciones_update")
      * @Method("PUT")
      * @Template("VentasBundle:Direccion:edit.html.twig")
      */
@@ -193,7 +193,7 @@ class DireccionController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('direccion_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('direcciones_edit', array('id' => $id)));
         }
 
         return array(
@@ -205,7 +205,7 @@ class DireccionController extends Controller
     /**
      * Deletes a Direccion entity.
      *
-     * @Route("/{id}", name="direccion_delete")
+     * @Route("/{id}", name="direcciones_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +225,7 @@ class DireccionController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('direccion'));
+        return $this->redirect($this->generateUrl('direcciones'));
     }
 
     /**
@@ -238,7 +238,7 @@ class DireccionController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('direccion_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('direcciones_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

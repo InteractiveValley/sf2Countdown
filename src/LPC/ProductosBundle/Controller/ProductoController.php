@@ -21,7 +21,7 @@ class ProductoController extends Controller
     /**
      * Lists all Producto entities.
      *
-     * @Route("/", name="producto")
+     * @Route("/", name="productos")
      * @Method("GET")
      * @Template()
      */
@@ -38,7 +38,7 @@ class ProductoController extends Controller
     /**
      * Creates a new Producto entity.
      *
-     * @Route("/", name="producto_create")
+     * @Route("/", name="productos_create")
      * @Method("POST")
      * @Template("ProductosBundle:Producto:new.html.twig")
      */
@@ -53,7 +53,7 @@ class ProductoController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('producto_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('productos_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -72,7 +72,7 @@ class ProductoController extends Controller
     private function createCreateForm(Producto $entity)
     {
         $form = $this->createForm(new ProductoType(), $entity, array(
-            'action' => $this->generateUrl('producto_create'),
+            'action' => $this->generateUrl('productos_create'),
             'method' => 'POST',
         ));
 
@@ -84,7 +84,7 @@ class ProductoController extends Controller
     /**
      * Displays a form to create a new Producto entity.
      *
-     * @Route("/new", name="producto_new")
+     * @Route("/new", name="productos_new")
      * @Method("GET")
      * @Template()
      */
@@ -102,7 +102,7 @@ class ProductoController extends Controller
     /**
      * Finds and displays a Producto entity.
      *
-     * @Route("/{id}", name="producto_show")
+     * @Route("/{id}", name="productos_show")
      * @Method("GET")
      * @Template()
      */
@@ -127,7 +127,7 @@ class ProductoController extends Controller
     /**
      * Displays a form to edit an existing Producto entity.
      *
-     * @Route("/{id}/edit", name="producto_edit")
+     * @Route("/{id}/edit", name="productos_edit")
      * @Method("GET")
      * @Template()
      */
@@ -161,7 +161,7 @@ class ProductoController extends Controller
     private function createEditForm(Producto $entity)
     {
         $form = $this->createForm(new ProductoType(), $entity, array(
-            'action' => $this->generateUrl('producto_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('productos_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -172,7 +172,7 @@ class ProductoController extends Controller
     /**
      * Edits an existing Producto entity.
      *
-     * @Route("/{id}", name="producto_update")
+     * @Route("/{id}", name="productos_update")
      * @Method("PUT")
      * @Template("ProductosBundle:Producto:edit.html.twig")
      */
@@ -193,7 +193,7 @@ class ProductoController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('producto_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('productos_edit', array('id' => $id)));
         }
 
         return array(
@@ -205,7 +205,7 @@ class ProductoController extends Controller
     /**
      * Deletes a Producto entity.
      *
-     * @Route("/{id}", name="producto_delete")
+     * @Route("/{id}", name="productos_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +225,7 @@ class ProductoController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('producto'));
+        return $this->redirect($this->generateUrl('productos'));
     }
 
     /**
@@ -238,7 +238,7 @@ class ProductoController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('producto_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('productos_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
