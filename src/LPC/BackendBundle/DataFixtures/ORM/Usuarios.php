@@ -47,7 +47,6 @@ class Usuarios extends AbstractFixture implements OrderedFixtureInterface, Conta
         $admin->setNombre("Richpolis Systems");
         $admin->setEmail('richpolis@gmail.com');
         $admin->setTelefono('55555555');
-        $admin->setNumero('000');
         $admin->setGrupo(Usuario::GRUPO_SUPER_ADMIN);
         $manager->persist($admin);
         
@@ -64,7 +63,6 @@ class Usuarios extends AbstractFixture implements OrderedFixtureInterface, Conta
         $admin->setNombre("Administrador general");
         $admin->setEmail('admin@countdown.com');
         $admin->setTelefono('55555555');
-        $admin->setNumero('000');
         $admin->setGrupo(Usuario::GRUPO_ADMIN);
         $manager->persist($admin);
         
@@ -79,7 +77,6 @@ class Usuarios extends AbstractFixture implements OrderedFixtureInterface, Conta
         $usuario->setNombre("Usuario 1");
         $usuario->setEmail('usuario1@countdown.com');
         $usuario->setTelefono('55555555');
-        $usuario->setNumero('101');
         $usuario->setGrupo(Usuario::GRUPO_USUARIOS);
         $manager->persist($usuario);
         
@@ -96,7 +93,6 @@ class Usuarios extends AbstractFixture implements OrderedFixtureInterface, Conta
         $usuario->setNombre("Usuario 2");
         $usuario->setEmail('usuario2@countdown.com');
         $usuario->setTelefono('55555555');
-        $usuario->setNumero('102');
         $usuario->setGrupo(Usuario::GRUPO_USUARIOS);
         $manager->persist($usuario);
 

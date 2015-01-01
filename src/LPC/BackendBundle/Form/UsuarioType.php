@@ -5,8 +5,6 @@ namespace LPC\BackendBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use LPC\BackendBundle\Entity\Usuario;
-use LPC\BackendBundle\Form\DataTransformer\EdificioToNumberTransformer;
 
 class UsuarioType extends AbstractType
 {
@@ -16,9 +14,6 @@ class UsuarioType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $em = $options['em'];
-        //$is_super_admin = $options['is_super_admin'];
-        $edificioTransformer = new EdificioToNumberTransformer($em);
         
         $builder
             ->add('email','email',array('attr'=>array('class'=>'form-control')))
@@ -27,7 +22,6 @@ class UsuarioType extends AbstractType
             ->add('nombre','text',array('attr'=>array('class'=>'form-control')))
             ->add('telefono','text',array('attr'=>array('class'=>'form-control')))
             ->add('imagen','hidden')
-            ->add('numero','text',array('label'=>'Departamento','attr'=>array('class'=>'form-control')))
             ->add('isActive',null,array('label'=>'Activo?','attr'=>array(
                 'class'=>'checkbox-inline',
                 'placeholder'=>'Es activo',
@@ -44,10 +38,7 @@ class UsuarioType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'LPC\BackendBundle\Entity\Usuario'
-        ))
-        ->setRequired(array('em'))
-        ->setAllowedTypes(array('em'=>'Doctrine\Common\Persistence\ObjectManager'))
-        ;
+        ));
     }
 
     /**

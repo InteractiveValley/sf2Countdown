@@ -74,24 +74,6 @@ class Usuario implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="numero", type="string", length=100, nullable=true)
-     */
-    private $numero;
-    
-    /**
-     * @var \Edificio
-     * @todo Edificio del usuario
-     *
-     * @ORM\ManyToOne(targetEntity="Edificio", inversedBy="usuarios")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="edificio_id", referencedColumnName="id")
-     * })
-     */
-    private $edificio;    
-    
-    /**
-     * @var string
-     *
      * @ORM\Column(name="grupo", type="integer")
      */
     private $grupo;
@@ -117,27 +99,16 @@ class Usuario implements UserInterface, \Serializable
      */
     private $updatedAt;
     
-    /**
-     * @var integer
-     * @todo Residenciales asociadas al usuario administrador. 
-     *
-     * @ORM\ManyToMany(targetEntity="LPC\BackendBundle\Entity\Residencial")
-     * @ORM\JoinTable(name="usuarios_residencial")
-     * @ORM\OrderBy({"nombre" = "ASC"})
-     */
-    private $residenciales;
-    
     const GRUPO_USUARIOS    =   1;
     const GRUPO_ADMIN       =   2;
     const GRUPO_SUPER_ADMIN =   3;
     
     public function __toString(){
-        //return sprintf('%s | %s | %s', $this->getNumero(),$this->getNombre(),$this->getEdificio());
         return $this->getNombre();
     }
     
     public function getStringCompleto(){
-        return sprintf('%s | %s | %s', $this->getNombre(),$this->getNumero(),$this->getEdificio());
+        return $this->getNombre();
     }
     
     public function getStringTipoGrupo(){
@@ -511,29 +482,6 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Set numero
-     *
-     * @param string $numero
-     * @return Usuario
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-    /**
-     * Get numero
-     *
-     * @return string 
-     */
-    public function getNumero()
-    {
-        return $this->numero;
-    }
-
-    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
@@ -580,29 +528,6 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Set edificio
-     *
-     * @param \LPC\BackendBundle\Entity\Edificio $edificio
-     * @return Usuario
-     */
-    public function setEdificio(\LPC\BackendBundle\Entity\Edificio $edificio = null)
-    {
-        $this->edificio = $edificio;
-
-        return $this;
-    }
-
-    /**
-     * Get edificio
-     *
-     * @return \LPC\BackendBundle\Entity\Edificio 
-     */
-    public function getEdificio()
-    {
-        return $this->edificio;
-    }
-
-    /**
      * Set grupo
      *
      * @param integer $grupo
@@ -646,38 +571,5 @@ class Usuario implements UserInterface, \Serializable
     public function getIsActive()
     {
         return $this->isActive;
-    }
-
-    /**
-     * Add residenciales
-     *
-     * @param \LPC\BackendBundle\Entity\Residencial $residenciales
-     * @return Usuario
-     */
-    public function addResidenciale(\LPC\BackendBundle\Entity\Residencial $residenciales)
-    {
-        $this->residenciales[] = $residenciales;
-
-        return $this;
-    }
-
-    /**
-     * Remove residenciales
-     *
-     * @param \LPC\BackendBundle\Entity\Residencial $residenciales
-     */
-    public function removeResidenciale(\LPC\BackendBundle\Entity\Residencial $residenciales)
-    {
-        $this->residenciales->removeElement($residenciales);
-    }
-
-    /**
-     * Get residenciales
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getResidenciales()
-    {
-        return $this->residenciales;
     }
 }

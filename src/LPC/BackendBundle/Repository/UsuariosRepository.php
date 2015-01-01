@@ -3,7 +3,6 @@
 namespace LPC\BackendBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use LPC\BackendBundle\Entity\Usuarios;
 
 /**
  * UsuariosRepository
@@ -17,10 +16,6 @@ class UsuariosRepository extends EntityRepository
         $query= $this->getEntityManager()->createQueryBuilder();
         $query->select('u')   
               ->from('LPC\BackendBundle\Entity\Usuario', 'u')
-              ->leftJoin('u.edificio', 'e')
-              ->leftJoin('e.residencial', 'r')
-              ->where('r.id=:residencial')
-              ->setParameter('residencial', $residencial)
               ->orderBy('u.nombre', 'ASC');
         return $query->getQuery();
     }
