@@ -1,0 +1,63 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Direccion list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Tipodireccion</th>
+                <th>Calle</th>
+                <th>Numexterior</th>
+                <th>Num_interior</th>
+                <th>Cp</th>
+                <th>Municipio</th>
+                <th>Colonia</th>
+                <th>Estado</th>
+                <th>Contacto</th>
+                <th>Paqueteria</th>
+                <th>Fechaalta</th>
+                <th>Fechamodificacion</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('direcciones_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.tipoDireccion }}</td>
+                <td>{{ entity.calle }}</td>
+                <td>{{ entity.numExterior }}</td>
+                <td>{{ entity.numinterior }}</td>
+                <td>{{ entity.cp }}</td>
+                <td>{{ entity.municipio }}</td>
+                <td>{{ entity.colonia }}</td>
+                <td>{{ entity.estado }}</td>
+                <td>{{ entity.contacto }}</td>
+                <td>{{ entity.paqueteria }}</td>
+                <td>{% if entity.fechaAlta %}{{ entity.fechaAlta|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.fechaModificacion %}{{ entity.fechaModificacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('direcciones_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('direcciones_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('direcciones_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

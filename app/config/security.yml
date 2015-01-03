@@ -26,13 +26,13 @@ security:
         - { path: ^/*, roles: ROLE_USER }
 
     encoders:
-        LPC\BackendBundle\Entity\Usuario:        { algorithm: sha512, iterations: 10 }
+        InteractiveValley\BackendBundle\Entity\Usuario:        { algorithm: sha512, iterations: 10 }
 
 
     providers:
         # Usuarios del frontend
         usuarios:
-            entity: { class: LPC\BackendBundle\Entity\Usuario, property: email }
+            entity: { class: InteractiveValley\BackendBundle\Entity\Usuario, property: email }
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER

@@ -1,5 +1,0 @@
-#usuarios_api:
-#    type:       rest
-#    prefix:     /v1
-#    name_prefix: api_1_
-#    resource: LPC\BackendBundle\Controller\UsuariosController

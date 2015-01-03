@@ -1,0 +1,222 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Countdown{% endblock %}
+
+{% set urlAbsolutaFoto = 'http://'
+                             ~ app.request.server.get('SERVER_NAME')
+                             ~ asset('images/logo.png') %}
+{% block stylesheets %}
+    {% block redes_sociales %}
+        <meta property="og:url" content="{{url('homepage')}}" />
+        <meta property="og:title" content="Countdown" />
+        <meta property="og:image" content="{{urlAbsolutaFoto}}" />
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="countdown.com" />
+        <!--meta property="fb:admins" content="USER_ID1,USER_ID2"/-->
+
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@Countdown">
+        <meta name="twitter:title" content="Countdown">
+        <meta name="twitter:description" content="Countdown, ventas de articulos promocionales">
+        <meta name="twitter:creator" content="@richpolis">
+        <meta name="twitter:image:src" content="{{urlAbsolutaFoto}}">
+        <meta name="twitter:domain" content="{{url('homepage')}}">
+        <meta name="twitter:app:name:iphone" content="">
+        <meta name="twitter:app:name:ipad" content="">
+        <meta name="twitter:app:name:googleplay" content="">
+        <meta name="twitter:app:url:iphone" content="">
+        <meta name="twitter:app:url:ipad" content="">
+        <meta name="twitter:app:url:googleplay" content="">
+        <meta name="twitter:app:id:iphone" content="">
+        <meta name="twitter:app:id:ipad" content="">
+        <meta name="twitter:app:id:googleplay" content="">
+    {% endblock %}
+
+    <link rel="stylesheet" href="{{asset('css/main.css')}}"/>
+    <link rel="stylesheet" href="{{asset('css/jquery.bxslider.css')}}"/>
+    <style>
+        .loader {
+            display: none;
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url('/images/page-loader.gif') 50% 50% no-repeat transparent;
+        }
+
+    </style>
+    {% if app.environment == 'prod' %}
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-55928211-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="container border-gris-lr fondo-blanco">
+        <header class="header">
+            <div class="publicidad publicidad-principal">
+                {{ render(controller('FrontendBundle:Default:publicidadHead')) }}
+            </div>
+            <div class="navegador secundario">
+                <ul>
+                    <li><a href="{{path('frontend_nosotros')}}">nosotros</a></li>
+                    <li><a href="{{path('frontend_historia')}}">historia</a></li>
+                    <li><a href="{{path('frontend_edicion_pdf')}}">edicion pdf</a></li>
+                    <li><a href="{{path('frontend_heraldo_tv',{'slug':'ultimo'})}}">videos</a></li>
+                    <li><a href="{{path('frontend_tu_espacio',{'slug':'ultimo'})}}">tu espacio</a></li>
+                    <li><a href="{{path('frontend_contacto')}}">contacto</a></li>
+                </ul>
+            </div>
+            <div id="logo-redes-sociales">
+                <a id="logo" href="{{path('homepage')}}">
+                    <figure id="logo">
+                        <img src="{{ asset('images/heraldologo.png') }}" alt="Heraldo de Toluca"/>
+                    </figure>
+                </a>
+                <div class="redes-sociales">
+                    <a href="https://twitter.com/HeraldoEdomex/" target="_blank"><span class="twitter ico_twitter"></span></a>
+                    <a href="https://www.facebook.com/HeraldoEdomex" target="_blank"><span class="facebook ico_facebook"></span></a>
+                    <a href="https://www.youtube.com/user/HGrupoEditorial" target="_blank"><span class="youtube ico_youtube"></span></a>
+                    <a href="https://www.flickr.com/photos/77889457@N06/" target="_blank"><span class="flickr ico_flickr"></span></a>
+                </div>
+                <div class="buscador">
+                    <form id="formBuscar" action="{{path('frontend_buscador')}}" class="form-buscador">
+                        <input name="textoBuscar" id="textoBuscar" type="text" class="buscar">
+                        <a href="#" onclick="javascript:buscar();"><span class="accion-buscar ico_buscar"></span></a>
+                        <a href="{{path('frontend_archivos')}}" class="link-archivo">archivos</a>
+                    </form>
+                </div>
+                <!--div class="fecha">{{"now"|date("l,j F Y", "America/Mexico_City")}}</div-->
+                <div class="fecha">{{"now"|date("Y-m-d H:i:s", "America/Mexico_City")|translate_date }}</div>
+            </div>
+        </header>
+        <nav class="navegador principal">
+            <ul class="menu">
+                <!--li>
+                    <a href="{{path('portada')}}">portada</a>
+                </li-->
+                <li>
+                    <a href="{{path('homepage')}}">inicio</a>
+                </li>
+                <li>
+                    <a href="{{path('frontend_categoria',{slug: 'entorno'})}}">general</a>
+                    <ul class="submenu">
+                        <li><a href="{{path('frontend_categoria',{slug: 'entorno'})}}">entorno</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'poder'})}}">poder</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{path('frontend_categoria',{slug: 'nacional'})}}">nacional</a></li>
+                <li><a href="{{path('frontend_categoria',{slug: 'mundo'})}}">mundo</a></li>
+                <li><a href="{{path('frontend_categoria',{slug: 'negocios'})}}">negocios</a></li>
+                <li>
+                    <a href="{{path('frontend_categoria',{slug: 'oriente'})}}">municipios</a>
+                    <ul class="submenu">
+                        <li><a href="{{path('frontend_categoria',{slug: 'oriente'})}}">oriente</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'valle-de-mexico'})}}">valle de mexico</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'valle-de-toluca'})}}">valle de toluca</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{path('frontend_categoria',{slug: 'local'})}}">trofeo</a>
+                    <ul class="submenu">
+                        <li><a href="{{path('frontend_categoria',{slug: 'local'})}}">local</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'nacional'})}}">nacional</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'internacional'})}}">internacional</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{path('frontend_categoria',{slug: 'espectaculos'})}}">arte y gente</a>
+                    <ul class="submenu">
+                        <li><a href="{{path('frontend_categoria',{slug: 'espectaculos'})}}">espectaculos</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'cultura'})}}">cultura</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'sociales'})}}">sociales</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{{path('frontend_categoria',{slug: 'columnas'})}}">editorial</a>
+                    <ul class="submenu">
+                        <li><a href="{{path('frontend_categoria',{slug: 'columnas'})}}">columnas</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'caricaturas'})}}">caricaturas</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{path('frontend_categoria',{slug: 'entrevista'})}}">entrevista</a></li>
+            </ul>
+        </nav>
+    {% block contenido %}{% endblock %}
+    <span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span>
+    <div class="loader"></div>
+</div>
+    <footer>
+        <div class="navegadores">
+            <div class="container">
+                <div class="navegador secundario">
+                    <ul>
+                        <li><a href="{{path('frontend_nosotros')}}">nosotros</a></li>
+                        <li><a href="{{path('frontend_historia')}}">historia</a></li>
+                        <li><a href="{{path('frontend_edicion_pdf')}}">edicion pdf</a></li>
+                        <li><a href="{{path('frontend_heraldo_tv',{'slug':'ultimo'})}}">videos</a></li>
+                        <li><a href="{{path('frontend_tu_espacio',{'slug':'ultimo'})}}">tu espacio</a></li>
+                        <li><a href="{{path('frontend_contacto')}}">contacto</a></li>
+                    </ul>
+                </div>
+                <div class="navegador principal principal-footer">
+                    <ul>
+                        <!--li><a href="{{path('portada')}}">portada</a></li-->
+                        <li><a href="{{path('homepage')}}">inicio</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'entorno'})}}">general</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'nacional'})}}">nacional</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'mundo'})}}">mundo</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'negocios'})}}">negocios</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'oriente'})}}">municipios</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'local'})}}">trofeo</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'espectaculos'})}}">arte y gente</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'columnas'})}}">editorial</a></li>
+                        <li><a href="{{path('frontend_categoria',{slug: 'entrevista'})}}">entrevista</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="contenidos">
+                <figure class="logo">
+                    <img src="{{asset('images/logofooter.png')}}" alt="" class="imagen-logo">
+                </figure>
+                <div class="contenido">
+                    {{ render(controller('FrontendBundle:Default:piePagina')) }}
+                </div>
+                <div class="redes-sociales">
+                    <a href="https://twitter.com/HeraldoEdomex/" target="_blank"><span class="twitter ico_twitter"></span></a>
+                    <a href="https://www.facebook.com/HeraldoEdomex" target="_blank"><span class="facebook ico_facebook"></span></a>
+                    <a href="https://www.youtube.com/user/HGrupoEditorial" target="_blank"><span class="youtube ico_youtube"></span></a>
+                    <a href="https://www.flickr.com/photos/77889457@N06/" target="_blank"><span class="flickr ico_flickr"></span></a>
+                </div>
+            </div>
+        </div>
+        <figure id="LogoInteractieValley">
+            <a href="http://www.web2014.interactivevalley.com" target="_blank">
+                <img src="{{asset('images/interactivevalley.png')}}" alt=""/>
+            </a>    
+        </figure>
+    </footer>    
+{% endblock %}
+ 
+{% block javascripts %}
+<script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/underscore-min.js')}}"></script>
+<script src="{{asset('js/backbone-min.js')}}"></script>
+<script src="{{asset('js/swig.js')}}"></script>
+<script src="{{asset('js/jquery.bxslider.min.js')}}"></script>
+<script>
+    $(document).ready(function(){
+    
+    });
+</script>
+{% endblock %}

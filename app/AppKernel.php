@@ -16,10 +16,13 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new LPC\VentasBundle\VentasBundle(),
-            new LPC\BackendBundle\BackendBundle(),
-            new LPC\FrontendBundle\FrontendBundle(),
-            new LPC\ProductosBundle\ProductosBundle(),
+            
+            new InteractiveValley\VentasBundle\VentasBundle(),
+            new InteractiveValley\BackendBundle\BackendBundle(),
+            new InteractiveValley\FrontendBundle\FrontendBundle(),
+            new InteractiveValley\ProductosBundle\ProductosBundle(),
+            new InteractiveValley\GaleriasBundle\GaleriasBundle(),
+            new InteractiveValley\PaginasBundle\PaginasBundle(),
             
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new FOS\RestBundle\FOSRestBundle(),
@@ -30,8 +33,6 @@ class AppKernel extends Kernel
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            //             new AppBundle\AppBundle(),
-            //$bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();

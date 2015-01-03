@@ -6,7 +6,7 @@ services:
             - { name: twig.extension }
 
 #    login_listener:
-#        class: LPC\FrontendBundle\Listener\LoginListener
+#        class: InteractiveValley\FrontendBundle\Listener\LoginListener
 #        arguments: [@service_container,@security.context, @router]
 #        tags:
 #            - { name: kernel.event_listener, event: security.interactive_login }
