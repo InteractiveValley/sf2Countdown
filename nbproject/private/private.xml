@@ -2,12 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/home/richpolis/Proyectos/php/sf2/sf2Countdown/src/InteractiveValley/VentasBundle/Entity/Pago.php</file>
-            <file>file:/home/richpolis/Proyectos/php/sf2/sf2Countdown/src/InteractiveValley/ProductosBundle/Entity/Categoria.php</file>
-            <file>file:/home/richpolis/Proyectos/php/sf2/sf2Countdown/src/InteractiveValley/VentasBundle/Entity/Venta.php</file>
-            <file>file:/home/richpolis/Proyectos/php/sf2/sf2Countdown/src/InteractiveValley/BackendBundle/Entity/Usuario.php</file>
-            <file>file:/home/richpolis/Proyectos/php/sf2/sf2Countdown/src/InteractiveValley/VentasBundle/Entity/DetVenta.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

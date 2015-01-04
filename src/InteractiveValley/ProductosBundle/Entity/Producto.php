@@ -4,6 +4,8 @@ namespace InteractiveValley\ProductosBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use InteractiveValley\BackendBundle\Utils\Richsys as RpsStms;
+
 /**
  * Producto
  *
@@ -182,6 +184,8 @@ class Producto
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
+        
+        $this->setSlug(RpsStms::slugify($nombre));
 
         return $this;
     }

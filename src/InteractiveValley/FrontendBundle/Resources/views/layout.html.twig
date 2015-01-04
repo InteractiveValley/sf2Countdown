@@ -31,9 +31,11 @@
         <meta name="twitter:app:id:ipad" content="">
         <meta name="twitter:app:id:googleplay" content="">
     {% endblock %}
-
-    <link rel="stylesheet" href="{{asset('css/main.css')}}"/>
+    
+    <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}"/>
     <link rel="stylesheet" href="{{asset('css/jquery.bxslider.css')}}"/>
+    <link rel="stylesheet" href="{{asset('css/normalize.css')}}"/>
+    <link rel="stylesheet" href="{{asset('css/main.css')}}"/>
     <style>
         .loader {
             display: none;
@@ -60,156 +62,102 @@
 {% endblock %}
 
 {% block body %}
-<div class="container border-gris-lr fondo-blanco">
-        <header class="header">
-            <div class="publicidad publicidad-principal">
-                {{ render(controller('FrontendBundle:Default:publicidadHead')) }}
+<div class="container">
+    <header class="row">
+        <div class="col-md-7">
+            <figure id="logoPrincipal">
+                <img src="/images/logo.png" class="img-responsive" alt="Countdown">
+            </figure>
+        </div>
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img src="/images/informacion.png" alt="">
+                        </div>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                              <input type="text" class="form-control" placeholder="Ingrese su orden" name="pedido">
+                              <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                              </span>
+                            </div>
+                        </div>
+                    </div>    
+                    
+                    
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="link-cuenta-usuario" href="#crear/cuenta">Crear Cuenta</a>
+                            <a class="link-cuenta-usuario" href="#login">Login</a>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                              <input type="text" class="form-control" placeholder="Search" name="buscar">
+                              <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                              </span>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
             </div>
-            <div class="navegador secundario">
-                <ul>
-                    <li><a href="{{path('frontend_nosotros')}}">nosotros</a></li>
-                    <li><a href="{{path('frontend_historia')}}">historia</a></li>
-                    <li><a href="{{path('frontend_edicion_pdf')}}">edicion pdf</a></li>
-                    <li><a href="{{path('frontend_heraldo_tv',{'slug':'ultimo'})}}">videos</a></li>
-                    <li><a href="{{path('frontend_tu_espacio',{'slug':'ultimo'})}}">tu espacio</a></li>
-                    <li><a href="{{path('frontend_contacto')}}">contacto</a></li>
+        </div>    
+    </header>
+    <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a href="#" class="navbar-brand">Project name</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#">About</a></li>
+              <li><a href="#">Contact</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li class="divider"></li>
+                  <li class="dropdown-header">Nav header</li>
+                  <li><a href="#">Separated link</a></li>
+                  <li><a href="#">One more separated link</a></li>
                 </ul>
-            </div>
-            <div id="logo-redes-sociales">
-                <a id="logo" href="{{path('homepage')}}">
-                    <figure id="logo">
-                        <img src="{{ asset('images/heraldologo.png') }}" alt="Heraldo de Toluca"/>
-                    </figure>
-                </a>
-                <div class="redes-sociales">
-                    <a href="https://twitter.com/HeraldoEdomex/" target="_blank"><span class="twitter ico_twitter"></span></a>
-                    <a href="https://www.facebook.com/HeraldoEdomex" target="_blank"><span class="facebook ico_facebook"></span></a>
-                    <a href="https://www.youtube.com/user/HGrupoEditorial" target="_blank"><span class="youtube ico_youtube"></span></a>
-                    <a href="https://www.flickr.com/photos/77889457@N06/" target="_blank"><span class="flickr ico_flickr"></span></a>
-                </div>
-                <div class="buscador">
-                    <form id="formBuscar" action="{{path('frontend_buscador')}}" class="form-buscador">
-                        <input name="textoBuscar" id="textoBuscar" type="text" class="buscar">
-                        <a href="#" onclick="javascript:buscar();"><span class="accion-buscar ico_buscar"></span></a>
-                        <a href="{{path('frontend_archivos')}}" class="link-archivo">archivos</a>
-                    </form>
-                </div>
-                <!--div class="fecha">{{"now"|date("l,j F Y", "America/Mexico_City")}}</div-->
-                <div class="fecha">{{"now"|date("Y-m-d H:i:s", "America/Mexico_City")|translate_date }}</div>
-            </div>
-        </header>
-        <nav class="navegador principal">
-            <ul class="menu">
-                <!--li>
-                    <a href="{{path('portada')}}">portada</a>
-                </li-->
-                <li>
-                    <a href="{{path('homepage')}}">inicio</a>
-                </li>
-                <li>
-                    <a href="{{path('frontend_categoria',{slug: 'entorno'})}}">general</a>
-                    <ul class="submenu">
-                        <li><a href="{{path('frontend_categoria',{slug: 'entorno'})}}">entorno</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'poder'})}}">poder</a></li>
-                    </ul>
-                </li>
-                <li><a href="{{path('frontend_categoria',{slug: 'nacional'})}}">nacional</a></li>
-                <li><a href="{{path('frontend_categoria',{slug: 'mundo'})}}">mundo</a></li>
-                <li><a href="{{path('frontend_categoria',{slug: 'negocios'})}}">negocios</a></li>
-                <li>
-                    <a href="{{path('frontend_categoria',{slug: 'oriente'})}}">municipios</a>
-                    <ul class="submenu">
-                        <li><a href="{{path('frontend_categoria',{slug: 'oriente'})}}">oriente</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'valle-de-mexico'})}}">valle de mexico</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'valle-de-toluca'})}}">valle de toluca</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="{{path('frontend_categoria',{slug: 'local'})}}">trofeo</a>
-                    <ul class="submenu">
-                        <li><a href="{{path('frontend_categoria',{slug: 'local'})}}">local</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'nacional'})}}">nacional</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'internacional'})}}">internacional</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="{{path('frontend_categoria',{slug: 'espectaculos'})}}">arte y gente</a>
-                    <ul class="submenu">
-                        <li><a href="{{path('frontend_categoria',{slug: 'espectaculos'})}}">espectaculos</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'cultura'})}}">cultura</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'sociales'})}}">sociales</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="{{path('frontend_categoria',{slug: 'columnas'})}}">editorial</a>
-                    <ul class="submenu">
-                        <li><a href="{{path('frontend_categoria',{slug: 'columnas'})}}">columnas</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'caricaturas'})}}">caricaturas</a></li>
-                    </ul>
-                </li>
-                <li><a href="{{path('frontend_categoria',{slug: 'entrevista'})}}">entrevista</a></li>
+              </li>
             </ul>
-        </nav>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
+              <li><a href="../navbar-static-top/">Static top</a></li>
+              <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
     {% block contenido %}{% endblock %}
     <span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span>
     <div class="loader"></div>
 </div>
-    <footer>
-        <div class="navegadores">
-            <div class="container">
-                <div class="navegador secundario">
-                    <ul>
-                        <li><a href="{{path('frontend_nosotros')}}">nosotros</a></li>
-                        <li><a href="{{path('frontend_historia')}}">historia</a></li>
-                        <li><a href="{{path('frontend_edicion_pdf')}}">edicion pdf</a></li>
-                        <li><a href="{{path('frontend_heraldo_tv',{'slug':'ultimo'})}}">videos</a></li>
-                        <li><a href="{{path('frontend_tu_espacio',{'slug':'ultimo'})}}">tu espacio</a></li>
-                        <li><a href="{{path('frontend_contacto')}}">contacto</a></li>
-                    </ul>
-                </div>
-                <div class="navegador principal principal-footer">
-                    <ul>
-                        <!--li><a href="{{path('portada')}}">portada</a></li-->
-                        <li><a href="{{path('homepage')}}">inicio</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'entorno'})}}">general</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'nacional'})}}">nacional</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'mundo'})}}">mundo</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'negocios'})}}">negocios</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'oriente'})}}">municipios</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'local'})}}">trofeo</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'espectaculos'})}}">arte y gente</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'columnas'})}}">editorial</a></li>
-                        <li><a href="{{path('frontend_categoria',{slug: 'entrevista'})}}">entrevista</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="contenidos">
-                <figure class="logo">
-                    <img src="{{asset('images/logofooter.png')}}" alt="" class="imagen-logo">
-                </figure>
-                <div class="contenido">
-                    {{ render(controller('FrontendBundle:Default:piePagina')) }}
-                </div>
-                <div class="redes-sociales">
-                    <a href="https://twitter.com/HeraldoEdomex/" target="_blank"><span class="twitter ico_twitter"></span></a>
-                    <a href="https://www.facebook.com/HeraldoEdomex" target="_blank"><span class="facebook ico_facebook"></span></a>
-                    <a href="https://www.youtube.com/user/HGrupoEditorial" target="_blank"><span class="youtube ico_youtube"></span></a>
-                    <a href="https://www.flickr.com/photos/77889457@N06/" target="_blank"><span class="flickr ico_flickr"></span></a>
-                </div>
-            </div>
-        </div>
-        <figure id="LogoInteractieValley">
-            <a href="http://www.web2014.interactivevalley.com" target="_blank">
-                <img src="{{asset('images/interactivevalley.png')}}" alt=""/>
-            </a>    
-        </figure>
-    </footer>    
 {% endblock %}
  
 {% block javascripts %}
 <script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/bootstrap.js')}}"></script>
 <script src="{{asset('js/underscore-min.js')}}"></script>
 <script src="{{asset('js/backbone-min.js')}}"></script>
 <script src="{{asset('js/swig.js')}}"></script>

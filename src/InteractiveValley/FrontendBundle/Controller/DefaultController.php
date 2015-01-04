@@ -22,7 +22,10 @@ class DefaultController extends BaseController {
      */
     public function indexAction(Request $request) 
     {
-        return array();
+        $categorias = $this->getDoctrine()
+                           ->getRepository('ProductosBundle:Categoria')->findAll();
+        
+        return array('categorias'=>$categorias);
     }
 
     /**
