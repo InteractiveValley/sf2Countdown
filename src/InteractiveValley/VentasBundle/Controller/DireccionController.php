@@ -10,10 +10,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use InteractiveValley\VentasBundle\Entity\Direccion;
 use InteractiveValley\VentasBundle\Form\DireccionType;
 
+use InteractiveValley\BackendBundle\Utils\Richsys as RpsStms;
+
 /**
  * Direccion controller.
  *
- * @Route("/direcciones")
+ * @Route("/backend/direcciones")
  */
 class DireccionController extends Controller
 {
@@ -59,6 +61,7 @@ class DireccionController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'errores' => RpsStms::getErrorMessages($form),
         );
     }
 
@@ -76,7 +79,7 @@ class DireccionController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        //$form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -96,6 +99,7 @@ class DireccionController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'errores' => RpsStms::getErrorMessages($form),
         );
     }
 
@@ -148,6 +152,7 @@ class DireccionController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'errores' => RpsStms::getErrorMessages($editForm),
         );
     }
 
@@ -165,7 +170,7 @@ class DireccionController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -200,6 +205,7 @@ class DireccionController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'errores' => RpsStms::getErrorMessages($editForm),
         );
     }
     /**
@@ -240,8 +246,26 @@ class DireccionController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('direcciones_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    /**
+     * Exportar los direcciones.
+     *
+     * @Route("/exportar", name="direcciones_exportar")
+     */
+    public function exportarAction(Request $request)
+    {
+        $direcciones = $this->getDoctrine()->getRepository('VentasBundle:Direccion')
+                         ->findAll();
+
+        $response = $this->render(
+                'VentasBundle:Direccion:list.xls.twig', array('entities' => $direcciones)
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export-direcciones.xls"');
+        return $response;
     }
 }

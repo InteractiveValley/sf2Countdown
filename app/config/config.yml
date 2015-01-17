@@ -128,6 +128,26 @@ liip_imagine:
             filters:
                 thumbnail: { size: [90, 60], mode: outbound }
 
+hwi_oauth:
+    #this is my custom user provider, will manage the 
+    #automatic user registration on your site, with data from the provider (facebook. google, etc.)
+    #and also, the connecting part (get the token and the user_id)
+    connect:
+        account_connector: my_user_provider
+    # name of the firewall in which this bundle is active, this setting MUST be set
+    firewall_name: frontend
+    resource_owners:
+        facebook:
+            type:                facebook
+            client_id:           "%facebook_app_id%"
+            client_secret:       "%facebook_app_secret%"
+            scope:               "email"
+        twitter:
+            type:                twitter
+            client_id:           "%twitter_app_id%"
+            client_secret:       "%twitter_app_secret%"
+            scope:               "email"
+
 ps_pdf:
     nodes_file: ~
     fonts_file: ~

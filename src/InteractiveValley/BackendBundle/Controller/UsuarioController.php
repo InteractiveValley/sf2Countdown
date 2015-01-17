@@ -3,7 +3,7 @@
 namespace InteractiveValley\BackendBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use InteractiveValley\BackendBundle\Controller\BaseController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -15,9 +15,9 @@ use InteractiveValley\BackendBundle\Utils\Richsys as RpsStms;
 /**
  * Usuario controller.
  *
- * @Route("/usuarios")
+ * @Route("/backend/usuarios")
  */
-class UsuarioController extends BaseController
+class UsuarioController extends Controller
 {
 
     /**
@@ -83,7 +83,7 @@ class UsuarioController extends BaseController
             'em'=>$this->getDoctrine()->getManager(),
         ));
 
-        ////$form->add('submit', 'submit', array('label' => 'Create'));
+        //$form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -177,7 +177,7 @@ class UsuarioController extends BaseController
             'em'=>$this->getDoctrine()->getManager()
         ));
 
-        ////$form->add('submit', 'submit', array('label' => 'Update'));
+        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -263,7 +263,7 @@ class UsuarioController extends BaseController
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('usuarios_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ////->add('submit', 'submit', array('label' => 'Delete'))
+            //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
     }

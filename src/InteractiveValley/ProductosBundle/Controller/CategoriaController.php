@@ -10,10 +10,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use InteractiveValley\ProductosBundle\Entity\Categoria;
 use InteractiveValley\ProductosBundle\Form\CategoriaType;
 
+use InteractiveValley\BackendBundle\Utils\Richsys as RpsStms;
+
 /**
  * Categoria controller.
  *
- * @Route("/categorias")
+ * @Route("/backend/categorias")
  */
 class CategoriaController extends Controller
 {
@@ -59,6 +61,7 @@ class CategoriaController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'errores' => RpsStms::getErrorMessages($form),
         );
     }
 
@@ -76,7 +79,7 @@ class CategoriaController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        //$form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -96,6 +99,7 @@ class CategoriaController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'errores'     => RpsStms::getErrorMessages($form),
         );
     }
 
@@ -148,6 +152,7 @@ class CategoriaController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'errores'     => RpsStms::getErrorMessages($editForm),
         );
     }
 
@@ -165,7 +170,7 @@ class CategoriaController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -200,6 +205,7 @@ class CategoriaController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'errores'     => RpsStms::getErrorMessages($editForm),
         );
     }
     /**
@@ -240,8 +246,26 @@ class CategoriaController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('categorias_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    /**
+     * Exportar los categorias.
+     *
+     * @Route("/exportar", name="categorias_exportar")
+     */
+    public function exportarAction(Request $request)
+    {
+        $categorias = $this->getDoctrine()->getRepository('ProductosBundle:Categoria')
+                         ->findAll();
+
+        $response = $this->render(
+                'ProductosBundle:Categoria:list.xls.twig', array('entities' => $categorias)
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export-categorias.xls"');
+        return $response;
     }
 }

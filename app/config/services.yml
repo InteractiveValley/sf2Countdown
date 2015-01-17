@@ -1,14 +1,34 @@
 # app/config/services.yml
+parameters:
+    my_user_provider.class: Richpolis\UsuariosBundle\Security\Core\User\UserProvider
+    my_user.class: Richpolis\BackendBundle\Entity\Usuario
+    facebook_app_id: 763353070403839
+    facebook_app_secret: fcb999c0b2838a43b78e5957dcfb985a
+    twitter_app_id: oCDfF9DWJeSwHKdZEDciLKAWy
+    twitter_app_secret: 9OOStXmCjelx63WvOUNMTsbOAzYI0azr3122ql1po7cGNHWImH
+    
+    
 services:
+    my_user_provider:
+        class: "%my_user_provider.class%"
+        #this is the place where the properties are passed to the UserProvider - see config.yml
+        arguments: [@doctrine,%my_user.class%,{facebook: facebook_id, twitter: twitter_id }]
+        
     twig.extension.text:
         class: Twig_Extensions_Extension_Text
         tags:
             - { name: twig.extension }
 
+    login_admin_listener:
+        class: Richpolis\BackendBundle\Listener\LoginAdminListener
+        arguments: [@service_container,@security.context, @router]
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login }
+            - { name: kernel.event_listener, event: kernel.response }
+
 #    login_listener:
-#        class: InteractiveValley\FrontendBundle\Listener\LoginListener
+#        class: Richpolis\FrontendBundle\Listener\LoginListener
 #        arguments: [@service_container,@security.context, @router]
 #        tags:
 #            - { name: kernel.event_listener, event: security.interactive_login }
-#            - { name: kernel.event_listener, event: kernel.response }
-    
+#            - { name: kernel.event_listener, event: kernel.response }#

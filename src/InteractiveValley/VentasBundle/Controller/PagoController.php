@@ -10,10 +10,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use InteractiveValley\VentasBundle\Entity\Pago;
 use InteractiveValley\VentasBundle\Form\PagoType;
 
+use InteractiveValley\BackendBundle\Utils\Richsys as RpsStms;
+
 /**
  * Pago controller.
  *
- * @Route("/pagos")
+ * @Route("/backend/pagos")
  */
 class PagoController extends Controller
 {
@@ -59,6 +61,7 @@ class PagoController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'errores' => RpsStms::getErrorMessages($form),
         );
     }
 
@@ -76,7 +79,7 @@ class PagoController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        //$form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -96,6 +99,7 @@ class PagoController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'errores' => RpsStms::getErrorMessages($form),
         );
     }
 
@@ -148,6 +152,7 @@ class PagoController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'errores' => RpsStms::getErrorMessages($editForm),
         );
     }
 
@@ -165,7 +170,7 @@ class PagoController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -200,6 +205,7 @@ class PagoController extends Controller
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'errores' => RpsStms::getErrorMessages($editForm),
         );
     }
     /**
@@ -240,8 +246,26 @@ class PagoController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('pagos_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+    
+    /**
+     * Exportar los pagos.
+     *
+     * @Route("/exportar", name="pagos_exportar")
+     */
+    public function exportarAction(Request $request)
+    {
+        $pagos = $this->getDoctrine()->getRepository('VentasBundle:Pago')
+                         ->findAll();
+
+        $response = $this->render(
+                'VentasBundle:Pago:list.xls.twig', array('entities' => $pagos)
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export-pagos.xls"');
+        return $response;
     }
 }

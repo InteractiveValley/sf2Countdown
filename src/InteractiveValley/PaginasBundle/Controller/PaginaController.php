@@ -132,7 +132,7 @@ class PaginaController extends Controller
             'delete_form' => $deleteForm->createView(),
             'get_galerias' =>$this->generateUrl('paginas_galerias',array('id'=>$entity->getId()),true),
             'post_galerias' =>$this->generateUrl('paginas_galerias_upload', array('id'=>$entity->getId()),true),
-			'post_galerias_link_video' =>$this->generateUrl('paginas_galerias_link_video', array('id'=>$entity->getId()),true),
+            'post_galerias_link_video' =>$this->generateUrl('paginas_galerias_link_video', array('id'=>$entity->getId()),true),
             'url_delete' => $this->generateUrl('paginas_galerias_delete',array('id'=>$entity->getId(),'idGaleria'=>'0'),true),
         );
     }
@@ -290,7 +290,7 @@ class PaginaController extends Controller
             'galerias'=>$galerias,
             'get_galerias' =>$get_galerias,
             'post_galerias' =>$post_galerias,
-			'post_galerias_link_video' =>$post_galerias_link_video,
+            'post_galerias_link_video' =>$post_galerias_link_video,
             'url_delete' => $url_delete,
         ));
     }

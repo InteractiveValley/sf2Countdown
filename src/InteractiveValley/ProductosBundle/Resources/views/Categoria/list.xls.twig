@@ -1,0 +1,20 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Categoria</th>
+            <th>Slug</th>
+            <th>Creado</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.slug }}</td>
+                <td>{{ entity.fechaAlta | date('d-m-Y') }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

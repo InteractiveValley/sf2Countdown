@@ -1,6 +1,6 @@
 <?php
 
-namespace InteractiveValley\FrontendBundle\Controller;
+namespace InteractiveValley\BackendBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

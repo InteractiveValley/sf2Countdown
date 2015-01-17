@@ -17,7 +17,7 @@ use InteractiveValley\BackendBundle\Form\ConfiguracionesStringType;
 /**
  * Configuraciones controller.
  *
- * @Route("/configuraciones")
+ * @Route("/backend/configuraciones")
  */
 class ConfiguracionesController extends Controller
 {

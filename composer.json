@@ -27,7 +27,9 @@
         "friendsofsymfony/rest-bundle": "~1.0",
         "beberlei/DoctrineExtensions": "*",
         "psliwa/php-pdf": "*",
-        "psliwa/pdf-bundle": "~1.0"
+        "psliwa/pdf-bundle": "~1.0",
+        "hwi/oauth-bundle": "0.4.*@dev"
+        
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
