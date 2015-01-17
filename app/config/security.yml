@@ -3,39 +3,39 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-    admin:
-        pattern: ^/admin
-        provider: usuarios
-        form_login:
-            login_path: admin_login
-            check_path: admin_login_check
-            remember_me: true
-            use_referer: false
-        logout:
-            path: admin_logout
-            target: admin_login
-        security: true
-        anonymous: true
-    frontend:
-        pattern:  ^/
-        provider: usuarios
-        form_login:
-            login_path: login
-            check_path: login_check
-            remember_me: true
-            use_referer: false
-        oauth:
-            resource_owners:
-                facebook:    "/login/check-facebook"
-                twitter:     "/login/check-twitter"
-            login_path:     /login
-            failure_path:   /login 
-            oauth_user_provider:
-               #servicio para logear al usuario.
-                service: my_user_provider
-        logout:
-            path: logout
-            target: login
+        admin:
+            pattern: ^/backend
+            provider: usuarios
+            form_login:
+                login_path: backend_login
+                check_path: backend_login_check
+                remember_me: true
+                use_referer: false
+            logout:
+                path: backend_logout
+                target: backend_login
+            security: true
+            anonymous: true
+        frontend:
+            pattern:  ^/
+            provider: usuarios
+            form_login:
+                login_path: login
+                check_path: login_check
+                remember_me: true
+                use_referer: false
+            oauth:
+                resource_owners:
+                    facebook:    "/login/check-facebook"
+                    twitter:     "/login/check-twitter"
+                login_path:     /login
+                failure_path:   /login 
+                oauth_user_provider:
+                   #servicio para logear al usuario.
+                    service: my_user_provider
+            logout:
+                path: logout
+                target: login
             remember_me:
                 key:        countdown1234
                 lifetime:   604800  # 604.800 = 3.600 * 24 * 7 = 1 semana
