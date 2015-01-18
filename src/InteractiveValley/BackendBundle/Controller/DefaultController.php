@@ -18,7 +18,7 @@ class DefaultController extends Controller
     }
     
     /**
-     * @Route("/backend/login", name="login")
+     * @Route("/backend/login", name="backend_login")
      * @Template()
      */
     public function loginAction()
@@ -37,18 +37,18 @@ class DefaultController extends Controller
         }
 
         return $this->render(
-            'FrontendBundle:Security:login.html.twig',
+            'BackendBundle:Security:login.html.twig',
             array(
                 // último nombre de usuario ingresado
                 'last_username' => $session->get(SecurityContext::LAST_USERNAME),
                 'error'         => $error,
-                'ruta'          => 'login_check',
+                'ruta'          => 'backend_login_check',
             )
         );
     }
     
     /**
-     * @Route("/backend/login_check", name="login_check")
+     * @Route("/backend/login_check", name="backend_login_check")
      */
     public function securityCheckAction()
     {
@@ -56,7 +56,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/backend/logout", name="logout")
+     * @Route("/backend/logout", name="backend_logout")
      */
     public function logoutAction()
     {

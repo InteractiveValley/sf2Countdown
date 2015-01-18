@@ -63,7 +63,10 @@ class DetVenta
     /**
      * @var integer
      *
-     * @ORM\OneToOne(targetEntity="InteractiveValley\ProductosBundle\Entity\Producto")
+     * @ORM\ManyToOne(targetEntity="InteractiveValley\ProductosBundle\Entity\Producto")
+     *  @ORM\JoinColumns({
+     *  @ORM\JoinColumn(name="producto_id", referencedColumnName="id")
+     * })
      */
     private $producto;
 
@@ -208,26 +211,4 @@ class DetVenta
         return $this->venta;
     }
 
-    /**
-     * Set producto
-     *
-     * @param \InteractiveValley\ProductosBundle\Entity\Producto $producto
-     * @return DetVenta
-     */
-    public function setProducto(\InteractiveValley\ProductosBundle\Entity\Producto $producto = null)
-    {
-        $this->producto = $producto;
-
-        return $this;
-    }
-
-    /**
-     * Get producto
-     *
-     * @return \InteractiveValley\ProductosBundle\Entity\Producto 
-     */
-    public function getProducto()
-    {
-        return $this->producto;
-    }
 }

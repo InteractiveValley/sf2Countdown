@@ -18,6 +18,16 @@ ventas:
     type:     annotation
     prefix:   /
 
+galerias:
+    resource: "@GaleriasBundle/Controller/"
+    type:     annotation
+    prefix:   /
+    
+paginas:
+    resource: "@PaginasBundle/Controller/"
+    type:     annotation
+    prefix:   /    
+
 #HWIOAuthBundle routes
 hwi_oauth_security:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"

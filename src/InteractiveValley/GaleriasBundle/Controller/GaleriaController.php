@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Galeria controller.
  *
- * @Route("/galerias")
+ * @Route("/backend/galerias")
  */
 class GaleriaController extends Controller
 {
