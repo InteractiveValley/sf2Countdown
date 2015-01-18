@@ -1,0 +1,20 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Usuario</th>
+            <th>tipoDireccion</th>
+            <th>Calle</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>{{ entity.usuario.nombre }}</td>
+                <td>{{ entity.tipoDireccion }}</td>
+                <td>{{ entity.calle }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

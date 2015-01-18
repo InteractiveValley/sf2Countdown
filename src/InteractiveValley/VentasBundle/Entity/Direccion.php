@@ -53,7 +53,7 @@ class Direccion
     /**
      * @var string
      *
-     * @ORM\Column(name="cp", type="string", length=5)
+     * @ORM\Column(name="cp", type="string", length=6)
      */
     private $cp;
 

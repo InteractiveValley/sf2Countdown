@@ -2,11 +2,6 @@
 
 {% block title %}Administrador{% endblock %}
 
-{% block viewport %} 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-{% endblock %}
-
 {% block stylesheets %}
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
@@ -130,18 +125,8 @@
                     </a>
                 </li>
                 <li>
-                    <a {{usuarios}} href="{{path('usuarios')}}">
-                        <i class="fa fa-user"></i> <span>Usuarios</span>
-                    </a>
-                </li>
-                <li>
                     <a {{direcciones}} href="{{path('direcciones')}}">
                         <i class="fa fa-user"></i> <span>Direcciones</span>
-                    </a>
-                </li>
-                <li>
-                    <a {{envios}} href="{{path('envios')}}">
-                        <i class="fa fa-user"></i> <span>Envios</span>
                     </a>
                 </li>
                 <li>

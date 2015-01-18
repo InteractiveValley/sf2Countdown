@@ -63,7 +63,10 @@ class DetVenta
     /**
      * @var integer
      *
-     * @ORM\OneToOne(targetEntity="InteractiveValley\ProductosBundle\Entity\Producto")
+     * @ORM\ManyToOne(targetEntity="InteractiveValley\ProductosBundle\Entity\Producto")
+     *  @ORM\JoinColumns({
+     *  @ORM\JoinColumn(name="producto_id", referencedColumnName="id")
+     * })
      */
     private $producto;
 
@@ -207,6 +210,7 @@ class DetVenta
     {
         return $this->venta;
     }
+
 
     /**
      * Set producto

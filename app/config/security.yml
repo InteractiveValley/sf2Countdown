@@ -10,7 +10,7 @@ security:
                 login_path: backend_login
                 check_path: backend_login_check
                 remember_me: true
-                use_referer: false
+                use_referer: true
             logout:
                 path: backend_logout
                 target: backend_login
@@ -23,7 +23,7 @@ security:
                 login_path: login
                 check_path: login_check
                 remember_me: true
-                use_referer: false
+                use_referer: true
             oauth:
                 resource_owners:
                     facebook:    "/login/check-facebook"
@@ -43,8 +43,8 @@ security:
             anonymous: true
 
     access_control:
-        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin, roles: [ROLE_ADMIN] }
+        - { path: ^/backend/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/backend, roles: [ROLE_ADMIN] }
         - { path: ^/categorias, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/recuperar, roles: IS_AUTHENTICATED_ANONYMOUSLY }
