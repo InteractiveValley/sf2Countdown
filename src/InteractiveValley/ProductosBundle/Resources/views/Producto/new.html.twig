@@ -111,6 +111,12 @@ $(document).ready(function(){
     $("#formProductos").submit();
   });
   
+  /* CL Editor */
+  $(".cleditor").cleditor({
+    width: "auto",
+    height: "auto"
+  });
+  
   {% if errores | length > 0 %}
     {% for error in errores %}
        noty({

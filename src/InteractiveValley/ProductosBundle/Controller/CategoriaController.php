@@ -19,7 +19,7 @@ use InteractiveValley\BackendBundle\Utils\Richsys as RpsStms;
  */
 class CategoriaController extends Controller
 {
-
+    
     /**
      * Lists all Categoria entities.
      *
@@ -31,7 +31,9 @@ class CategoriaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('ProductosBundle:Categoria')->findAll();
+        $entities = $em->getRepository('ProductosBundle:Categoria')->findBy(array(),array(
+            'position'=>'ASC'
+        ));
 
         return array(
             'entities' => $entities,
@@ -94,6 +96,13 @@ class CategoriaController extends Controller
     public function newAction()
     {
         $entity = new Categoria();
+        $max = $this->getDoctrine()->getRepository('ProductosBundle:Categoria')
+                ->getMaxPosicion();
+        if (!is_null($max)) {
+            $entity->setPosition($max + 1);
+        } else {
+            $entity->setPosition(1);
+        }
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -150,7 +159,7 @@ class CategoriaController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'errores'     => RpsStms::getErrorMessages($editForm),
         );
@@ -203,7 +212,7 @@ class CategoriaController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'errores'     => RpsStms::getErrorMessages($editForm),
         );
@@ -267,5 +276,38 @@ class CategoriaController extends Controller
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment; filename="export-categorias.xls"');
         return $response;
+    }
+    
+    /**
+     * Ordenar las posiciones de las categorias de productos.
+     *
+     * @Route("/ordenar/registros", name="categorias_ordenar")
+     * @Method("PATCH")
+     */
+    public function ordenarRegistrosAction(Request $request) {
+        if ($request->isXmlHttpRequest()) {
+            $registro_order = $request->query->get('registro');
+            $em = $this->getDoctrine()->getManager();
+            $result['ok'] = true;
+            foreach ($registro_order as $order => $id) {
+                $registro = $em->getRepository('ProductosBundle:Categoria')->find($id);
+                if ($registro->getPosition() != ($order + 1)) {
+                    try {
+                        $registro->setPosition($order + 1);
+                        $em->flush();
+                    } catch (Exception $e) {
+                        $result['mensaje'] = $e->getMessage();
+                        $result['ok'] = false;
+                    }
+                }
+            }
+            $response = new \Symfony\Component\HttpFoundation\JsonResponse();
+            $response->setData($result);
+            return $response;
+        } else {
+            $response = new \Symfony\Component\HttpFoundation\JsonResponse();
+            $response->setData(array('ok' => false));
+            return $response;
+        }
     }
 }

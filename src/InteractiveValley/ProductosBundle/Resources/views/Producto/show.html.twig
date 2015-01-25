@@ -86,8 +86,22 @@
                                                                                 <td>Descripcion:</td>
                                                                                 <td>{{ entity.descripcion | raw }}</td>
                                                                             </tr>
-                                                                            
-
+                                                                            <tr>
+                                                                                <td>Existencia:</td>
+                                                                                <td>{{entity.existencia | number_format(2,".",",") }}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Reservado:</td>
+                                                                                <td>{{ entity.reservado | number_format(2,".",",") }}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Precio:</td>
+                                                                                <td>${{ entity.precio | number_format(2,".",",") }}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Iva:</td>
+                                                                                <td>{{ entity.iva | number_format(2,".",",") }}</td>
+                                                                            </tr>
                                                                         </tbody>
                                                                     </table>
                                                                 </div>

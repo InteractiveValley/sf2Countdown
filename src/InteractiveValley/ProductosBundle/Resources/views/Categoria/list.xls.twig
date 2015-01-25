@@ -4,6 +4,7 @@
             <th>Id</th>
             <th>Categoria</th>
             <th>Slug</th>
+            <th>Activo</th>
             <th>Creado</th>
         </tr>
     </thead>
@@ -13,6 +14,7 @@
                 <td>{{ entity.id }}</td>
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.slug }}</td>
+                <td>{{ ((entity.isActive == true)?'Si':'No') }}</td>
                 <td>{{ entity.fechaAlta | date('d-m-Y') }}</td>
             </tr>
         {% endfor %}

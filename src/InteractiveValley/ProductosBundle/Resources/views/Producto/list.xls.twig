@@ -30,8 +30,8 @@
                 <td>{{ entity.existencia | number_format(2,".",",") }}</td>
                 <td>{{ entity.reservado | number_format(2,".",",") }}</td>
                 <td>$ {{ entity.precio | number_format(2,".",",") }}</td>
-                <td>$ {{ entity.iva | number_format(2,".",",") }}</td>
-                <td>{{ entity.status }}</td>                
+                <td>{{ entity.iva | number_format(2,".",",") }}</td>
+                <td>{{ ((entity.isActive)?'Si':'No')  }}</td>                
                 <td>{{ entity.fechaAlta | date('d-m-Y') }}</td>
                 <td>{{ entity.fechaModificacion | date('d-m-Y') }}</td>
             </tr>

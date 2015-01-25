@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoriaRepository extends EntityRepository
 {
+    public function getMaxPosicion(){
+        $em=$this->getEntityManager();
+       
+        $query=$em->createQuery('
+            SELECT MAX(c.position) as value 
+            FROM ProductosBundle:Categoria c 
+            ORDER BY c.position ASC
+        ');
+        
+        $max=$query->getResult();
+        return $max[0]['value'];
+    }
+    
 }

@@ -111,17 +111,22 @@
                 <!-- Main menu with font awesome icon -->
                 <li>
                     <a {{categorias}}  href="{{path('categorias')}}">
-                        <i class="fa fa-sitemap"></i> <span>Categorias</span>
+                        <i class="fa fa-th-large"></i> <span>Categorias</span>
                     </a>
                 </li>
                 <li>
                     <a {{productos}}  href="{{path('productos')}}">
-                        <i class="fa fa-sitemap"></i> <span>Productos</span>
+                        <i class="fa fa-th-list"></i> <span>Productos</span>
                     </a>
                 </li>
-                <li>
+                <!--li>
                     <a {{galerias}} href="{{path('galerias')}}">
-                        <i class="fa fa-user"></i> <span>Galerias</span>
+                        <i class="fa fa-tumblr"></i> <span>Galerias</span>
+                    </a>
+                </li-->
+                <li>
+                    <a {{usuarios}} href="{{path('usuarios')}}">
+                        <i class="fa fa-user"></i> <span>Usuarios</span>
                     </a>
                 </li>
                 <li>
@@ -142,11 +147,6 @@
                 <li>
                     <a {{pagos}} href="{{path('pagos')}}">
                         <i class="fa fa-user"></i> <span>Pagos</span>
-                    </a>
-                </li>
-                <li>
-                    <a {{usuarios}} href="{{path('usuarios')}}">
-                        <i class="fa fa-user"></i> <span>Usuarios</span>
                     </a>
                 </li>
                 <li>

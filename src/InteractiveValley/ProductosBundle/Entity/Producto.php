@@ -34,7 +34,7 @@ class Producto
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=255)
+     * @ORM\Column(name="descripcion", type="text")
      */
     private $descripcion;
 
@@ -93,13 +93,6 @@ class Producto
      * @ORM\Column(name="fecha_modificacion", type="datetime",nullable=true)
      */
     private $fechaModificacion;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="integer")
-     */
-    private $status;
     
     /**
      * @var string
@@ -108,6 +101,13 @@ class Producto
      * @ORM\Column(name="slug", type="string", length=255, nullable=true)
      */
     private $slug;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
     
     /**
      * @var integer
@@ -129,6 +129,10 @@ class Producto
      * })
      */
     private $categoria;
+    
+    function __toString() {
+        return $this->nombre;
+    }
     
     /*
      * Timestable
@@ -163,6 +167,7 @@ class Producto
     public function __construct()
     {
         $this->galerias = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isActive = true;
     }
 
     /**
@@ -408,29 +413,6 @@ class Producto
     }
 
     /**
-     * Set status
-     *
-     * @param integer $status
-     * @return Producto
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return integer 
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
      * Set slug
      *
      * @param string $slug
@@ -507,5 +489,28 @@ class Producto
     public function getCategoria()
     {
         return $this->categoria;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return Producto
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 }

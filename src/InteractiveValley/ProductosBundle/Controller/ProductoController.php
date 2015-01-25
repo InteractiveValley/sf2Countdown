@@ -22,6 +22,53 @@ use InteractiveValley\GaleriasBundle\Entity\Galeria;
  */
 class ProductoController extends Controller
 {
+    
+    private $categorias = null;
+    
+    protected function getFilters() {
+        return $this->get('session')->get('filters', array());
+    }
+    protected function setFilters($filtros) {
+        $this->get('session')->set('filters', $filtros);
+    }
+    protected function getCategoriaDefault() {
+        $filters = $this->getFilters();
+        $cat = null;
+        if (isset($filters['categorias'])) {
+            $categorias = $this->getCategoriasProductos();
+            foreach ($categorias as $categoria) {
+                if ($categoria->getId() == $filters['categorias']) {
+                    $cat = $categoria;
+                    break;
+                }
+            }
+        } else {
+            $categorias = $this->getCategoriasProductos();
+            $this->setFilters(array('categorias' => $categorias[0]->getId()));
+            $cat = $categorias[0];
+        }
+        return $cat;
+    }
+    protected function getCategoriasProductos() {
+        $em = $this->getDoctrine()->getManager();
+        if ($this->categorias == null) {
+            $this->categorias = $em->getRepository('ProductosBundle:Categoria')
+                    ->findAll();
+        }
+        return $this->categorias;
+    }
+    protected function getCategoriaActual($categoriaId) {
+        $categorias = $this->getCategoriasProductos();
+        $categoriaActual = null;
+        foreach ($categorias as $categoria) {
+            if ($categoria->getId() == $categoriaId) {
+                $categoriaActual = $categoria;
+                break;
+            }
+        }
+        return $categoriaActual;
+    }
+
 
     /**
      * Lists all Producto entities.
@@ -32,14 +79,36 @@ class ProductoController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('ProductosBundle:Producto')->findAll();
-
+        $categoria = $this->getCategoriaDefault();
         return array(
-            'entities' => $entities,
+            'categoria' =>  $categoria,
+            'entities'  =>  $categoria->getProductos(),
         );
     }
+    
+    /**
+     * Lista todos los productos de una categoria.
+     *
+     * @Route("/categoria/{slug}", name="productos_categoria")
+     * @Method("GET")
+     * @Template("ProductosBundle:Producto:index.html.twig")
+     */
+    public function categoriaAction($slug) {
+        $em = $this->getDoctrine()->getManager();
+        $categoria = $em->getRepository('ProductosBundle:Categoria')
+                ->findOneBy(array('slug' => $slug));
+        if (!$categoria) {
+            throw $this->createNotFoundException('Unable to find Categoria entity.');
+        }
+        $filters = $this->getFilters();
+        $filters['categorias'] = $categoria->getId();
+        $this->setFilters($filters);
+        return array(
+            'categoria' =>  $categoria,
+            'entities'  =>  $categoria->getProductos(),
+        );
+    }
+    
     /**
      * Creates a new Producto entity.
      *
@@ -97,6 +166,7 @@ class ProductoController extends Controller
     public function newAction()
     {
         $entity = new Producto();
+        $entity->setCategoria($this->getCategoriaDefault());
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -157,7 +227,7 @@ class ProductoController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'        => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'errores'     => RpsStms::getErrorMessages($editForm),
         );
@@ -210,7 +280,7 @@ class ProductoController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'        => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
             'errores'     => RpsStms::getErrorMessages($editForm),
         );
@@ -286,13 +356,13 @@ class ProductoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $pagina = $em->getRepository('ProductosBundle:Producto')->find($id);
+        $producto = $em->getRepository('ProductosBundle:Producto')->find($id);
         
-        $galerias = $pagina->getGalerias();
-        $get_galerias = $this->generateUrl('productos_galerias',array('id'=>$pagina->getId()),true);
-        $post_galerias = $this->generateUrl('productos_galerias_upload', array('id'=>$pagina->getId()),true);
-	$post_galerias_link_video = $this->generateUrl('productos_galerias_link_video', array('id'=>$pagina->getId()),true);
-        $url_delete = $this->generateUrl('productos_galerias_delete',array('id'=>$pagina->getId(),'idGaleria'=>'0'),true);
+        $galerias = $producto->getGalerias();
+        $get_galerias = $this->generateUrl('productos_galerias',array('id'=>$producto->getId()),true);
+        $post_galerias = $this->generateUrl('productos_galerias_upload', array('id'=>$producto->getId()),true);
+	$post_galerias_link_video = $this->generateUrl('productos_galerias_link_video', array('id'=>$producto->getId()),true);
+        $url_delete = $this->generateUrl('productos_galerias_delete',array('id'=>$producto->getId(),'idGaleria'=>'0'),true);
         
         return $this->render('GaleriasBundle:Galeria:galerias.html.twig', array(
             'galerias'=>$galerias,
@@ -304,14 +374,14 @@ class ProductoController extends Controller
     }
     
     /**
-     * Crea una galeria de una pagina.
+     * Crea una galeria de una producto.
      *
      * @Route("/{id}/galerias", name="productos_galerias_upload")
      * @Method("POST")
      */
     public function galeriasUploadAction(Request $request,$id){
         $em = $this->getDoctrine()->getManager();
-        $pagina=$em->getRepository('ProductosBundle:Producto')->find($id);
+        $producto=$em->getRepository('ProductosBundle:Producto')->find($id);
        
         if(!$request->request->has('tipoArchivo')){ 
             // list of valid extensions, ex. array("jpeg", "xml", "bmp")
@@ -339,7 +409,7 @@ class ProductoController extends Controller
                 //unset($result["filename"],$result['original'],$result['titulo'],$result['contenido']);
                 $em->persist($registro);
                 $registro->crearThumbnail();    
-                $pagina->getGalerias()->add($registro);
+                $producto->getGalerias()->add($registro);
                 $em->flush();
             }
         }else{
@@ -350,7 +420,7 @@ class ProductoController extends Controller
             $registro->setPosition($result['position']);
             $registro->setTipoArchivo($result['tipoArchivo']);
             $em->persist($registro);
-            $pagina->getGalerias()->add($registro);
+            $producto->getGalerias()->add($registro);
             $em->flush();  
         }
         
@@ -360,7 +430,7 @@ class ProductoController extends Controller
     }
     
     /**
-     * Crea una galeria link video de una pagina.
+     * Crea una galeria link video de una producto.
      *
      * @Route("/{id}/galerias/link/video", name="productos_galerias_link_video", requirements={"id" = "\d+"})
      * @Method({"POST","GET"})
@@ -394,14 +464,14 @@ class ProductoController extends Controller
     public function deleteGaleriaAction(Request $request, $id, $idGaleria)
     {
             $em = $this->getDoctrine()->getManager();
-            $pagina = $em->getRepository('ProductosBundle:Producto')->find($id);
+            $producto = $em->getRepository('ProductosBundle:Producto')->find($id);
             $galeria = $em->getRepository('GaleriasBundle:Galeria')->find(intval($idGaleria));
 
-            if (!$pagina) {
+            if (!$producto) {
                 throw $this->createNotFoundException('Unable to find Producto entity.');
             }
             
-            $pagina->getGalerias()->removeElement($galeria);
+            $producto->getGalerias()->removeElement($galeria);
             $em->remove($galeria);
             $em->flush();
         
@@ -412,7 +482,7 @@ class ProductoController extends Controller
     }
 
     /*
-     * Crea el thumbnail especifico para la pagina de clientes
+     * Crea el thumbnail especifico para la producto de clientes
      * 
      * @return void
      */

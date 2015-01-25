@@ -62,8 +62,16 @@
                                                     <td>{{ entity.nombre }}</td>
                                                 </tr>
                                                 <tr>
+                                                    <th>Posicion</th>
+                                                    <td>{{ entity.position }}</td>
+                                                </tr>
+                                                <tr>
                                                     <th>Slug</th>
                                                     <td>{{ entity.slug }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Activo</th>
+                                                    <td>{{ entity.isActive | isActive | raw }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Creado</th>

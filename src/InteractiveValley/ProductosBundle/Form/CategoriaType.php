@@ -15,9 +15,14 @@ class CategoriaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
-            ->add('fechaAlta')
-            ->add('slug')
+            ->add('nombre','text',array('attr'=>array('class'=>'form-control')))
+            ->add('isActive',null,array('label'=>'Activo?','attr'=>array(
+                'class'=>'checkbox-inline',
+                'placeholder'=>'Es activo',
+                'data-bind'=>'value: isActive'
+             )))    
+            ->add('position','hidden')    
+            ->add('slug','hidden')
         ;
     }
     

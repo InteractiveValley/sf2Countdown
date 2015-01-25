@@ -30,14 +30,17 @@ class Categorias extends AbstractFixture implements OrderedFixtureInterface, Con
     {
         $categoria1 = new Categoria();
         $categoria1->setNombre('Categoria 1');
+        $categoria1->setPosition(1);
         $manager->persist($categoria1);
         
         $categoria2 = new Categoria();
         $categoria2->setNombre('Categoria 2');
+        $categoria2->setPosition(2);
         $manager->persist($categoria2);
         
         $categoria3 = new Categoria();
         $categoria3->setNombre('Categoria 3');
+        $categoria3->setPosition(3);
         $manager->persist($categoria3);
 
         $manager->flush();
