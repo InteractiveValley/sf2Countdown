@@ -12,19 +12,356 @@ opacity(n)
 	if support-for-ie
 		filter unquote('progid:DXImageTransform.Microsoft.Alpha(Opacity=' + round(n * 100) + ')')
 
+color_rojo = #E34A3A
+color_verde_claro = #56C5B6
+color_verde_oscuro = #27AA98
+color_gris_claro = #F4F4F4
+color_gris_oscuro = #C3C3C3
+color_naranja_claro = #EB9A53
+color_naranja_oscuro = #E68229
+
+article.producto
+	display inline-block 
+	margin 20px 12px 30px 
+	vertical-align top
+	width 303px
+	& .titulo-producto
+		color color_rojo
+		text-align center
+		text-transform capitalize
+	& .imagen-producto
+		margin 0px
+		border 1px solid color_gris_claro
+	& .descripcion-producto
+		font-size .8em
+		height 100px
+		margin 5px 0px
+		overflow hidden
+		text-align left
+		width 100%
+	& .precio-producto
+		color color_verde_oscuro
+		font-size 1.2em
+		height 30px 
+		margin-right 5px
+		width 160px
+	& .inventario-producto
+		background-color color_verde_oscuro
+		color white
+		font-size 1.2em
+		height 30px
+		width 115px
+		& span
+			display inline-block
+			vertical-align top
+	& .agregarCarrito
+		background-color color_rojo
+		color white
+		display block
+		font-size .9em
+		height 30px 
+		line-height 30px
+		margin-right 5px
+		width 160px
+		cursor pointer
+	& .verProducto
+		background-color color_naranja_oscuro
+		color white
+		display block
+		font-size .9em
+		height 30px
+		line-height 30px
+		width 115px
+		cursor pointer
+	& .precio-producto
+	& .inventario-producto
+	& .agregarCarrito
+	& .verProducto
+		display inline-block
+		vertical-align top
+		margin-top 3px
+
+
+article.producto-detalle
+	& .producto-detail
+		text-align center
+		margin 0 auto
+		& .titulo-producto
+			color color_rojo
+			text-align center
+			text-transform capitalize
+		& .descripcion-producto
+			font-size 1em
+			text-align left
+			width 100%
+		& .precio-producto
+			color color_verde_oscuro
+			font-size 1.2em
+			height 30px 
+			width 100%
+			margin-top 3em
+			display block
+		& .inventario-producto
+			background-color color_verde_oscuro
+			color white
+			font-size 1em
+			height 30px
+			width 100%
+			margin-top 2em
+			& span
+				display inline-block
+				vertical-align top
+		& .agregarCarrito
+			background-color color_rojo
+			color white
+			display block
+			font-size 1em
+			height 30px 
+			line-height 30px
+			width 100%
+			margin-top 2em
+			cursor pointer
+			display block
+		
 body
 	font-size 16px
+	& > .container > header
+		background-color color_gris_claro
+		width 100%
+		margin 0 auto
+	& > .container > footer
+		width 100%
+		margin 0 auto
 
-.container > header
-	background-color #F4F4F4
+button#hacerPedido
+	background-color color_verde_oscuro
+	color white
+	height 50px
+	line-height 45px
+	text-transform capitalize
+	width 100%
+	margin-bottom 10px
+
+nav 
+	background-color color_gris_oscuro
+
+footer
+	height 2.1em
+	border-top 1px solid color_gris_oscuro
+	border-bottom 1px solid color_gris_oscuro
+	color black
+	& a
+		color black
+		text-decoration none
+		font-size .8em
+		
+ul.list-categorias
+	padding 0
+	& li.item-categoria
+		box-sizing border-box
+		display inline-block
+		height 2em
+		line-height 2em
+		margin .3em .5em
+		min-width 6.25em
+		text-align center
+		vertical-align top
+		& a
+			background-color color_rojo
+			border-radius .5em
+			color white
+			display block
+			padding 0px .5em
+			transition background-color .3s ease-out
+			&:hover
+			&.active
+				background-color color_verde_claro
+				text-decoration none
+
+ul.list-carrito
+	padding 0
+	& li.item-carrito
+		border-bottom 1px solid color_rojo
+		border-top 1px solid color_rojo
+		list-style none
+		margin .5em 0px
+		padding .5em 0px
+		width 100%
+		& .imagen-producto-carrito
+			margin 0
+			overflow hidden
+			width 98px
+			height 80px
+			position relative
+			& figcaption
+				background-color color_verde_oscuro
+				bottom -80px
+				color white
+				font-size 14px
+				height 30px
+				left 0px
+				line-height 30px
+				position absolute
+				text-align center
+				transition bottom .5s ease-out
+				width 100%
+				& a
+					color white
+					&:hover
+						text-decoration none
+		& .producto-carrito
+			position relative
+			margin-left 5px
+			& .titulo-producto-carrito
+				color white
+				margin 0
+				font-size .8em
+			& .precio-producto-carrito
+				color white
+				display block
+				font-size .8em
+			& .tiempo-producto-carrito
+				color white
+				display block
+				font-size .8em
+			& .close-producto-carrito
+				position absolute
+				top -10px
+				right 0px
+				font-size 1.1em
+				font-weight normal
+				& a 
+					color white
+	& li.item-carrito:hover .imagen-producto-carrito figcaption
+		bottom 0px
+
+section.productos
+	text-align center
+
+
+.buscador-envio
+	background-color color_rojo
+	height 2.68em
+	color white
+	& .input-group
+		padding .2em
+		& input[type="text"]
+		& button
+			background-color color_rojo
+			color white
+			border 1px solid white
+			
+	
+.buscador-usuario
+	height 2.68em
+	& .input-group
+		padding .2em
+		& button
+			background-color color_rojo
+			color white
+			border 1px solid white
+	
+
+.categorias 
+	width 100%
+	padding 0px 1em 1em
+	
 
 .container-project
 	margin 0 auto
-	max-width 1000px
+	max-width 1020px
+	box-sizing border-box
 
-.fondo-rojo
-	background-color #E74C3C
+.link-cuenta
+	padding .3em
+	font-size 0px
+	& .link-cuenta-usuario
+		color color_rojo
+		display inline-block
+		font-size 14px
+		line-height 14px
+		margin-top 10px
+		padding 2px 0px 2px 4px 
+		vertical-align top
+		&:first-child
+			border-right 1px solid color_rojo
+			padding-right 4px
+
+.links-footer
+	displa inline-block
+	vertical-align top
+	line-height 1em
+	padding .2em
+	margin-top .2em
+	& .link-footer-first
+		border-right 1px solid color_gris_oscuro
+		padding-right .4em
+
+.total-carrito
+	color white
+	font-size 1.5em
+	line-height 3em
+	margin 10px 0px
+	text-align center
+	text-transform uppercase
+	font-weight normal
+
+.titulo-carrito
+	border-bottom 1px solid color_rojo
+	color white
+	font-size .8em
+	line-height 4em
+	margin 2px 0px
+	text-align center
+	text-transform uppercase
+	font-weight normal
 	
+
+.totop
+	background-color rgba(black,0.8)
+	bottom 0px
+	height 3em
+	line-height 2.8em
+	position fixed
+	right 20%
+	text-align center
+	width 3em
+	border-radius 50%
+	display none
+	& a
+		color white
+		display block
+	
+
+#carrito
+	position relative
+	& .carrito
+		position absolute
+		width 266px
+		background-color color_naranja_oscuro
+		border-left 4px solid color_naranja_claro
+		top 50px
+		right 0px
+		display none
+		& .triangulo-carrito
+			width 0
+			height 0
+			border-left 10px solid transparent
+			border-right 10px solid transparent
+			border-top 10px solid color_verde_oscuro
+			font-size 0
+			line-height 0
+			position absolute
+			top 0px
+			right 13px
+		
+
+
+#mensajeBienvenida
+	background-color color_verde_claro
+	color white
+	border-top .5em solid color_verde_oscuro
+	border-bottom .5em solid color_verde_oscuro
 
 @media (max-width: 480px)
 	footer.footer

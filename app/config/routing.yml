@@ -1,3 +1,7 @@
+_portada:
+     path:     /
+     defaults: { _controller: FrameworkBundle:Redirect:redirect, route: homepage }
+
 productos:
     resource: "@ProductosBundle/Controller/"
     type:     annotation

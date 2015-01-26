@@ -1,0 +1,35 @@
+{% raw %}
+<script type="text/template" id="item_producto_carrito_template">
+    <!--li class="item-carrito item-carrito-producto-{{producto.id}}"-->
+        <div class="row">
+            <div class="col-md-4">
+                <figure class="imagen-producto-carrito">
+                    <img src="http://placehold.it/98x80" alt="{{producto.nombre}}"/>
+                    <figcaption>
+                        <a href="#producto/{{producto.slug}}">Ver detalles</a>
+                    </figcaption>
+                </figure>
+            </div>
+            <div class="col-md-7 producto-carrito">
+                <h6 class="titulo-producto-carrito">{{producto.nombre}}</h6>
+                <span class="precio-producto-carrito">
+                    ${{ producto.getPrecioFormat() }} MXN
+                </span>
+                <div class="tiempo-producto">
+                    <span style="display: block;">
+                        <i class="fa fa-clock-o"></i>
+                    </span>
+                    <span class="tiempo-producto-carrito">
+                        {{ producto.getTiempoFormat }}
+                    </span>
+                </div>
+                <span class="close-producto-carrito">
+                    <a href="#producto/quitar/carrito/slug">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </span>
+            </div>
+        </div>
+    <--/li-->
+</script>
+{% endraw %}

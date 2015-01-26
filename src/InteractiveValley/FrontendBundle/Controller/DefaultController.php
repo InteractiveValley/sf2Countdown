@@ -17,7 +17,7 @@ use InteractiveValley\BackendBundle\Entity\Usuario;
 class DefaultController extends BaseController {
 
     /**
-     * @Route("/", name="homepage")
+     * @Route("/inicio", name="homepage")
      * @Template()
      */
     public function indexAction(Request $request) 
@@ -26,6 +26,115 @@ class DefaultController extends BaseController {
                            ->getRepository('ProductosBundle:Categoria')->findAll();
         
         return array('categorias'=>$categorias);
+    }
+    
+    /**
+     * @Route("/lo/mas/nuevo", name="lo_mas_nuevo")
+     * @Template("FrontendBundle:Default:productos.html.twig")
+     */
+    public function loMasNuevoAction(Request $request) 
+    {
+        $productos = $this->getDoctrine()
+                           ->getRepository('ProductosBundle:Producto')->findAll();
+        
+        return array('productos'=>$productos);
+    }
+    
+    /**
+     * @Route("/recomendaciones", name="recomendaciones")
+     * @Template("FrontendBundle:Default:productos.html.twig")
+     */
+    public function recomendacionesAction(Request $request) 
+    {
+        $productos = $this->getDoctrine()
+                           ->getRepository('ProductosBundle:Producto')->findAll();
+        
+        return array('productos'=>$productos);
+    }
+    
+    /**
+     * @Route("/categoria/{slug}", name="categoria_productos")
+     * @Template("FrontendBundle:Default:productos.html.twig")
+     */
+    public function categoriaProductosAction(Request $request) 
+    {
+        $productos = $this->getDoctrine()
+                           ->getRepository('ProductosBundle:Producto')->findAll();
+        
+        return array('productos'=>$productos);
+    }
+    
+    /**
+     * @Route("/categorias", name="categorias")
+     * @Method({"GET"})
+     */
+    public function categoriasAction(Request $request) 
+    {
+        $categorias = $this->getDoctrine()
+                           ->getRepository('ProductosBundle:Categoria')->findAll();
+        
+        return array('categorias'=>$categorias);
+    }
+    
+    /**
+     * @Route("/api/categorias", name="api_categorias")
+     * @Method({"GET"})
+     */
+    public function getCategoriasAction(Request $request) 
+    {
+        $categorias = $this->getDoctrine()
+                           ->getRepository('ProductosBundle:Categoria')->findAll();
+        
+        $arreglo = array();
+        foreach($categorias as $categoria){
+            $arreglo1['nombre'] = $categoria->getNombre();
+            $arreglo1['slug'] = $categoria->getSlug();
+            $arreglo1['position'] = $categoria->getPosition();
+            $arreglo1['is_active'] = $categoria->getIsActive();
+            $arreglo[]=$arreglo1;
+        }
+        return new JsonResponse($arreglo);
+    }
+    
+    /**
+     * @Route("/api/categorias/{id}")
+     * @Method({"GET"})
+     */
+    public function getCategoriaAction(Request $request,$id) 
+    {
+        $categoria = $this->getDoctrine()
+                           ->getRepository('ProductosBundle:Categoria')->find($id);
+        
+        return new JsonResponse(array('categoria'=>$categoria));
+    }
+    
+    /**
+     * @Route("/api/categorias/{id}/productos", name="api_categorias_productos")
+     * @Method({"GET"})
+     */
+    public function getProductosCategoriasAction(Request $request,$id) 
+    {
+        $categoria = $this->getDoctrine()
+                           ->getRepository('ProductosBundle:Categoria')->find($id);
+        
+        $productos = $categoria->getProductos();
+        
+        return new JsonResponse(array('productos'=>$productos));
+    }
+    
+    /**
+     * @Route("/api/categorias/{cat}/productos/{id}", name="api_get_categorias_productos")
+     * @Method({"GET"})
+     */
+    public function getProductoCategoriaAction(Request $request,$cat,$id) 
+    {
+        $categoria = $this->getDoctrine()
+                           ->getRepository('ProductosBundle:Categoria')->find($cat);
+        
+        $producto = $this->getDoctrine()
+                           ->getRepository('ProductosBundle:Producto')->find($id);
+        
+        return new JsonResponse(array('producto'=>$producto));
     }
 
     /**

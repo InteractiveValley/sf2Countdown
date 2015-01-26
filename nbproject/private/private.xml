@@ -3,27 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/BackendBundle/Resources/views/layout.html.twig</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Resources/views/Producto/index.html.twig</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Controller/CategoriaController.php</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Form/CategoriaType.php</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/web/app_dev.php</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Resources/views/Producto/new.html.twig</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/.htaccess</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Form/ProductoType.php</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/BackendBundle/Utils/qqFileUploader.php</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Resources/views/Producto/list.xls.twig</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/BackendBundle/Resources/views/Security/login.html.twig</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/VentasBundle/Entity/Direccion.php</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/GaleriasBundle/Entity/Galeria.php</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Resources/views/Producto/edit.html.twig</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Resources/views/Categoria/index.html.twig</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Resources/views/Categoria/list.xls.twig</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Controller/ProductoController.php</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Repository/ProductoRepository.php</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/BackendBundle/Form/UsuarioType.php</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/VentasBundle/Form/DireccionType.php</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Resources/views/Producto/show.html.twig</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/FrontendBundle/Resources/views/Default/index.html.twig</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/FrontendBundle/Resources/public/js/app_countdown.js</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/FrontendBundle/Resources/views/layout.html.twig</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/FrontendBundle/Resources/public/js/app_productos.js</file>
         </group>
     </open-files>
 </project-private>
