@@ -199,7 +199,8 @@
                 </div><!--/.nav-collapse -->
             </div><!--/.container-fluid -->
         </nav>
-        {{render(controller('FrontendBundle:Default:categorias'))}}
+        {% set route = app.request.get('_route') %}
+        {% render(controller('FrontendBundle:Default:categorias',{'route':route})) %}
         
     {% block contenido %}{% endblock %}
     <footer class="row">

@@ -1,0 +1,112 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block contenido %}
+    <section id="secundario">
+        <article  id="filtro-categorias">
+            <div class="row buscador-categoria">
+                <div class="col-md-2">
+                    filtrar por precio
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="buscar">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="buscar">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article id="lista-de-productos">
+            <section class="productos">
+                {% for producto in productos %}
+                    <article class="producto">
+                        <header>
+                            <h4 class="titulo-producto">
+                                {{producto.nombre}}
+                            </h4>
+                        </header>
+                        <div class="contenido">
+                            <figure class="imagen-producto">
+                                <img src="http://placehold.it/303x253" alt="imagen de producto"/>
+                            </figure>
+                            <div class="descripcion-producto">
+                                {{producto.descripcion | raw }}
+                            </div>
+                        </div>
+                        <div class="controles">
+                            <span class="precio-producto">
+                                ${{producto.precio|number_format(2, '.', ',') }} MXN
+                            </span>
+                            <div class="inventario-producto">
+                                <span>
+                                    <i class="fa fa-clock-o"></i>
+                                </span>
+                                <span class="inventario">
+                                    {{producto.existencia}}
+                                </span>
+                                <span>
+                                    <i class="fa fa-undo"></i>
+                                </span>
+                            </div>
+                            <span class="agregarCarrito" data-id="{{producto.id}}">
+                                Agregar a carrito
+                            </span>
+                            <span class="verProducto" data-url="{{path('get_producto',{'slug': producto.slug})}}">
+                                Ver producto
+                            </span>
+                        </div>
+                    </article>
+                {% endfor %}
+            </section>
+        </article>    
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{asset('bundles/frontend/js/app_countdown.js')}}"></script> 
+    <script src="{{asset('bundles/frontend/js/app_productos.js')}}"></script> 
+    <script type="text/javascript">
+    $(function(){
+        
+        $(".item-categoria-{{categoria.id}}").find("a").addClass('active');
+        
+        window.api = {
+          url: '{{path('api_categorias')}}',
+          status: 'portada',
+          modelo: {
+            id: 0  
+          },
+        };
+        //$(".loader").fadeIn();
+        /*window.routers.app = new Countdown.Routers.App();
+        window.collections.categorias = new Countdown.Collections.Categorias();
+        window.collections.categorias.url=window.api.url;
+        var xhr = window.collections.categorias.fetch();
+        xhr.done(function(){
+            window.views.listCategoriasView = new Countdown.Views.ListCategoriasView({
+                collection: window.collections.categorias,
+            });
+            views.listCategoriasView.render();
+           $(".loader").fadeOut();
+            Backbone.history.start({
+                root : '/',
+                pushState:false
+            });
+        });*/
+    });
+    </script> 
+{% endblock %}

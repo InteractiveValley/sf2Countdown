@@ -1,7 +1,7 @@
-<div class="categorias" style="display: none;">
+<div class="categorias" {% if is_show %} style="display: none;"{% endif %}>
     <ul class="list-categorias">
         {% for categoria in categorias %}
-            <li class="item-categoria">
+            <li class="item-categoria item-categoria-{{categoria.id}}">
                 <a href="{{path('categoria_productos',{'slug': categoria.slug})}}" class="link-categoria">
                     {{categoria.nombre}}
                 </a>

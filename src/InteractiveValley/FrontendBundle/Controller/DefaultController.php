@@ -10,8 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use InteractiveValley\FrontendBundle\Entity\Contacto;
 use InteractiveValley\FrontendBundle\Form\ContactoType;
-use InteractiveValley\BackendBundle\Form\UsuarioFrontendType;
-use InteractiveValley\BackendBundle\Form\UsuarioContrasenaFrontendType;
 use InteractiveValley\BackendBundle\Entity\Usuario;
 
 class DefaultController extends BaseController {
@@ -53,27 +51,58 @@ class DefaultController extends BaseController {
     }
     
     /**
-     * @Route("/categoria/{slug}", name="categoria_productos")
-     * @Template("FrontendBundle:Default:productos.html.twig")
-     */
-    public function categoriaProductosAction(Request $request) 
-    {
-        $productos = $this->getDoctrine()
-                           ->getRepository('ProductosBundle:Producto')->findAll();
-        
-        return array('productos'=>$productos);
-    }
-    
-    /**
      * @Route("/categorias", name="categorias")
+     * @Template("FrontendBundle:Default:categorias.html.twig")
      * @Method({"GET"})
      */
     public function categoriasAction(Request $request) 
     {
         $categorias = $this->getDoctrine()
                            ->getRepository('ProductosBundle:Categoria')->findAll();
+        $route = $request->query->get('route','');
+        if($route == "categoria_productos"){
+            $isShow = true;
+        }else{
+            $isShow = false;
+        }
         
-        return array('categorias'=>$categorias);
+        return array(
+            'categorias'=>$categorias,
+            'is_show'=>$isShow,
+        );
+    }
+    
+    /**
+     * @Route("/categorias/{slug}", name="categoria_productos")
+     * @Template("FrontendBundle:Default:productos.html.twig")
+     * @Method({"GET"})
+     */
+    public function categoriaProductosAction(Request $request,$slug) 
+    {
+        $categoria = $this->getDoctrine()
+                          ->getRepository('ProductosBundle:Categoria')
+                          ->findOneBy(array('slug'=>$slug));
+        
+        $productos = $categoria->getProductos();
+        
+        return array(
+            'productos'=>$productos,
+            'categoria'=>$categoria
+            );
+    }
+    
+    /**
+     * @Route("/productos/{slug}", name="get_producto")
+     * @Template("FrontendBundle:Default:productoDetalle.html.twig")
+     * @Method({"GET"})
+     */
+    public function mostrarProductoAction(Request $request,$slug) 
+    {
+        $producto = $this->getDoctrine()
+                         ->getRepository('ProductosBundle:Producto')
+                         ->findOneBy(array('slug'=>$slug));
+        
+        return array('producto'=>$producto);
     }
     
     /**
@@ -97,7 +126,7 @@ class DefaultController extends BaseController {
     }
     
     /**
-     * @Route("/api/categorias/{id}")
+     * @Route("/api/categorias/{id}", name="api_get_categoria")
      * @Method({"GET"})
      */
     public function getCategoriaAction(Request $request,$id) 
@@ -109,10 +138,10 @@ class DefaultController extends BaseController {
     }
     
     /**
-     * @Route("/api/categorias/{id}/productos", name="api_categorias_productos")
+     * @Route("/api/productos", name="api_productos")
      * @Method({"GET"})
      */
-    public function getProductosCategoriasAction(Request $request,$id) 
+    public function getProductosAction(Request $request) 
     {
         $categoria = $this->getDoctrine()
                            ->getRepository('ProductosBundle:Categoria')->find($id);
@@ -123,14 +152,11 @@ class DefaultController extends BaseController {
     }
     
     /**
-     * @Route("/api/categorias/{cat}/productos/{id}", name="api_get_categorias_productos")
+     * @Route("/api/productos/{id}", name="api_get_producto")
      * @Method({"GET"})
      */
-    public function getProductoCategoriaAction(Request $request,$cat,$id) 
-    {
-        $categoria = $this->getDoctrine()
-                           ->getRepository('ProductosBundle:Categoria')->find($cat);
-        
+    public function getProductoAction(Request $request,$id) 
+    {   
         $producto = $this->getDoctrine()
                            ->getRepository('ProductosBundle:Producto')->find($id);
         
