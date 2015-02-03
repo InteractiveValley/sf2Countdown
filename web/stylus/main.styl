@@ -20,6 +20,92 @@ color_gris_oscuro = #C3C3C3
 color_naranja_claro = #EB9A53
 color_naranja_oscuro = #E68229
 
+/* colores filtro */
+
+filtro_color_carmesi = #9F0700
+filtro_color_amarillo = #FA9000
+filtro_color_cafe = #7F5400
+filtro_color_azul = #1DA5FF
+filtro_color_azul_marino = #084664
+filtro_color_verde = #3CAE55
+filtro_color_fiusa = #F500FC
+filtro_color_gris = #A0A0A0
+
+article.filtro-categorias
+		border-top 1px solid color_gris_oscuro
+		border-bottom 1px solid color_gris_oscuro
+		position relative
+	& .filtro
+		height 2.9em
+		line-height 2.9em
+		&:last-child
+			border-top 1px solid color_gris_oscuro
+	& .filtro-titulo
+		text-transform uppercase
+		font-size .8em
+		background-color color_gris_claro
+	& #valor-precio
+		color color_verde_oscuro
+	& .color
+		font-size 2em
+		margin 8px 4px 0px
+		float left
+		cursor pointer
+		&.color-carmesi
+			color filtro_color_carmesi
+		&.color-amarillo
+			color filtro_color_amarillo
+		&.color-cafe
+			color filtro_color_cafe
+		&.color-azul
+			color filtro_color_azul
+		&.color-azul_marino
+			color filtro_color_azul
+		&.color-verde
+			color filtro_color_verde
+		&.color-fiusa
+			color filtro_color_fiusa
+		&.color-gris
+			color filtro_color_gris
+		&.inactive
+			opacity 0.5
+	& .filtro-ordenar
+		position absolute
+		top 0px
+		right 0px
+		& .filtro-ordenar-por-precio
+			position absolute
+			top 8px
+			right 0px
+			& .btn-grupo
+				width 100%
+				height 3em
+				& .btn-verde-countdown
+					color white
+					background-color color_verde_claro
+					border-color color_verde_claro
+		& .filtro-filtrar
+		& .filtro-ver-todos
+			position absolute
+			top 3em 
+			height 3em
+			width 50%
+			line-height 3em
+			background-color color_gris_oscuro
+			& span 
+				display block
+				text-align center
+				cursor pointer
+				&.active 
+					background-color color_rojo
+					color white
+		& .filtro-filtrar
+			left 0px
+		& .filtro-ver-todos
+			right 0px
+			
+			
+
 article.producto
 	display inline-block 
 	margin 20px 12px 30px 
@@ -154,7 +240,8 @@ footer
 		color black
 		text-decoration none
 		font-size .8em
-		
+	
+
 ul.list-categorias
 	padding 0
 	& li.item-categoria
@@ -272,6 +359,13 @@ section.productos
 	max-width 1020px
 	box-sizing border-box
 
+.errores
+	ul
+		padding 0px
+		& li
+			color color_rojo
+			font-size 14px
+
 .link-cuenta
 	padding .3em
 	font-size 0px
@@ -335,14 +429,29 @@ section.productos
 
 #carrito
 	position relative
+	display none
+	border-top 1px solid color_gris_oscuro
+	& h6.titulo-logo-carrito
+		width 100%
+		position relative
+		height 3em
+		line-height 3em
+		text-align center
+		text-transform capitalize
+		font-size 1em
+		margin 0px
+		& #logo-carrito
+			position absolute
+			top -2px
+			right 0px
 	& .carrito
 		position absolute
 		width 266px
 		background-color color_naranja_oscuro
 		border-left 4px solid color_naranja_claro
-		top 50px
+		top 48px
 		right 0px
-		display none
+		z-index 2000
 		& .triangulo-carrito
 			width 0
 			height 0
@@ -355,7 +464,10 @@ section.productos
 			top 0px
 			right 13px
 		
-
+#division-principal
+#carrito 
+	&.flotar
+		float left
 
 #mensajeBienvenida
 	background-color color_verde_claro

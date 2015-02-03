@@ -1,30 +1,66 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('css/bootstrap-slider.css')}}">
+{% endblock %}
+
 {% block contenido %}
     <section id="secundario">
-        <article  id="filtro-categorias">
-            <div class="row buscador-categoria">
-                <div class="col-md-2">
-                    filtrar por precio
-                </div>
-                <div class="col-md-6">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="buscar">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
+        <article  class="filtro-categorias container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row filtro">
+                        <div class="col-md-4 filtro-titulo">
+                            <div class="filtro-por-precio">
+                                filtrar por precio
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <input id="sliderPrecio" type="text" class="span2" value="" data-slider-min="50" data-slider-max="2000" data-slider-step="50" data-slider-value="2000" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="hide">
+                        </div>
+                        <div class="col-md-2">
+                            <span id="valor-precio"></span>
+                        </div>
+                    </div>
+                    <div class="row filtro">
+                        <div class="col-md-4 filtro-titulo">
+                            <div class=" filtro-por-color">
+                                filtrar por color
+                            </div>
+                        </div>
+                        <div class="col-md-8 filtro-colores text-center">
+                            <span class="color color-carmesi fa fa-square"></span>
+                            <span class="color color-amarillo fa fa-square"></span>
+                            <span class="color color-cafe fa fa-square"></span>
+                            <span class="color color-azul fa fa-square"></span>
+                            <span class="color color-azul-marino fa fa-square"></span>
+                            <span class="color color-verde fa fa-square"></span>
+                            <span class="color color-fiusa fa fa-square"></span>
+                            <span class="color color-gris fa fa-square"></span>
+                            <span class="color color-blanco fa fa-square-o"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="buscar">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <i class="fa fa-search"></i>
+                <div class="col-md-3 filtro-ordenar" style="padding-right: 0px;">
+                    <div class="filtro-ordenar-por-precio">
+                        <div class="btn-group">
+                            <button type="button" class="btn" style="background-color: #56C5B6; color: white; border-color: #56C5B6;">Mayor a menor precio</button>
+                            <button type="button" class="btn dropdown-toggle" style="background-color: #56C5B6; color: white; border-color: #56C5B6;" data-toggle="dropdown" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
                             </button>
-                        </span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a class="mayor-a-menor" href="#">Mayor a menor precio</a></li>
+                                <li><a class="menor-a-mayor" href="#">Menor a mayor precio</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="filtro-filtrar filtrar-color">
+                        <span class="filtrar active">Filtrar</span>
+                    </div>
+                    <div class="filtro-ver-todos filtrar-color">
+                        <span class="todos"> Ver todos</span>
                     </div>
                 </div>
             </div>
@@ -77,13 +113,56 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{asset('js/bootstrap-slider.js')}}"></script> 
     <script src="{{asset('bundles/frontend/js/app_countdown.js')}}"></script> 
-    <script src="{{asset('bundles/frontend/js/app_productos.js')}}"></script> 
+    <script src="{{asset('bundles/frontend/js/app_productos.js')}}"></script>
     <script type="text/javascript">
     $(function(){
         
         $(".item-categoria-{{categoria.id}}").find("a").addClass('active');
+
+        $("#sliderPrecio").slider({'tooltip':'show'}).on('slide', function(ev){
+            $("#valor-precio").text("$ "+formato_numero(ev.value,2,".",","));
+          }).on("slideStop",function(ev){
+            
+          });
+          
+        $("#valor-precio").text("$ "+formato_numero(2000,2,".",","));
         
+        $(".slider.slider-horizontal").css({'width':'100%'});
+
+        $(".filtro-ver-todos span").on("click",function(){
+            var activos = $(".filtro-colores").find(".color.active");
+            activos.each(function(indice,item){
+                $(item).click();
+            });
+            $(".filtro-colores .color").addClass('inactive');
+            $(".filtro-filtrar span").removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $(".filtro-filtrar span").on("click",function(){
+            $(".filtro-colores .color").removeClass('inactive');
+            $(".filtro-ver-todos span").removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $(".filtro-filtrar span").click();
+
+        $(".color").on("click",function(){
+            if($(this).hasClass('inactive')) return false;
+            
+            if($(this).hasClass('fa-square')){
+                $(this).addClass('fa-check-square active').removeClass('fa-square');
+            }else if($(this).hasClass('fa-square-o')){
+                $(this).addClass('fa-check-square-o active').removeClass('fa-square-o');
+            }else if($(this).hasClass('fa-check-square')){
+                $(this).addClass('fa-square').removeClass('fa-check-square active');
+            }else if($(this).hasClass('fa-check-square-o')){
+                $(this).addClass('fa-square-o').removeClass('fa-check-square-o active');
+            }    
+        });
+
         window.api = {
           url: '{{path('api_categorias')}}',
           status: 'portada',
@@ -108,5 +187,7 @@
             });
         });*/
     });
-    </script> 
+    </script>
+    
+
 {% endblock %}

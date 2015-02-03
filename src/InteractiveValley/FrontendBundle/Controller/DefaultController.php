@@ -11,6 +11,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use InteractiveValley\FrontendBundle\Entity\Contacto;
 use InteractiveValley\FrontendBundle\Form\ContactoType;
 use InteractiveValley\BackendBundle\Entity\Usuario;
+use InteractiveValley\BackendBundle\Form\Frontend\UsuarioType;
+use InteractiveValley\BackendBundle\Form\Frontend\UsuarioPerfilType;
 
 class DefaultController extends BaseController {
 
@@ -88,7 +90,7 @@ class DefaultController extends BaseController {
         return array(
             'productos'=>$productos,
             'categoria'=>$categoria
-            );
+        );
     }
     
     /**
@@ -164,7 +166,7 @@ class DefaultController extends BaseController {
     }
 
     /**
-     * @Route("/contacto", name="frontend_contacto")
+     * @Route("/api/contacto", name="frontend_contacto")
      * @Method({"GET", "POST"})
      */
     public function contactoAction(Request $request) {
@@ -186,40 +188,36 @@ class DefaultController extends BaseController {
                 $this->get('mailer')->send($message);
                 // Redirige - Esto es importante para prevenir que el usuario
                 // reenvíe el formulario si actualiza la página
-                $ok = true;
-                $error = false;
+                $status = 'send';
                 $mensaje = "Se ha enviado el mensaje";
                 $contacto = new Contacto();
                 $form = $this->createForm(new ContactoType(), $contacto);
             } else {
-                $ok = false;
-                $error = true;
+                $status = 'notsend';
                 $mensaje = "El mensaje no se ha podido enviar";
             }
         } else {
-            $ok = false;
-            $error = false;
+            $status = 'new';
             $mensaje = "";
         }
 
         if ($request->isXmlHttpRequest()) {
-            return $this->render('FrontendBundle:Default:formContacto.html.twig', array(
-                        'form' => $form->createView(),
-                        'ok' => $ok,
-                        'error' => $error,
-                        'mensaje' => $mensaje,
+            $vista = $this->renderView('FrontendBundle:Default:formContacto.html.twig', array(
+                'form' => $form->createView(),
+                'status' => $status,
+                'mensaje' => $mensaje,
+            ));
+            return new JsonResponse(array(
+                'form'=>$vista,
+                'status' => $status,
+                'mensaje' => $mensaje,
             ));
         }
 
-        $pagina = $em->getRepository('PaginasBundle:Pagina')
-                ->findOneBy(array('pagina' => 'contacto'));
-
-        return $this->render('FrontendBundle:Default:contacto.html.twig', array(
-                    'form' => $form->createView(),
-                    'ok' => $ok,
-                    'error' => $error,
-                    'mensaje' => $mensaje,
-                    'pagina' => $pagina,
+        return $this->render('FrontendBundle:Default:formContacto.html.twig', array(
+            'form' => $form->createView(),
+            'status' => $status,
+            'mensaje' => $mensaje
         ));
     }
 
@@ -270,7 +268,7 @@ class DefaultController extends BaseController {
      */
     public function registroAction(Request $request) {
         $usuario = new Usuario();
-        $form = $this->createForm(new UsuarioFrontendType(), $usuario);
+        $form = $this->createForm(new UsuarioType(), $usuario);
         $isNew = true;
         if ($request->isMethod('POST')) {
             $parametros = $request->request->all();
@@ -278,11 +276,13 @@ class DefaultController extends BaseController {
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $this->setSecurePassword($usuario);
-                $rolUsuario = $em->getRepository('UsuariosBundle:Roles')
-                        ->findOneBy(array('nombre' => 'ROLE_USUARIO'));
-                $usuario->addRol($rolUsuario);
                 $em->persist($usuario);
                 $em->flush();
+                
+                if($request->isXmlHttpRequest()){
+                    return new JsonResponse(array('status'=>true));
+                }
+                
                 return $this->redirect($this->generateUrl('login'));
             }
         }
@@ -342,12 +342,31 @@ class DefaultController extends BaseController {
         $asunto = 'Se ha reestablecido su contraseña';
         $message = \Swift_Message::newInstance()
                 ->setSubject($asunto)
-                ->setFrom('noreply@mosaicors.com')
+                ->setFrom($this->container->get('richpolis.emails.to_email'))
                 ->setTo($usuario->getEmail())
                 ->setBody(
                 $this->renderView('FrontendBundle:Default:enviarCorreo.html.twig', compact('usuario', 'sUsuario', 'sPassword', 'isNew', 'asunto')), 'text/html'
         );
         $this->get('mailer')->send($message);
+    }
+    
+    /**
+     * @Route("/api/existe/email",name="existe_email")
+     * @Template()
+     * @Method({"POST"})
+     */
+    public function existeAction(Request $request) {
+        if ($request->isMethod('POST')) {
+            $email = $request->get('email');
+            $usuario = $this->getDoctrine()->getRepository('BackendBundle:Usuario')
+                        ->findOneBy(array('email' => $email));
+            if (!$usuario) {
+                return new JsonResponse(array('existe'=>false));
+            } else {
+                return new JsonResponse(array('existe'=>true));
+            }
+        }
+        return new JsonResponse(array('existe'=>null));
     }
 
 }

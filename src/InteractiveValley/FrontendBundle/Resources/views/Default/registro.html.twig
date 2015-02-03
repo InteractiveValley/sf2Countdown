@@ -1,110 +1,87 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
 {% block stylesheets %}
-  {{ parent() }}
-  <!-- Datatables -->
-  <link rel="stylesheet" href="{{asset('js/datatables/css/dataTables.bootstrap.css')}}">
-  <!-- Main stylesheet -->
-  <link rel="stylesheet" href="{{asset('css/style.css')}}">
-  <!-- Widgets stylesheet -->
-  <link rel="stylesheet" href="{{asset('css/widgets.css')}}">   
-  <!-- Gritter Notifications stylesheet -->
-  <link rel="stylesheet" href="{{asset('css/jquery.gritter.css')}}"> 
-  <link rel="stylesheet" href="{{asset('css/main.css')}}"> 
+    {{ parent() }}
 {% endblock %}
 
-{% block mainbar %}
-     <!-- Main bar -->
-    <div class="mainbar">
-        <div class="matter">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="widget">
-
-                            <div class="widget-head">
-                                <div class="pull-left">Editar perfil "{{usuario.nombre}}"</div>
-                                <div class="clearfix"></div>
-                            </div>
-
-                                <div class="widget-content">
-                                    <div class="padd contenido-formulario">
-                                        <!-- Form starts.  -->
-                                        <form action="{{ path('perfil_usuario') }}" id="formUsuarios" method="post" {{ form_enctype(form)}}>
-                                            <fieldset>
-                                                <legend>Generales:</legend>
-                                                {{ form_row(form.email) }}
-                                                {{ form_row(form.nombre) }}
-                                                {{ form_row(form.telefono) }}
-                                                {{ form_row(form.numero) }}
-                                            </fieldset>
-                                            <br/>
-                                            <fieldset>
-                                                <legend>Seguridad:</legend>
-                                                {{ form_row(form.password) }}
-                                                {{ form_rest(form) }}
-                                            </fieldset>
-                                        </form>
-                                    </div>
+{% block contenido %}
+    <section id="registro" class="container">
+        <div class="row">
+            <article id="registroView" class="registroView">
+                <header class="titulo-view well">
+                    <h2 class="titulo"><i class="fa fa-shopping-cart"></i>Crear cuenta</h2>
+                </header>
+                <div class="contenido container">
+                    <form action="{{ path('registro') }}" class="form validate" role="form" id="formRegistro" method="post" {{ form_enctype(form)}}>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_row(form.nombre,{'attr':{'class':'form-control','label':'Nombre','placeholder':'Nombre'}}) }}
                                 </div>
-                            <div class="widget-foot">
-                                <button id="botonRegresar" class="btn btn-default">Regresar</button>
-                                <button id="botonGuardar" class="btn btn-primary">Actualizar</button>
+                                <div class="form-group">
+                                    {{ form_row(form.email,{'attr':{'class':'form-control','label':'Email','placeholder':'Email'}}) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_row(form.telefono,{'attr':{'class':'form-control','label':'Telefono','placeholder':'Telefono'}}) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_row(form.rfc,{'attr':{'class':'form-control','label':'RFC','placeholder':'RFC'}}) }}
+                                </div>
                             </div>
-                        </div>  
-                    </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_row(form.password,{'attr':{'class':'form-control','label':'Contraseña','placeholder':'Contraseña'}}) }}
+                                </div>    
+                            </div>
+                        </div>
+                        <br/>
+                        {{form_rest(form)}}
+                        <div class="row">
+                            <div class="col-md-6"><button type="submit" class="btn btn-success">Registrar</button></div>
+                            <div class="col-md-6"></div> 
+                        </div>
+                        <br/>
+                    </form>
                 </div>
-            </div>
+            </article>
         </div>
-    </div>
-<!-- Modal -->
-<div class="modal fade" id="modalFormulario" tabindex="-1" role="dialog" aria-labelledby="labelFormulario" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="labelFormulario"></h4>
-      </div>
-      <div class="modal-body" id="modalBodyFormulario">
-          
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" onclick="guardar();">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>  
+
+    </section>
 {% endblock %}
 
 {% block javascripts %}
-  {{ parent() }}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function () {
+            window.api = {
+                url: '/api',
+                status: 'portada',
+                modelo: {
+                    id: 0
+                },
+            };
+        });
+        < script src = "{{asset('bundles/frontend/js/app_registro.js')}}" ></script> 
+    <script type="text/javascript">
+                $(function () {
+                    //$(".loader").fadeIn();
+                    /*window.routers.app = new Countdown.Routers.App();
+                     window.collections.categorias = new Countdown.Collections.Categorias();
+                     window.collections.categorias.url=window.api.url;
+                     var xhr = window.collections.categorias.fetch();
+                     xhr.done(function(){
+                     window.views.listCategoriasView = new Countdown.Views.ListCategoriasView({
+                     collection: window.collections.categorias,
+                     });
+                     views.listCategoriasView.render();
+                     $(".loader").fadeOut();
+                     Backbone.history.start({
+                     root : '/',
+                     pushState:false
+                     });
+                     });*/
+                });
+    </script>
 
-  <script src="{{asset('js/jquery-ui-1.9.2.custom.min.js')}}"></script> <!-- jQuery UI -->
-  <!-- jQuery Notification - Noty -->
-  <script src="{{asset('js/jquery.noty.js')}}"></script> <!-- jQuery Notify -->
-  <script src="{{asset('js/themes/default.js')}}"></script> <!-- jQuery Notify -->
-  <script src="{{asset('js/layouts/bottom.js')}}"></script> <!-- jQuery Notify -->
-  <script src="{{asset('js/layouts/topRight.js')}}"></script> <!-- jQuery Notify -->
-  <script src="{{asset('js/layouts/top.js')}}"></script> <!-- jQuery Notify -->
-  <!-- jQuery Notification ends -->
 
-  <script src="{{asset('js/jquery.slimscroll.min.js')}}"></script> <!-- jQuery SlimScroll -->
-  <script src="{{asset('js/bootbox.min.js')}}"></script> <!-- Filter for support page -->
-  <script src="{{asset('js/custom.js')}}"></script> <!-- Custom codes -->
-  <script>
-  $(document).ready(function(){
-      $("#botonGuardar").on("click",function(){
-         $(".contenido-formulario form").submit(); 
-      });
-      $("#botonRegresar").on("click",function(){
-         location.href = '{{path('homepage')}}'; 
-      });
-  });
-  
-  {% for flashMessage in app.session.flashbag.get('notice') %}
-    noty({text: flashMessage,layout:'top', type:'notice', timeout:2000 });
-  {% endfor %}
-  </script>
 {% endblock %}
-

@@ -34,7 +34,6 @@
 
     <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}"/>
     <link rel="stylesheet" href="{{asset('css/font-awesome.css')}}">
-    <link rel="stylesheet" href="{{asset('css/jquery.bxslider.css')}}"/>
     <link rel="stylesheet" href="{{asset('css/main.css')}}"/>
     <style>
         .loader {
@@ -100,8 +99,8 @@
                     <div class="col-md-12">
                         <div class="row buscador-usuario">
                             <div class="col-md-4 link-cuenta">
-                                <a class="link-cuenta-usuario" href="#crear/cuenta">Crear cuenta</a>
-                                <a class="link-cuenta-usuario" href="#login">Login</a>
+                                <a class="link-cuenta-usuario" href="{{path('registro')}}">Crear cuenta</a>
+                                <a class="link-cuenta-usuario" href="{{path('login')}}">Login</a>
                             </div>
                             <div class="col-md-8">
                                 <div class="input-group">
@@ -133,7 +132,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="#lonuevo">Lo nuevo</a></li>
-                        <li><a href="#recomendaciones">Recomendaciones</a></li>
+                        <!--li><a href="#recomendaciones">Recomendaciones</a></li-->
                         <li>
                             <a href="#categorias" id="showCategorias">
                                 Categorias
@@ -147,53 +146,8 @@
                         <li>
                             <a href="#mostrar/carrito" id="showCarrito">Carrito</a>
                         </li>
-                        <li id="carrito">
+                        <li id="carrito-1">
                             <img src="/images/carrito.png" alt="" height="50">
-                            <div class="carrito">
-                                <span class="triangulo-carrito"></span>
-                                <h3 class="titulo-carrito">Mis productos</h3>
-                                <ul class="list-carrito">
-                                    {% set monto = 0 %}
-                                    {% for producto in range(1,5) %}
-                                        {% set monto = monto + producto %}
-                                        <li class="item-carrito">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <figure class="imagen-producto-carrito">
-                                                        <img src="http://placehold.it/98x80" alt="producto {{producto}}"/>
-                                                        <figcaption>
-                                                            <a href="#producto/slug">Ver detalles</a>
-                                                        </figcaption>
-                                                    </figure>
-                                                </div>
-                                                <div class="col-md-7 producto-carrito">
-                                                    <h6 class="titulo-producto-carrito">Producto {{producto}}</h6>
-                                                    <span class="precio-producto-carrito">
-                                                        ${{producto|number_format(2, '.', ',') }} MXN
-                                                    </span>
-                                                    <div class="tiempo-producto">
-                                                        <span style="display: block;">
-                                                            <i class="fa fa-clock-o"></i>
-                                                        </span>
-                                                        <span class="tiempo-producto-carrito">
-                                                            {{producto}} min 20 sec
-                                                        </span>
-                                                    </div>
-                                                    <span class="close-producto-carrito">
-                                                        <a href="#producto/quitar/carrito/slug">
-                                                            <i class="fa fa-times"></i>
-                                                        </a>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                                <h3 class="total-carrito">${{monto|number_format(2, '.', ',') }} MXN</h3>
-                                <button id="hacerPedido">
-                                    hacer pedido
-                                </button>
-                            </div>
                         </li>
                     </ul>
                 </div><!--/.nav-collapse -->
@@ -201,22 +155,93 @@
         </nav>
         {% set route = app.request.get('_route') %}
         {% render(controller('FrontendBundle:Default:categorias',{'route':route})) %}
-        
-    {% block contenido %}{% endblock %}
+
+    <div id="division-principal" class="flotar" style="width: 100%;">
+        {% block contenido %}{% endblock %}
+    </div>
+    <div id="carrito" class="flotar">
+        <h6 class="titulo-logo-carrito">
+            Carrito <span id="logo-carrito"><img src="/images/carrito.png" alt="" height="50"></span>
+        </h6>
+        <div class="carrito">
+            <span class="triangulo-carrito"></span>
+            <h3 class="titulo-carrito">Mis productos</h3>
+            <ul class="list-carrito">
+                {% set monto = 0 %}
+                {% for producto in range(1,5) %}
+                    {% set monto = monto + producto %}
+                    <li class="item-carrito">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <figure class="imagen-producto-carrito">
+                                    <img src="http://placehold.it/98x80" alt="producto {{producto}}"/>
+                                    <figcaption>
+                                        <a href="#producto/slug">Ver detalles</a>
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            <div class="col-md-7 producto-carrito">
+                                <h6 class="titulo-producto-carrito">Producto {{producto}}</h6>
+                                <span class="precio-producto-carrito">
+                                    ${{producto|number_format(2, '.', ',') }} MXN
+                                </span>
+                                <div class="tiempo-producto">
+                                    <span style="display: block;">
+                                        <i class="fa fa-clock-o"></i>
+                                    </span>
+                                    <span class="tiempo-producto-carrito">
+                                        {{producto}} min 20 sec
+                                    </span>
+                                </div>
+                                <span class="close-producto-carrito">
+                                    <a href="#producto/quitar/carrito/slug">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <h3 class="total-carrito">${{monto|number_format(2, '.', ',') }} MXN</h3>
+            <button id="hacerPedido">
+                hacer pedido
+            </button>
+        </div>
+    </div>
+    <div class="clearfix"></div>
     <footer class="row">
         <div class="col-md-4 links-footer">
-            <a href="#crear/cuenta" class="link-footer link-footer-first">Crear Cuenta</a>
-            <a href="#login" class="link-footer">Login</a>
+            <a href="{{path('registro')}}" class="link-footer link-footer-first">Crear Cuenta</a>
+            <a href="{{path('login')}}" class="link-footer">Login</a>
         </div>
         <div class="col-md-4"></div>
         <div class="col-md-4 links-footer text-right">
             <a href="#politicia-de-privacidad" class="link-footer link-footer-first">Politica de privacidad</a>
-            <a href="#contacto" class="link-footer">Contacto</a>
+            <a href="#contacto" class="link-footer" data-toggle="modal" data-target="#contactoModal">Contacto</a>
         </div>
     </footer>
     <span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span>
     <div class="loader"></div>
 </div>
+<div class="modal fade" id="contactoModal" tabindex="-1" role="dialog" aria-labelledby="contactoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="contactoLabel">Contacto</h4>
+      </div>
+      <div class="modal-body">
+        {{render(controller('FrontendBundle:Default:contacto'))}}
+      </div>
+      <div class="modal-footer">
+        <img class="ajax-loader pull-left" src="/images/bx_loader.gif" alt="Enviando ..." style="display: none;">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="button" id="enviarContacto" class="btn btn-primary">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>            
 {% endblock %}
 
 {% block javascripts %}
@@ -224,31 +249,65 @@
     <script src="{{asset('js/bootstrap.js')}}"></script>
     <script src="{{asset('js/underscore-min.js')}}"></script>
     <script src="{{asset('js/backbone-min.js')}}"></script>
-    <script src="{{asset('js/swig.js')}}"></script>
+    <script src="{{asset('js/swig.js')}}"></script>  
     <script>
-        $(document).ready(function () {
-            $("#showCategorias").on("click",function(){
-                if ($('div.categorias').is(':hidden')){
-                   $('div.categorias').slideDown('fast',function(){
-                       $(".cerrar-categorias").html("<i class='fa fa-chevron-down'></i>");
-                   });
-               }else{
-                   $('div.categorias').slideUp('fast',function(){
-                       $(".cerrar-categorias").html("<i class='fa fa-list'></i>");
-                   });
-               }
+            $(document).ready(function () {
+                $("#showCategorias").on("click", function () {
+                    if ($('div.categorias').is(':hidden')) {
+                        $('div.categorias').slideDown('fast', function () {
+                            $(".cerrar-categorias").html("<i class='fa fa-chevron-down'></i>");
+                        });
+                    } else {
+                        $('div.categorias').slideUp('fast', function () {
+                            $(".cerrar-categorias").html("<i class='fa fa-list'></i>");
+                        });
+                    }
+                });
+                $("#showCarrito").on("click", function () {
+                    if ($('#carrito').is(':hidden')) {
+                        $(".filtro-ordenar-por-precio").hide();
+                        $("#valor-precio").animate({'fontSize':'12px'},'fast');
+                        $("#division-principal").animate({'width': '-=266px'},'fast',function(){
+                            $("#carrito").animate({'width':'266px'},'fast').fadeIn('fast');
+                        });
+                    } else {
+                        $("#carrito").fadeOut('fast').animate({'width':'0px'},'fast',function(){
+                            $("#division-principal").animate({'width': '100%'},'fast',function(){
+                                $("#valor-precio").animate({'fontSize':'16px'},'fast');
+                                $(".filtro-ordenar-por-precio").show();
+                            });
+                        });
+                    }
+                });
+                $("#enviarContacto").on("click",function(){
+                    var form = $("#formContacto");
+                    $(".ajax-loader").fadeIn("fast");
+                    $.ajax({
+                        url: form.attr("action"),
+                        type: 'POST',
+                        dataType: 'json',
+                        data: form.serialize(),
+                        success: function(data){
+                            if(data.status == "send"){
+                                $("#contactoModal .modal-body").html(data.form);
+                                setTimeout(function(){
+                                    $("#contactoModal").modal("hide");
+                                },2000);
+                            }else{
+                                $("#contactoModal .modal-body").html(data.form);
+                            }
+                            $(".ajax-loader").fadeOut("fast");
+                            setTimeout(function(){
+                                 $(".alert").remove();
+                            },2000);
+                        },
+                        error: function(data){
+                            alert("error");
+                            console.log(data);
+                            $(".ajax-loader").fadeOut("fast");
+                        }
+                    })
+                });
             });
-            $("#showCarrito").on("click",function(){
-                if ($('div.carrito').is(':hidden')){
-                   $('div.carrito').fadeIn('fast',function(){
-                       
-                   });
-               }else{
-                   $('div.carrito').fadeOut('fast',function(){
-                       
-                   });
-               }
-            });
-        });
     </script>
 {% endblock %}
