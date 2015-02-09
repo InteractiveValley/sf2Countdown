@@ -69,24 +69,40 @@
             <section class="productos">
                 {% for producto in productos %}
                     <article class="producto">
+                        <header>
+                            <h4 class="titulo-producto">
+                                {{producto.nombre}}
+                            </h4>
+                        </header>
                         <div class="contenido">
                             <figure class="imagen-producto">
-                                <img src="http://placehold.it/240x240" alt="imagen de producto"/>
-                                <figcaption>
-                                    <span class="precio-producto">
-                                        ${{producto.precio|number_format(2, '.', ',') }} MXN
-                                    </span>
-                                    <span class="inventario">
-                                        {{producto.existencia}}
-                                    </span>
-                                    <span class="agregarCarrito" data-id="{{producto.id}}">
-                                        <i class="fa fa-cart-plus"></i>
-                                    </span>
-                                    <span class="verProducto" data-url="{{path('get_producto',{'slug': producto.slug})}}">
-                                        <i class="fa fa-plus-square"></i>
-                                    </span>
-                                </figcaption>
+                                <img src="http://placehold.it/303x253" alt="imagen de producto"/>
                             </figure>
+                            <div class="descripcion-producto">
+                                {{producto.descripcion | raw }}
+                            </div>
+                        </div>
+                        <div class="controles">
+                            <span class="precio-producto">
+                                ${{producto.precio|number_format(2, '.', ',') }} MXN
+                            </span>
+                            <div class="inventario-producto">
+                                <span>
+                                    <i class="fa fa-clock-o"></i>
+                                </span>
+                                <span class="inventario">
+                                    {{producto.existencia}}
+                                </span>
+                                <span>
+                                    <i class="fa fa-undo"></i>
+                                </span>
+                            </div>
+                            <span class="agregarCarrito" data-id="{{producto.id}}">
+                                Agregar a carrito
+                            </span>
+                            <span class="verProducto" data-url="{{path('get_producto',{'slug': producto.slug})}}">
+                                Ver producto
+                            </span>
                         </div>
                     </article>
                 {% endfor %}

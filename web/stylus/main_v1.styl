@@ -19,7 +19,6 @@ color_gris_claro = #F4F4F4
 color_gris_oscuro = #C3C3C3
 color_naranja_claro = #EB9A53
 color_naranja_oscuro = #E68229
-color_rosa = #DF2E72
 
 /* colores filtro */
 
@@ -98,7 +97,7 @@ article.filtro-categorias
 				text-align center
 				cursor pointer
 				&.active 
-					background-color color_rosa
+					background-color color_rojo
 					color white
 		& .filtro-filtrar
 			left 0px
@@ -111,40 +110,45 @@ article.producto
 	display inline-block 
 	margin 20px 12px 30px 
 	vertical-align top
-	width 240px
-	height 240px
+	width 303px
+	& .titulo-producto
+		color color_rojo
+		text-align center
+		text-transform capitalize
 	& .imagen-producto
 		margin 0px
 		border 1px solid color_gris_claro
-		position relative
-		& figcaption
-			background-color white
-			width 100%
-			position absolute
-			height 50px
-			bottom 0px
-			left 0px
-			& span
-				display inline-block
-				vertical-align top
-				width 40%
+	& .descripcion-producto
+		font-size .8em
+		height 100px
+		margin 5px 0px
+		overflow hidden
+		text-align left
+		width 100%
 	& .precio-producto
 		color color_verde_oscuro
 		font-size 1.2em
 		height 30px 
 		margin-right 5px
+		width 160px
 	& .inventario-producto
 		background-color color_verde_oscuro
 		color white
 		font-size 1.2em
 		height 30px
+		width 115px
+		& span
+			display inline-block
+			vertical-align top
 	& .agregarCarrito
-		background-color color_rosa
+		background-color color_rojo
 		color white
 		display block
 		font-size .9em
 		height 30px 
 		line-height 30px
+		margin-right 5px
+		width 160px
 		cursor pointer
 	& .verProducto
 		background-color color_naranja_oscuro
@@ -153,7 +157,15 @@ article.producto
 		font-size .9em
 		height 30px
 		line-height 30px
+		width 115px
 		cursor pointer
+	& .precio-producto
+	& .inventario-producto
+	& .agregarCarrito
+	& .verProducto
+		display inline-block
+		vertical-align top
+		margin-top 3px
 
 
 article.producto-detalle
@@ -161,7 +173,7 @@ article.producto-detalle
 		text-align center
 		margin 0 auto
 		& .titulo-producto
-			color color_rosa
+			color color_rojo
 			text-align center
 			text-transform capitalize
 		& .descripcion-producto
@@ -186,7 +198,7 @@ article.producto-detalle
 				display inline-block
 				vertical-align top
 		& .agregarCarrito
-			background-color color_rosa
+			background-color color_rojo
 			color white
 			display block
 			font-size 1em
@@ -228,9 +240,7 @@ footer
 		color black
 		text-decoration none
 		font-size .8em
-
-figure
-	margin 0	
+	
 
 ul.list-categorias
 	padding 0
@@ -244,7 +254,7 @@ ul.list-categorias
 		text-align center
 		vertical-align top
 		& a
-			background-color color_rosa
+			background-color color_rojo
 			border-radius .5em
 			color white
 			display block
@@ -258,8 +268,8 @@ ul.list-categorias
 ul.list-carrito
 	padding 0
 	& li.item-carrito
-		border-bottom 1px solid color_rosa
-		border-top 1px solid color_rosa
+		border-bottom 1px solid color_rojo
+		border-top 1px solid color_rojo
 		list-style none
 		margin .5em 0px
 		padding .5em 0px
@@ -317,14 +327,14 @@ section.productos
 
 
 .buscador-envio
-	background-color color_rosa
+	background-color color_rojo
 	height 2.68em
 	color white
 	& .input-group
 		padding .2em
 		& input[type="text"]
 		& button
-			background-color color_rosa
+			background-color color_rojo
 			color white
 			border 1px solid white
 			
@@ -334,7 +344,7 @@ section.productos
 	& .input-group
 		padding .2em
 		& button
-			background-color color_rosa
+			background-color color_rojo
 			color white
 			border 1px solid white
 	
@@ -353,14 +363,14 @@ section.productos
 	ul
 		padding 0px
 		& li
-			color color_rosa
+			color color_rojo
 			font-size 14px
 
 .link-cuenta
 	padding .3em
 	font-size 0px
 	& .link-cuenta-usuario
-		color color_rosa
+		color color_rojo
 		display inline-block
 		font-size 14px
 		line-height 14px
@@ -368,7 +378,7 @@ section.productos
 		padding 2px 0px 2px 4px 
 		vertical-align top
 		&:first-child
-			border-right 1px solid color_rosa
+			border-right 1px solid color_rojo
 			padding-right 4px
 
 .links-footer
@@ -391,7 +401,7 @@ section.productos
 	font-weight normal
 
 .titulo-carrito
-	border-bottom 1px solid color_rosa
+	border-bottom 1px solid color_rojo
 	color white
 	font-size .8em
 	line-height 4em
