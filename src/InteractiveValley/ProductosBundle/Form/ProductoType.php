@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
+use InteractiveValley\ProductosBundle\Entity\Producto;
 
 class ProductoType extends AbstractType
 {
@@ -30,7 +31,15 @@ class ProductoType extends AbstractType
             ->add('existencia','text',array('attr'=>array('class'=>'form-control')))
             ->add('reservado','text',array('attr'=>array('class'=>'form-control')))
             ->add('precio',null,array('label'=>'Precio','attr'=>array('class'=>'form-control')))
-            ->add('iva',null,array('label'=>'Iva','attr'=>array('class'=>'form-control')))
+            ->add('iva','choice',array(
+                'label'=>'IVA',
+                'empty_value'=>false,
+                'choices'=>Producto::getArrayIva(),
+                'preferred_choices'=>Producto::getPreferedIva(),
+                'attr'=>array(
+                    'class'=>'validate[required] form-control placeholder',
+                    'placeholder'=>'IVA',
+                )))
             ->add('slug','hidden')
             ->add('categoria','entity',array(
                 'class'=> 'ProductosBundle:Categoria',
@@ -47,6 +56,21 @@ class ProductoType extends AbstractType
                     'data-bind'=>'value: categoria',
                     )
                 ))
+            ->add('isPromocional',null,array('label'=>'¿Imagen grande?','attr'=>array(
+                'class'=>'checkbox-inline',
+                'placeholder'=>'Es activo',
+                'data-bind'=>'value: isPromocional'
+             )))
+            ->add('isNew',null,array('label'=>'¿Mostrar seccion "Lo nuevo"?','attr'=>array(
+                'class'=>'checkbox-inline',
+                'placeholder'=>'Es activo',
+                'data-bind'=>'value: isNew'
+             )))
+            ->add('isActive',null,array('label'=>'¿Activo?','attr'=>array(
+                'class'=>'checkbox-inline',
+                'placeholder'=>'Es activo',
+                'data-bind'=>'value: isActive'
+             )))
         ;
     }
     

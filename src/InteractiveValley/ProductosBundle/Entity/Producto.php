@@ -105,6 +105,20 @@ class Producto
     /**
      * @var boolean
      *
+     * @ORM\Column(name="is_producto_promocional", type="boolean")
+     */
+    private $isPromocional;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="es_nuevo", type="boolean")
+     */
+    private $isNew;    
+    
+    /**
+     * @var boolean
+     *
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
@@ -129,6 +143,24 @@ class Producto
      * })
      */
     private $categoria;
+    
+    const IVA_16            = '1.16';
+    const IVA_EXENTO        = '1.0';
+    
+    static public $sIva=array(
+        self::IVA_EXENTO    => 'Exento',
+        self::IVA_16        => '16%'
+    );
+    static function getPreferedIva(){
+        return array(self::IVA_16);
+    }
+
+    public function getStringIva(){
+        return self::$sIva[$this->getIva()];
+    }
+    static function getArrayIva(){
+        return self::$sIva;
+    }
     
     function __toString() {
         return $this->nombre;
@@ -161,6 +193,18 @@ class Producto
         $this->fechaModificacion = new \DateTime();
     }
     
+    /*
+     * Slugable
+     */
+    
+    /*
+     * Esta funcion es para slugar el valor. 
+     */
+    public function setSlugAtValue()
+    {
+        $this->slug = RpsStms::slugify($this->getNombre());
+    }
+    
     /**
      * Constructor
      */
@@ -168,6 +212,9 @@ class Producto
     {
         $this->galerias = new \Doctrine\Common\Collections\ArrayCollection();
         $this->isActive = true;
+        $this->isPromocional = false;
+        $this->isNew = false;
+        $this->unidadMedida = "PZ";
     }
 
     /**
@@ -189,8 +236,6 @@ class Producto
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-        
-        $this->setSlug(RpsStms::slugify($nombre));
 
         return $this;
     }
@@ -512,5 +557,51 @@ class Producto
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Set isPromocional
+     *
+     * @param boolean $isPromocional
+     * @return Producto
+     */
+    public function setIsPromocional($isPromocional)
+    {
+        $this->isPromocional = $isPromocional;
+
+        return $this;
+    }
+
+    /**
+     * Get isPromocional
+     *
+     * @return boolean 
+     */
+    public function getIsPromocional()
+    {
+        return $this->isPromocional;
+    }
+
+    /**
+     * Set isNew
+     *
+     * @param boolean $isNew
+     * @return Producto
+     */
+    public function setIsNew($isNew)
+    {
+        $this->isNew = $isNew;
+
+        return $this;
+    }
+
+    /**
+     * Get isNew
+     *
+     * @return boolean 
+     */
+    public function getIsNew()
+    {
+        return $this->isNew;
     }
 }

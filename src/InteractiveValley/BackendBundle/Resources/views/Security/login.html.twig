@@ -12,8 +12,8 @@
     <div class="admin-form">
         <div class="container">
             <div class="text-center">
-                <a href="{{path('homepage')}}">
-                    <img src="{{ asset('images/logo.png') }}" style="max-width: 100%;"/>
+                <a href="{{path('homepage')}}" style="background-color: #F4F4F4;padding: 43px 30px;">
+                    <img src="{{ asset('images/logov2.png') }}" style="max-height: 100px;"/>
                 </a>
             </div>
             <div class="row">
@@ -64,7 +64,7 @@
 
                         <div class="widget-foot">
                             <!--No esta registrado? <a href="#">Registrarse aquí</a><br/>-->
-                            Recuperar constraseña <a href="{{path('recuperar')}}">Recuperar aquí</a><br/>
+                            Recuperar constraseña <a href="{{path('backend_recuperar')}}">Recuperar aquí</a><br/>
                             {% if error %}
                                 {% if error %} 
                                         <div id='error' class='error' style="color: red;">{{ error.message | trans}}</div> 
@@ -85,8 +85,8 @@
     </div>
 <footer class="footer">
     <div class="container">
-    <!--img src="{{asset('images/interactivevalley.png')}}"/-->
-    <p class="text-center">Direccion</p>
+    <img src="{{asset('images/interactivevalley.png')}}"/>
+    <!--p class="text-center">Direccion</p-->
     </div>
 </footer>
 {% endblock %}

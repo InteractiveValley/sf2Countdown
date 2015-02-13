@@ -1,5 +1,10 @@
 <div class="categorias" {% if is_show %} style="display: none;"{% endif %}>
     <ul class="list-categorias">
+        <li class="item-categoria item-categoria-0">
+            <a href="{{path('lo_mas_nuevo')}}#lo/nuevo" class="link-categoria">
+                Lo nuevo
+            </a>
+        </li>
         {% for categoria in categorias %}
             <li class="item-categoria item-categoria-{{categoria.id}}">
                 <a href="{{path('categoria_productos',{'slug': categoria.slug})}}" class="link-categoria">

@@ -12,4 +12,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductoRepository extends EntityRepository
 {
+    public function findNombreSluggable($slug, $excepto = 0){
+        $query= $this->getEntityManager()->createQueryBuilder();
+        if($excepto > 0){
+            $query->select('p')
+                ->from('InteractiveValley\ProductosBundle\Entity\Producto', 'p')
+                ->where('p.id<>:producto')
+                ->setParameter('producto',$excepto)
+                ->andWhere('p.slug LIKE :slug')
+                ->setParameter('slug',$slug."%")
+                ->orderBy('p.nombre', 'DESC'); 
+        }else{
+            $query->select('p')
+                ->from('InteractiveValley\ProductosBundle\Entity\Producto', 'p')
+                ->andWhere('p.slug LIKE :slug')
+                ->setParameter('slug',$slug."%")
+                ->orderBy('p.nombre', 'DESC'); 
+        }
+        return $query->getQuery()->getResult();
+    }
 }

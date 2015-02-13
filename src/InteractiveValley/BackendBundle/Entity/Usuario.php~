@@ -175,6 +175,7 @@ class Usuario implements UserInterface, \Serializable
         // may not be needed, see section on salt below
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
         $this->isActive = true;
+        $this->grupo = Usuario::GRUPO_USUARIOS;
     }
     
 

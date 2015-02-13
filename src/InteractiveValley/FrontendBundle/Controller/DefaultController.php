@@ -12,7 +12,6 @@ use InteractiveValley\FrontendBundle\Entity\Contacto;
 use InteractiveValley\FrontendBundle\Form\ContactoType;
 use InteractiveValley\BackendBundle\Entity\Usuario;
 use InteractiveValley\BackendBundle\Form\Frontend\UsuarioType;
-use InteractiveValley\BackendBundle\Form\Frontend\UsuarioPerfilType;
 
 class DefaultController extends BaseController {
 
@@ -35,9 +34,15 @@ class DefaultController extends BaseController {
     public function loMasNuevoAction(Request $request) 
     {
         $productos = $this->getDoctrine()
-                           ->getRepository('ProductosBundle:Producto')->findAll();
+                           ->getRepository('ProductosBundle:Producto')->findBy(array(
+                               'isNew'=>true
+                           ));
+        $categoria = array('id'=>0,'nombre'=>'Lo nuevo');
         
-        return array('productos'=>$productos);
+        return array(
+            'productos'=>$productos,
+            'categoria'=>$categoria
+        );
     }
     
     /**
@@ -53,7 +58,7 @@ class DefaultController extends BaseController {
     }
     
     /**
-     * @Route("/categorias", name="categorias")
+     * @Route("/categorias", name="menu_categorias")
      * @Template("FrontendBundle:Default:categorias.html.twig")
      * @Method({"GET"})
      */
@@ -108,7 +113,7 @@ class DefaultController extends BaseController {
     }
     
     /**
-     * @Route("/api/categorias", name="api_categorias")
+     * @Route("/api/categorias", name="api_get_categorias")
      * @Method({"GET"})
      */
     public function getCategoriasAction(Request $request) 
@@ -128,22 +133,10 @@ class DefaultController extends BaseController {
     }
     
     /**
-     * @Route("/api/categorias/{id}", name="api_get_categoria")
+     * @Route("/api/categorias/{slug}/productos", name="api_get_categorias_productos")
      * @Method({"GET"})
      */
-    public function getCategoriaAction(Request $request,$id) 
-    {
-        $categoria = $this->getDoctrine()
-                           ->getRepository('ProductosBundle:Categoria')->find($id);
-        
-        return new JsonResponse(array('categoria'=>$categoria));
-    }
-    
-    /**
-     * @Route("/api/productos", name="api_productos")
-     * @Method({"GET"})
-     */
-    public function getProductosAction(Request $request) 
+    public function getProductosAction(Request $request,$slug) 
     {
         $categoria = $this->getDoctrine()
                            ->getRepository('ProductosBundle:Categoria')->find($id);
@@ -154,7 +147,7 @@ class DefaultController extends BaseController {
     }
     
     /**
-     * @Route("/api/productos/{id}", name="api_get_producto")
+     * @Route("/api/productos/{slug}", name="api_get_producto")
      * @Method({"GET"})
      */
     public function getProductoAction(Request $request,$id) 

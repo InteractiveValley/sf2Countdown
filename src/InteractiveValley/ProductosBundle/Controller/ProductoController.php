@@ -124,6 +124,7 @@ class ProductoController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $this->setNombreSluggable($entity,true);
             $em->persist($entity);
             $em->flush();
 
@@ -273,6 +274,7 @@ class ProductoController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $this->setNombreSluggable($entity);
             $em->flush();
 
             return $this->redirect($this->generateUrl('productos_edit', array('id' => $id)));
@@ -524,5 +526,36 @@ class ProductoController extends Controller
         $centrado = new \Imagine\Image\Point($width, $height);
         $collage->paste($image,$centrado);
         $collage->save($path);        
+    }
+    
+    private function setNombreSluggable(Producto $entity, $isNew = false){
+        $em = $this->getDoctrine()->getManager();
+        $entity->setSlugAtValue();
+        $slug = $entity->getSlug();
+        $id = 0;
+        if(!$isNew){ $id = $entity->getId(); }
+        $resultados = $em->getRepository('ProductosBundle:Producto')
+                         ->findNombreSluggable($slug,$id);
+        if(count($resultados)>0){
+            $cont=0;
+            $encontrado = false;
+            do{
+                //buscamos el slug correcto
+                $slugBuscar = $slug .($cont>0?'-'.$cont:'');
+                foreach($resultados as $resultado){
+                    if($resultado->getSlug() == $slugBuscar){
+                        $encontrado=true;
+                        break;
+                    }else{
+                        $encontrado = false;
+                    }
+                }
+                //entonces empecemos a buscar otro slug
+                $cont++;
+            }while($encontrado);
+            $slug = $slugBuscar;    
+        }   
+        $entity->setSlug($slug);
+        return true;
     }
 }

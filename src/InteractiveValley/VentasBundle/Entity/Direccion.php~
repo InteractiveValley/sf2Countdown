@@ -116,7 +116,27 @@ class Direccion
      * })
      */
     private $usuario;
-
+    
+    const TIPO_DIRECCION_FACTURACION=1;
+    const TIPO_DIRECCION_ENVIO=2;
+        
+    static public $sTipoDireccion=array(
+        self::TIPO_DIRECCION_FACTURACION=>'Facturacion',
+        self::TIPO_DIRECCION_ENVIO=>'Envio'
+    );
+	
+    public function getStringTipoDireccion(){
+        return self::$sTipoDireccion[$this->getTipoDireccion()];
+    }
+    
+    static function getArrayTipoDireccion(){
+        return self::$sTipoDireccion;
+    }
+    
+    static function getPreferedTipoDireccion(){
+        return array(self::TIPO_DIRECCION_ENVIO);
+    }
+    
     /*
      * Timestable
      */
@@ -143,12 +163,6 @@ class Direccion
     {
         $this->fechaModificacion = new \DateTime();
     }
-
-    
-    /**
-     * @var string
-     */
-    private $num_interior;
 
 
     /**
@@ -238,7 +252,7 @@ class Direccion
      */
     public function setNumInterior($numInterior)
     {
-        $this->num_interior = $numInterior;
+        $this->numInterior = $numInterior;
 
         return $this;
     }
@@ -250,7 +264,7 @@ class Direccion
      */
     public function getNumInterior()
     {
-        return $this->num_interior;
+        return $this->numInterior;
     }
 
     /**

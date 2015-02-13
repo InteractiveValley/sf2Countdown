@@ -83,6 +83,10 @@
                                                                                 <td>{{entity.nombre}}</td>
                                                                             </tr>
                                                                             <tr>
+                                                                                <td>Slug:</td>
+                                                                                <td>{{entity.slug}}</td>
+                                                                            </tr>
+                                                                            <tr>
                                                                                 <td>Descripcion:</td>
                                                                                 <td>{{ entity.descripcion | raw }}</td>
                                                                             </tr>
@@ -102,6 +106,18 @@
                                                                                 <td>Iva:</td>
                                                                                 <td>{{ entity.iva | number_format(2,".",",") }}</td>
                                                                             </tr>
+                                                                            <tr>
+                                                                                <td>Es articulo promocional:</td>
+                                                                                <td>{{ entity.isPromocional | isActive | raw }}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Esta en la categoria "Lo nuevo":</td>
+                                                                                <td>{{ entity.isNew | isActive | raw }}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Activo:</td>
+                                                                                <td>{{ entity.isActive | isActive | raw }}</td>
+                                                                            </tr>
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
@@ -112,7 +128,7 @@
                                                                                 {% include 'GaleriasBundle:Galeria:galerias.html.twig' with {'galerias': entity.galerias, 'url_delete': url_delete } %}
                                                                             </div>
                                                                             <table style="width: 99%; margin: 0 auto;">
-                                                                                <tr>
+                                                                                <tr width="50%">
                                                                                     <td>
                                                                                         <div id="upload"></div>
                                                                                         Extenciones disponibles:   "jpeg","png","gif","jpg"
@@ -121,7 +137,7 @@
                                                                                         <div class="clear"></div>
                                                                                     </td>
                                                                                 </tr>
-                                                                                <tr>
+                                                                                <tr width="50%">
                                                                                     <td>
                                                                                         <!--button onclick="javascript:editarRegistro('{{path('galerias_new')}}?tipo=link_video&clase=pagina&idContenedor={{entity.id}}&return={{path('productos_show',{'id':entity.id})}}#galeria')" class="botonUploadVideoLink">Crear Video Link</button-->
                                                                                         <button onclick="javascript:crearVideoLink()" class="botonUploadVideoLink">Crear Video Link</button>

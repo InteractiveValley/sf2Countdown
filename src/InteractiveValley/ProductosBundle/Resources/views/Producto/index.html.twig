@@ -78,7 +78,9 @@
                       {% for entity in entities %}
                             <tr id="registro-{{entity.id}}">
                                 <td><a href="{{ path('productos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                                <td>{{ entity.categoria.nombre }}</td>
+                                <td>
+                                    {{ entity.categoria.nombre }}
+                                </td>
                                 <td>
                                     {% if entity.galerias | length > 0 %}
                                         <img src="{{ entity.galerias[0].webPath }}" style="max-width: 120px; max-width: 120px;"/>
@@ -86,7 +88,14 @@
                                         sin imagen
                                     {% endif %}
                                 </td>
-                                <td>{{entity.nombre}}</td>
+                                <td>
+                                    {{entity.nombre}}<br/>
+                                    <ul>
+                                        <li>Articulo promocional: {{ entity.isPromocional | isActive | raw }}</li>
+                                        <li>En la seccion de nuevo: {{ entity.isNew | isActive | raw }}</li>
+                                        <li>Activo?: {{ entity.isActive | isActive | raw }}</li>
+                                    </ul>
+                                </td>
                                 <td>{{ entity.existencia | number_format(2,".",",") }}</td>
                                 <td>{{ entity.reservado | number_format(2,".",",") }}</td>
                                 <td>$ {{ entity.precio | number_format(2,".",",") }}</td>

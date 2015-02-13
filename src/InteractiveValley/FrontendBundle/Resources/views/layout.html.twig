@@ -85,14 +85,19 @@
                                 <img src="{{asset('images/letra_i.jpg')}}" alt="información"/>
                             </div>
                             <div class="col-md-10">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Ingrese su orden" name="pedido">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button">
-                                            <i class="fa fa-road"></i>
-                                        </button>
-                                    </span>
-                                </div>
+                                <form class="form-inline">
+                                    <div class="form-group row">
+                                        <label for="pedido" class="col-md-5" style="font-size: .8em; line-height: 3em">Ingrese su pedido:</label>
+                                        <div class="input-group" class="col-md-7">
+                                            <input type="text" class="form-control" placeholder="" name="pedido">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>    
+                                </form>    
                             </div>
                         </div>    
                     </div>
@@ -103,14 +108,18 @@
                                 <a class="link-cuenta-usuario" href="{{path('login')}}">Login</a>
                             </div>
                             <div class="col-md-8">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search" name="buscar">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </span>
-                                </div>
+                                <form class="form-inline">
+                                    <div class="form-group row">
+                                        <div class="input-group col-md-12">
+                                            <input type="text" class="form-control" placeholder="Search" name="buscar">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>    
                     </div>
@@ -131,7 +140,7 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="#lonuevo">Lo nuevo</a></li>
+                        <li><a href="#inicio">Inicio</a></li>
                         <!--li><a href="#recomendaciones">Recomendaciones</a></li-->
                         <li>
                             <a href="#categorias" id="showCategorias">
@@ -186,7 +195,7 @@
                                     ${{producto|number_format(2, '.', ',') }} MXN
                                 </span>
                                 <div class="tiempo-producto">
-                                    <span style="display: block;">
+                                    <span class="tiempo-producto-reloj">
                                         <i class="fa fa-clock-o"></i>
                                     </span>
                                     <span class="tiempo-producto-carrito">
@@ -202,11 +211,43 @@
                         </div>
                     </li>
                 {% endfor %}
+                    <li class="item-carrito inactive">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <figure class="imagen-producto-carrito">
+                                    <img src="http://placehold.it/98x80" alt="producto inactivo"/>
+                                    <span class="reloj-inactivo">
+                                        <i class="fa fa-clock-o"></i>
+                                    </span>
+                                </figure>
+                            </div>
+                            <div class="col-md-7 producto-carrito">
+                                <h6 class="titulo-producto-carrito">Producto inactivo</h6>
+                                <span class="precio-producto-carrito">
+                                    ${{100|number_format(2, '.', ',') }} MXN
+                                </span>
+                                <div class="tiempo-producto-completo">
+                                    <span class="tiempo-producto-reactivar">
+                                        Countdown terminado.<br/>
+                                        ¿Agregarlo de nuevo?
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
             </ul>
-            <h3 class="total-carrito">${{monto|number_format(2, '.', ',') }} MXN</h3>
+            <div class="row">
+                <div class="total-carrito rubro col-md-4">Total: </div>
+                <div class="total-carrito col-md-8">${{monto|number_format(2, '.', ',') }} MXN</div>
+                <div class="total-carrito rubro col-md-4">Desc.: </div>
+                <div class="descuento-carrito col-md-8">${{100|number_format(2, '.', ',') }} MXN</div>
+            </div>
             <button id="hacerPedido">
                 hacer pedido
             </button>
+            <p class="letrero-carrito">
+                Obten $ 100.00 pesos <br/>de descuento por <br/>cada 3 productos agregados!
+            </p>
         </div>
     </div>
     <div class="clearfix"></div>
@@ -267,12 +308,14 @@
                     if ($('#carrito').is(':hidden')) {
                         $(".filtro-ordenar-por-precio").hide();
                         $("#valor-precio").animate({'fontSize':'12px'},'fast');
-                        $("#division-principal").animate({'width': '-=266px'},'fast',function(){
+                        $("#division-principal,section.productos").animate({'width': '-=266px'},'fast',function(){
+                            $("#division-principal,section.productos").resize();
                             $("#carrito").animate({'width':'266px'},'fast').fadeIn('fast');
                         });
                     } else {
                         $("#carrito").fadeOut('fast').animate({'width':'0px'},'fast',function(){
-                            $("#division-principal").animate({'width': '100%'},'fast',function(){
+                            $("#division-principal,section.productos").animate({'width': '100%'},'fast',function(){
+                                $("#division-principal,section.productos").resize();
                                 $("#valor-precio").animate({'fontSize':'16px'},'fast');
                                 $(".filtro-ordenar-por-precio").show();
                             });

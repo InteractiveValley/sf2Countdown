@@ -105,6 +105,20 @@ class Producto
     /**
      * @var boolean
      *
+     * @ORM\Column(name="is_producto_promocional", type="boolean")
+     */
+    private $isPromocional;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="es_nuevo", type="boolean")
+     */
+    private $isNew;    
+    
+    /**
+     * @var boolean
+     *
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
@@ -168,6 +182,8 @@ class Producto
     {
         $this->galerias = new \Doctrine\Common\Collections\ArrayCollection();
         $this->isActive = true;
+        $this->isPromocional = false;
+        $this->isNew = false;
     }
 
     /**

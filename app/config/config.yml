@@ -93,12 +93,12 @@ liip_imagine:
     resolvers:
         default:
             web_path: 
-                web_root:  %kernel.root_dir%/../html
+                web_root:  %kernel.root_dir%/../web
                 cache_prefix:  media/cache
     loaders:
         default:
             filesystem:
-                data_root:  %kernel.root_dir%/../html/
+                data_root:  %kernel.root_dir%/../web/
     driver:               gd
     cache:                default
     data_loader:          default
@@ -108,25 +108,20 @@ liip_imagine:
     filter_sets:
         imagen_grande:
             filters:
-                thumbnail: { size: [616, 411], mode: outbound }
-        imagen_302_126:
+                thumbnail: { size: [489, 489], mode: outbound }
+        imagen_chica:
             filters:
-                thumbnail: { size: [302, 126], mode: outbound }
-        imagen_222_94:
+                thumbnail: { size: [241, 241], mode: outbound }
+        imagen_carrusel:
             filters:
-                thumbnail: { size: [222, 94], mode: outbound }
-        imagen_246_76:
+                thumbnail: { size: [400, 400], mode: outbound }
+        imagen_carrito:
             filters:
-                thumbnail: { size: [246, 76], mode: outbound }
-        imagen_200_200:
+                thumbnail: { size: [98, 80], mode: outbound }
+        imagen_carrusel_thumbnail:
             filters:
-                thumbnail: { size: [200, 200], mode: outbound }
-        imagen_120_90:
-            filters:
-                thumbnail: { size: [120, 90], mode: outbound }
-        imagen_90_60:
-            filters:
-                thumbnail: { size: [90, 60], mode: outbound }
+                thumbnail: { size: [70, 70], mode: outbound }        
+
 
 hwi_oauth:
     #this is my custom user provider, will manage the 
