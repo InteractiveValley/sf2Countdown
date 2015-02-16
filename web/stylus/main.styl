@@ -46,7 +46,7 @@ article.filtro-categorias
 		font-size .8em
 		background-color color_gris_claro
 	& #valor-precio
-		color color_verde_oscuro
+		color color_rosa
 	& .color
 		font-size 2em
 		margin 8px 4px 0px
@@ -233,6 +233,12 @@ button#hacerPedido
 	text-transform capitalize
 	width 90%
 	margin 0px 5% 10px
+
+button[type="submit"]
+	background-color color rosa
+	border none
+	border-radius .5em
+	padding .5em
 
 nav 
 	background-color color_gris_oscuro
@@ -437,7 +443,53 @@ section.productos
 	&.rubro
 		font-size .9em
 		text-align right
-		
+
+.modal-producto-galeria
+	position relative
+
+.modal-producto-contenido
+	text-align center
+	& .modal-producto-titulo
+		color color_rosa
+		font-size 1.2em
+		margin-top 0px
+		margin-bottom 0px
+		text-align left
+	& .modal-producto-clave-producto
+		color color_rosa
+		font-size .8em
+		text-align left
+		margin-bottom 1em
+	& .modal-producto-descripcion
+		font-size 1em
+		text-align justify
+		margin-bottom .5em
+	& .modal-producto-precio
+		color color_rosa
+		font-size 1.3em
+		margin-bottom .5em
+	& .modal-producto-inventario
+		background-color color_rosa
+		color white
+		display block
+		font-size 1.2em
+		margin 0 auto .5em
+		padding 5px
+		width 300px
+	& .modal-producto-cantidad 
+		margin-bottom .5em
+	& .modal-producto-agrergar-carrito
+		text-transform uppercase
+		padding .5em
+		border none
+	& .modal-producto-cantidad label
+		color color_rosa
+	& .modal-producto-cantidad button
+	& .modal-producto-agrergar-carrito
+		background-color color_rosa
+		color white
+
+
 .descuento-carrito
 	color color_rosa
 	font-size 1em
@@ -473,6 +525,9 @@ section.productos
 
 .padding 
 	padding 1em	2em
+
+.well
+	padding .5em
 
 #carrito
 	position relative
@@ -512,41 +567,6 @@ section.productos
 			right 13px
 
 
-.modal-dialog
-  position absolute
-  top 50% !important
-  transform translate(0, -50%) !important
-  margin auto 5%
-  width 90%
-  height 80%
-
-.modal-content
-  min-height 100%
-  position absolute
-  top 0
-  bottom 0
-  left 0
-  right 0
-
-.modal-body
-  position absolute
-  top 45px
-  // height of header
-  bottom 45px
-  // height of footer
-  left 0
-  right 0
-  overflow-y auto
-
-.modal-footer
-  position absolute
-  bottom 0
-  left 0
-  right 0
-
-
-
-		
 #division-principal
 #carrito 
 	&.flotar
@@ -563,3 +583,34 @@ section.productos
 		display none
 
 
+.modal-dialog
+	position absolute
+	top 50% !important
+	transform translate(-55%, -50%) !important
+	margin auto 5%
+	width 90%
+	height 80%
+
+.modal-content
+	min-height 100%
+	position absolute
+	top 0
+	bottom 0
+	left 0
+	right 0
+
+.modal-body
+	position absolute
+	top 5px
+	// height of header
+	bottom 5px
+	// height of footer
+	left 0
+	right 0
+	overflow-y auto
+
+.modal-footer
+	position absolute
+	bottom 0
+	left 0
+	right 0

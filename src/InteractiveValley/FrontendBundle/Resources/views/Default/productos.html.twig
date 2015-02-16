@@ -3,6 +3,7 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{asset('css/bootstrap-slider.css')}}">
+    <link rel="stylesheet" href="{{asset('css/jquery.bxslider.css')}}">
 {% endblock %}
 
 {% block contenido %}
@@ -45,8 +46,8 @@
                 <div class="col-md-3 filtro-ordenar" style="padding-right: 0px;">
                     <div class="filtro-ordenar-por-precio">
                         <div class="btn-group">
-                            <button type="button" class="btn" style="background-color: #56C5B6; color: white; border-color: #56C5B6;">Mayor a menor precio</button>
-                            <button type="button" class="btn dropdown-toggle" style="background-color: #56C5B6; color: white; border-color: #56C5B6;" data-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="btn" style="background-color: #DF2E72; color: white; border-color: #DF2E72;">Mayor a menor precio</button>
+                            <button type="button" class="btn dropdown-toggle" style="background-color: #DF2E72; color: white; border-color: #DF2E72;" data-toggle="dropdown" aria-expanded="false">
                                 <span class="caret"></span>
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
@@ -99,7 +100,7 @@
         </article>    
     </section>
 
-    <div id="modalProducto" class="modal fade" style="width: 800px;" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div id="modalProducto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
@@ -110,15 +111,10 @@
                                 <li><img src="{{ galeria.webPath | imagine_filter('imagen_carrusel')}}" /></li>
                                 {% endfor %}
                             </ul>
-                            <div id="bx-pager">
-                                {% for galeria in productos[0].galerias %}
-                                <a data-slide-index="{{loop.index-1}}" href=""><img src="{{ galeria.webPath | imagine_filter('imagen_carrusel_thumbnail')}}" /></a>
-                                {% endfor %}
-                            </div>
                         </div>
                         <div class="col-md-6 modal-producto-contenido">
                             <h3 class="modal-producto-titulo">##Nombre de producto##</h3>
-                            <span class="modal-producto-clave-producto">ID: clave</span>
+                            <div class="modal-producto-clave-producto">ID: clave</div>
                             <div class="modal-producto-descripcion">
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                                 tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -126,16 +122,16 @@
                                 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
                                 cillum dolore eu fugiat nulla pariatur. 
                             </div>
-                            <span class="modal-producto-precio">
+                            <div class="modal-producto-precio">
                                 ${{250|number_format(2, '.', ',') }} MXN
-                            </span>
+                            </div>
                             <span class="modal-producto-inventario">
                                 Countdown:  {{'100'}}
                             </span>
                             <form class="form-inline modal-producto-cantidad">
                                 <div class="form-group">
                                     <label for="cantidad">Cantidad: </label>
-                                    <input type="text" class="form-control" id="cantidad" placeholder="">
+                                    <input type="text" class="form-control" id="cantidad" placeholder="" style="width:100px;">
                                     <button class="btn btn-default"><i class="fa fa-plus-square"></i></button>
                                     <button class="btn btn-default"><i class="fa fa-minus-square"></i></button>
                                 </div>
@@ -152,6 +148,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{asset('js/bootstrap-slider.js')}}"></script> 
+    <script src="{{asset('js/jquery.bxslider.min.js')}}"></script> 
     <script src="{{asset('bundles/frontend/js/app_countdown.js')}}"></script> 
     <script src="{{asset('bundles/frontend/js/app_productos.js')}}"></script>
     <script src="{{asset('js/jquery.masonry.min.js')}}"></script>
@@ -213,6 +210,10 @@
 
             $(".ver-producto").on('click', function () {
                 $("#modalProducto").modal('show');
+            });
+            
+            $('.bxslider').bxSlider({
+                //pagerCustom: '#bx-pager'
             });
 
             window.api = {
