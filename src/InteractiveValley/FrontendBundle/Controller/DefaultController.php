@@ -133,15 +133,42 @@ class DefaultController extends BaseController {
     }
     
     /**
-     * @Route("/api/categorias/{slug}/productos", name="api_get_categorias_productos")
+     * @todo Obligatorio enviar un parametro de categorias 
+     * @Route("/api/productos", name="api_get_productos")
      * @Method({"GET"})
      */
-    public function getProductosAction(Request $request,$slug) 
+    public function getProductosAction(Request $request) 
     {
-        $categoria = $this->getDoctrine()
-                           ->getRepository('ProductosBundle:Categoria')->find($id);
-        
-        $productos = $categoria->getProductos();
+		if($request->query->has('categoria')){
+			$idCategoria = $request->query->get('categoria');
+			if($idCategoria == "lo-mas-nuevo"){
+				$productos = $this->getDoctrine()
+							->getRepository('ProductosBundle:Producto')->findBy(array(
+								'isNew'=>true
+							));
+			}else{
+				$categoria = $this->getDoctrine()
+								->getRepository('ProductosBundle:Categoria')->find($idCategoria);
+				$productos = $categoria->getProductos();
+			}
+		}else{
+			$productos = $this->getDoctrine()
+							->getRepository('ProductosBundle:Producto')->findAll();
+		}
+        $aProductos = array();
+		foreach($productos as $producto){
+			$aProductos['id']			=$producto->getId();
+			$aProductos['nombre']		=$producto->getNombre();
+			$aProductos['slug']			=$producto->getSlug();
+			$aProductos['existencia']	=$producto->getExistencia();
+			$aProductos['reservado']	=$producto->getReservado();
+			$aProductos['precio']		=$producto->getPrecio();
+			$aProductos['iva']			=$producto->getIva();
+			$aProductos['isPromocional']	=$producto->getIsPromocional();
+			$aProductos['isNew']			=$producto->getIsNew();
+			$aProductos['isActive']			=$producto->getIsActive();
+			$aProductos['thumbnail']			=$producto->getIsActive();
+		}
         
         return new JsonResponse(array('productos'=>$productos));
     }

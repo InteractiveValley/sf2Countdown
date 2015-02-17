@@ -142,7 +142,30 @@
                 </div>
             </div>
         </div>
-    </div>                
+    </div>
+<script type="text/template" id="article_producto_template">
+					<!--article class="producto imagen_grande o imagen_chica"-->
+                        <div class="contenido">
+                            <figure class="imagen-producto">
+                                <img src="{{ producto.galerias[0].webPath | imagine_filter(imagenproducto)}}" alt="imagen de producto"/>
+                                <figcaption>
+                                    <span class="precio-producto">
+                                        ${{producto.precio|number_format(2, '.', ',') }} MXN
+                                    </span>
+                                    <span class="inventario-producto">
+                                        Countdown {{producto.existencia}}
+                                    </span>
+                                    <span class="agregar-carrito" data-id="{{producto.id}}">
+                                        +<i class="fa fa-shopping-cart"></i>
+                                    </span>
+                                    <span class="ver-producto" data-url="{{path('get_producto',{'slug': producto.slug})}}">
+                                        <i class="fa fa-plus-square"></i>
+                                    </span>
+                                </figcaption>
+                            </figure>
+                        </div>
+                    <!--/article-->
+</script>
 {% endblock %}
 
 {% block javascripts %}
@@ -212,10 +235,7 @@
                 $("#modalProducto").modal('show');
             });
             
-            $('.bxslider').bxSlider({
-                //pagerCustom: '#bx-pager'
-            });
-
+            
             window.api = {
                 url: '{{path('api_get_categorias')}}',
                 status: 'portada',
@@ -223,22 +243,23 @@
                     id: 0
                 },
             };
-            //$(".loader").fadeIn();
-            /*window.routers.app = new Countdown.Routers.App();
-             window.collections.categorias = new Countdown.Collections.Categorias();
-             window.collections.categorias.url=window.api.url;
-             var xhr = window.collections.categorias.fetch();
+			
+            $(".loader").fadeIn();
+            window.routers.app = new Countdown.Routers.App();
+             window.collections.productos = new Countdown.Collections.Productos();
+             window.collections.productos.url=window.api.url;
+             var xhr = window.collections.productos.fetch({data:{'categoria':'lo-mas-nuevo'}});
              xhr.done(function(){
              window.views.listCategoriasView = new Countdown.Views.ListCategoriasView({
-             collection: window.collections.categorias,
+             		collection: window.collections.categorias,
+				 });
+				 views.listCategoriasView.render();
+				 $(".loader").fadeOut();
+				 Backbone.history.start({
+				 	root : '/',
+				 	pushState:false
+				 });
              });
-             views.listCategoriasView.render();
-             $(".loader").fadeOut();
-             Backbone.history.start({
-             root : '/',
-             pushState:false
-             });
-             });*/
         });
     </script>
 

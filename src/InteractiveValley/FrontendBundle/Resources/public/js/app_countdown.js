@@ -11,13 +11,12 @@ window.views = {};
 window.collections = {};
 
 
-Countdown.Models.Categoria = Backbone.Model.extend({
+Countdown.Models.Producto = Backbone.Model.extend({
     defaults: {
       nombre: '',
       slug: '',
       position: 0,
-      is_active: true,
-      activa: false,
+      is_active: true
     }
 });
 
