@@ -32,11 +32,11 @@ Countdown.Collections.Categorias = Backbone.Collection.extend({
 });
 
 
-//Item de la lista de categorias
-Countdown.Views.ItemCategoriaView = Backbone.View.extend({
-    tagName: 'li',
-    className: 'item-categoria',
-    template: swig.compile($("#item_categoria_template").html()),
+//Item de la lista de productos
+Countdown.Views.ItemProductoView = Backbone.View.extend({
+    tagName: 'article',
+    className: 'producto',
+    template: swig.compile($("#item_producto_template").html()),
     events: {
         "click .item-categoria": "seleccionada"
     },

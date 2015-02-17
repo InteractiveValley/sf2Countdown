@@ -19,170 +19,176 @@ class DefaultController extends BaseController {
      * @Route("/inicio", name="homepage")
      * @Template()
      */
-    public function indexAction(Request $request) 
-    {
+    public function indexAction(Request $request) {
         $categorias = $this->getDoctrine()
-                           ->getRepository('ProductosBundle:Categoria')->findAll();
-        
-        return array('categorias'=>$categorias);
+                        ->getRepository('ProductosBundle:Categoria')->findAll();
+
+        return array('categorias' => $categorias);
     }
-    
+
     /**
      * @Route("/lo/mas/nuevo", name="lo_mas_nuevo")
      * @Template("FrontendBundle:Default:productos.html.twig")
      */
-    public function loMasNuevoAction(Request $request) 
-    {
+    public function loMasNuevoAction(Request $request) {
         $productos = $this->getDoctrine()
-                           ->getRepository('ProductosBundle:Producto')->findBy(array(
-                               'isNew'=>true
-                           ));
-        $categoria = array('id'=>0,'nombre'=>'Lo nuevo');
-        
+                        ->getRepository('ProductosBundle:Producto')->findBy(array(
+            'isNew' => true
+        ));
+        $categoria = array('id' => 0, 'nombre' => 'Lo nuevo');
+
         return array(
-            'productos'=>$productos,
-            'categoria'=>$categoria
+            'productos' => $productos,
+            'categoria' => $categoria
         );
     }
-    
+
     /**
      * @Route("/recomendaciones", name="recomendaciones")
      * @Template("FrontendBundle:Default:productos.html.twig")
      */
-    public function recomendacionesAction(Request $request) 
-    {
+    public function recomendacionesAction(Request $request) {
         $productos = $this->getDoctrine()
-                           ->getRepository('ProductosBundle:Producto')->findAll();
-        
-        return array('productos'=>$productos);
+                        ->getRepository('ProductosBundle:Producto')->findAll();
+
+        return array('productos' => $productos);
     }
-    
+
     /**
      * @Route("/categorias", name="menu_categorias")
      * @Template("FrontendBundle:Default:categorias.html.twig")
      * @Method({"GET"})
      */
-    public function categoriasAction(Request $request) 
-    {
+    public function categoriasAction(Request $request) {
         $categorias = $this->getDoctrine()
-                           ->getRepository('ProductosBundle:Categoria')->findAll();
-        $route = $request->query->get('route','');
-        if($route == "categoria_productos"){
+                        ->getRepository('ProductosBundle:Categoria')->findAll();
+        $route = $request->query->get('route', '');
+        if ($route == "categoria_productos") {
             $isShow = true;
-        }else{
+        } else {
             $isShow = false;
         }
-        
+
         return array(
-            'categorias'=>$categorias,
-            'is_show'=>$isShow,
+            'categorias' => $categorias,
+            'is_show' => $isShow,
         );
     }
-    
+
     /**
      * @Route("/categorias/{slug}", name="categoria_productos")
      * @Template("FrontendBundle:Default:productos.html.twig")
      * @Method({"GET"})
      */
-    public function categoriaProductosAction(Request $request,$slug) 
-    {
+    public function categoriaProductosAction(Request $request, $slug) {
         $categoria = $this->getDoctrine()
-                          ->getRepository('ProductosBundle:Categoria')
-                          ->findOneBy(array('slug'=>$slug));
-        
+                ->getRepository('ProductosBundle:Categoria')
+                ->findOneBy(array('slug' => $slug));
+
         $productos = $categoria->getProductos();
-        
+
         return array(
-            'productos'=>$productos,
-            'categoria'=>$categoria
+            'productos' => $productos,
+            'categoria' => $categoria
         );
     }
-    
+
     /**
      * @Route("/productos/{slug}", name="get_producto")
      * @Template("FrontendBundle:Default:productoDetalle.html.twig")
      * @Method({"GET"})
      */
-    public function mostrarProductoAction(Request $request,$slug) 
-    {
+    public function mostrarProductoAction(Request $request, $slug) {
         $producto = $this->getDoctrine()
-                         ->getRepository('ProductosBundle:Producto')
-                         ->findOneBy(array('slug'=>$slug));
-        
-        return array('producto'=>$producto);
+                ->getRepository('ProductosBundle:Producto')
+                ->findOneBy(array('slug' => $slug));
+
+        return array('producto' => $producto);
     }
-    
+
     /**
      * @Route("/api/categorias", name="api_get_categorias")
      * @Method({"GET"})
      */
-    public function getCategoriasAction(Request $request) 
-    {
+    public function getCategoriasAction(Request $request) {
         $categorias = $this->getDoctrine()
-                           ->getRepository('ProductosBundle:Categoria')->findAll();
-        
+                        ->getRepository('ProductosBundle:Categoria')->findAll();
+
         $arreglo = array();
-        foreach($categorias as $categoria){
+        foreach ($categorias as $categoria) {
             $arreglo1['nombre'] = $categoria->getNombre();
             $arreglo1['slug'] = $categoria->getSlug();
             $arreglo1['position'] = $categoria->getPosition();
             $arreglo1['is_active'] = $categoria->getIsActive();
-            $arreglo[]=$arreglo1;
+            $arreglo[] = $arreglo1;
         }
         return new JsonResponse($arreglo);
     }
-    
+
     /**
      * @todo Obligatorio enviar un parametro de categorias 
      * @Route("/api/productos", name="api_get_productos")
      * @Method({"GET"})
      */
-    public function getProductosAction(Request $request) 
-    {
-		if($request->query->has('categoria')){
-			$idCategoria = $request->query->get('categoria');
-			if($idCategoria == "lo-mas-nuevo"){
-				$productos = $this->getDoctrine()
-							->getRepository('ProductosBundle:Producto')->findBy(array(
-								'isNew'=>true
-							));
-			}else{
-				$categoria = $this->getDoctrine()
-								->getRepository('ProductosBundle:Categoria')->find($idCategoria);
-				$productos = $categoria->getProductos();
-			}
-		}else{
-			$productos = $this->getDoctrine()
-							->getRepository('ProductosBundle:Producto')->findAll();
-		}
+    public function getProductosAction(Request $request) {
+        if ($request->query->has('categoria')) {
+            $idCategoria = $request->query->get('categoria');
+            if ($idCategoria == "lo-mas-nuevo") {
+                $productos = $this->getDoctrine()
+                                ->getRepository('ProductosBundle:Producto')->findBy(array(
+                    'isNew' => true
+                ));
+            } else {
+                $categoria = $this->getDoctrine()
+                                ->getRepository('ProductosBundle:Categoria')->find($idCategoria);
+                $productos = $categoria->getProductos();
+            }
+        } else {
+            $productos = $this->getDoctrine()
+                            ->getRepository('ProductosBundle:Producto')->findAll();
+        }
         $aProductos = array();
-		foreach($productos as $producto){
-			$aProductos['id']			=$producto->getId();
-			$aProductos['nombre']		=$producto->getNombre();
-			$aProductos['slug']			=$producto->getSlug();
-			$aProductos['existencia']	=$producto->getExistencia();
-			$aProductos['reservado']	=$producto->getReservado();
-			$aProductos['precio']		=$producto->getPrecio();
-			$aProductos['iva']			=$producto->getIva();
-			$aProductos['isPromocional']	=$producto->getIsPromocional();
-			$aProductos['isNew']			=$producto->getIsNew();
-			$aProductos['isActive']			=$producto->getIsActive();
-			$aProductos['thumbnail']			=$producto->getIsActive();
-		}
-        
-        return new JsonResponse(array('productos'=>$productos));
+        $imagine = $this->get('liip_imagine.cache.manager');
+        foreach ($productos as $producto) {
+            $aProductos[]['id'] = $producto->getId();
+            $aProductos[]['nombre'] = $producto->getNombre();
+            $aProductos[]['slug'] = $producto->getSlug();
+            $aProductos[]['existencia'] = $producto->getExistencia();
+            $aProductos[]['reservado'] = $producto->getReservado();
+            $aProductos[]['precio'] = $producto->getPrecio();
+            $aProductos[]['iva'] = $producto->getIva();
+            $aProductos[]['isPromocional'] = $producto->getIsPromocional();
+            $aProductos[]['isNew'] = $producto->getIsNew();
+            $aProductos[]['isActive'] = $producto->getIsActive();
+            if($producto->getIsPromocional()){
+                $filtro = "imagen_grande";
+            }else{
+                $filtro = "imagen_chica";
+            }
+            $aProductos[]['imagen'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro, true);
+            $aProductos[]['thumbnail'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito', true);
+            $arreglo = array();
+            foreach($producto->getGalerias() as $index=>$galeria){
+                $arreglo[$index] = array(
+                    'imagen'=> $imagine->getBrowserPath($producto->getWebPath(), 'imagen_carrusel', true),
+                    'thumbnail'=> $imagine->getBrowserPath($producto->getWebPath(), 'imagen_carrusel_thumbnail', true),
+                );
+            }
+            $aProductos[]['galerias'] = $arreglo;
+        }
+
+        return new JsonResponse(array('productos' => $aProductos));
     }
-    
+
     /**
      * @Route("/api/productos/{slug}", name="api_get_producto")
      * @Method({"GET"})
      */
-    public function getProductoAction(Request $request,$id) 
-    {   
+    public function getProductoAction(Request $request, $id) {
         $producto = $this->getDoctrine()
-                           ->getRepository('ProductosBundle:Producto')->find($id);
-        
-        return new JsonResponse(array('producto'=>$producto));
+                        ->getRepository('ProductosBundle:Producto')->find($id);
+
+        return new JsonResponse(array('producto' => $producto));
     }
 
     /**
@@ -228,16 +234,16 @@ class DefaultController extends BaseController {
                 'mensaje' => $mensaje,
             ));
             return new JsonResponse(array(
-                'form'=>$vista,
+                'form' => $vista,
                 'status' => $status,
                 'mensaje' => $mensaje,
             ));
         }
 
         return $this->render('FrontendBundle:Default:formContacto.html.twig', array(
-            'form' => $form->createView(),
-            'status' => $status,
-            'mensaje' => $mensaje
+                    'form' => $form->createView(),
+                    'status' => $status,
+                    'mensaje' => $mensaje
         ));
     }
 
@@ -253,7 +259,7 @@ class DefaultController extends BaseController {
         if ($request->isMethod('POST')) {
             $email = $request->get('email');
             $usuario = $this->getDoctrine()->getRepository('BackendBundle:Usuario')
-                        ->findOneBy(array('email' => $email));
+                    ->findOneBy(array('email' => $email));
             if (!$usuario) {
                 $this->get('session')->getFlashBag()->add(
                         'error', 'El email no esta registrado.'
@@ -298,11 +304,11 @@ class DefaultController extends BaseController {
                 $this->setSecurePassword($usuario);
                 $em->persist($usuario);
                 $em->flush();
-                
-                if($request->isXmlHttpRequest()){
-                    return new JsonResponse(array('status'=>true));
+
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse(array('status' => true));
                 }
-                
+
                 return $this->redirect($this->generateUrl('login'));
             }
         }
@@ -369,7 +375,7 @@ class DefaultController extends BaseController {
         );
         $this->get('mailer')->send($message);
     }
-    
+
     /**
      * @Route("/api/existe/email",name="existe_email")
      * @Template()
@@ -379,14 +385,14 @@ class DefaultController extends BaseController {
         if ($request->isMethod('POST')) {
             $email = $request->get('email');
             $usuario = $this->getDoctrine()->getRepository('BackendBundle:Usuario')
-                        ->findOneBy(array('email' => $email));
+                    ->findOneBy(array('email' => $email));
             if (!$usuario) {
-                return new JsonResponse(array('existe'=>false));
+                return new JsonResponse(array('existe' => false));
             } else {
-                return new JsonResponse(array('existe'=>true));
+                return new JsonResponse(array('existe' => true));
             }
         }
-        return new JsonResponse(array('existe'=>null));
+        return new JsonResponse(array('existe' => null));
     }
 
 }
