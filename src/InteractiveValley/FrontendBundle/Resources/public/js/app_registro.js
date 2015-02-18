@@ -1,15 +1,3 @@
-window.Countdown = {};
-
-Countdown.Views = {};
-Countdown.Collections = {};
-Countdown.Models = {};
-Countdown.Routers = {};
-
-window.routers = {};
-window.models = {};
-window.views = {};
-window.collections = {};
-
 Countdown.Models.Usuario = Backbone.Model.extend({
     defaults: {
       nombre: '',

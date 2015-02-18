@@ -68,7 +68,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container container-project">
+    <div id="app" class="container container-project">
         <header class="row">
             <div class="col-md-7 col-sm-12 col-xs-12">
                 <a href="{{path('homepage')}}">
@@ -169,86 +169,7 @@
         {% block contenido %}{% endblock %}
     </div>
     <div id="carrito" class="flotar">
-        <h6 class="titulo-logo-carrito">
-            Carrito <span id="logo-carrito"><img src="/images/carrito.png" alt="" height="50"></span>
-        </h6>
-        <div class="carrito">
-            <span class="triangulo-carrito"></span>
-            <h3 class="titulo-carrito">Mis productos</h3>
-            <ul class="list-carrito">
-                {% set monto = 0 %}
-                {% for producto in range(1,5) %}
-                    {% set monto = monto + producto %}
-                    <li class="item-carrito">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <figure class="imagen-producto-carrito">
-                                    <img src="http://placehold.it/98x80" alt="producto {{producto}}"/>
-                                    <figcaption>
-                                        <a href="#producto/slug">Ver detalles</a>
-                                    </figcaption>
-                                </figure>
-                            </div>
-                            <div class="col-md-7 producto-carrito">
-                                <h6 class="titulo-producto-carrito">Producto {{producto}}</h6>
-                                <span class="precio-producto-carrito">
-                                    ${{producto|number_format(2, '.', ',') }} MXN
-                                </span>
-                                <div class="tiempo-producto">
-                                    <span class="tiempo-producto-reloj">
-                                        <i class="fa fa-clock-o"></i>
-                                    </span>
-                                    <span class="tiempo-producto-carrito">
-                                        {{producto}} min 20 sec
-                                    </span>
-                                </div>
-                                <span class="close-producto-carrito">
-                                    <a href="#producto/quitar/carrito/slug">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </span>
-                            </div>
-                        </div>
-                    </li>
-                {% endfor %}
-                    <li class="item-carrito inactive">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <figure class="imagen-producto-carrito">
-                                    <img src="http://placehold.it/98x80" alt="producto inactivo"/>
-                                    <span class="reloj-inactivo">
-                                        <i class="fa fa-clock-o"></i>
-                                    </span>
-                                </figure>
-                            </div>
-                            <div class="col-md-7 producto-carrito">
-                                <h6 class="titulo-producto-carrito">Producto inactivo</h6>
-                                <span class="precio-producto-carrito">
-                                    ${{100|number_format(2, '.', ',') }} MXN
-                                </span>
-                                <div class="tiempo-producto-completo">
-                                    <span class="tiempo-producto-reactivar">
-                                        Countdown terminado.<br/>
-                                        ¿Agregarlo de nuevo?
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-            </ul>
-            <div class="row">
-                <div class="total-carrito rubro col-md-4">Total: </div>
-                <div class="total-carrito col-md-8">${{monto|number_format(2, '.', ',') }} MXN</div>
-                <div class="total-carrito rubro col-md-4">Desc.: </div>
-                <div class="descuento-carrito col-md-8">${{100|number_format(2, '.', ',') }} MXN</div>
-            </div>
-            <button id="hacerPedido">
-                hacer pedido
-            </button>
-            <p class="letrero-carrito">
-                Obten $ 100.00 pesos <br/>de descuento por <br/>cada 3 productos agregados!
-            </p>
-        </div>
+        <!-- template backbone -->
     </div>
     <div class="clearfix"></div>
     <footer class="row">
@@ -282,7 +203,95 @@
       </div>
     </div>
   </div>
-</div>            
+</div>
+{% raw %}
+<script type="text/template" id="item_carrito_activo_template">
+                    <!--li class="item-carrito"-->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <figure class="imagen-producto-carrito">
+                                    <img src="{{producto.thumbnail}}" alt="{{producto.nombre}}"/>
+                                    <figcaption>
+                                        <a href="#producto/{{producto.slug}}">Ver detalles</a>
+                                    </figcaption>
+                                </figure>
+                            </div>
+                            <div class="col-md-7 producto-carrito">
+                                <h6 class="titulo-producto-carrito">{{producto.nombre}}</h6>
+                                <span class="precio-producto-carrito">
+                                    ${{producto.getPrecioFormat() }} MXN
+                                </span>
+                                <div class="tiempo-producto">
+                                    <span class="tiempo-producto-reloj">
+                                        <i class="fa fa-clock-o"></i>
+                                    </span>
+                                    <span class="tiempo-producto-carrito">
+                                        {{producto.nombre}} min 20 sec
+                                    </span>
+                                </div>
+                                <span class="close-producto-carrito">
+                                    <a href="#producto/quitar/carrito/slug">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    <!--/li-->
+</script>      
+<script type="text/template" id="item_carrito_inactivo_template">
+                    <!--li class="item-carrito inactive"-->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <figure class="imagen-producto-carrito">
+                                    <img src="http://placehold.it/98x80" alt="producto inactivo"/>
+                                    <span class="reloj-inactivo">
+                                        <i class="fa fa-clock-o"></i>
+                                    </span>
+                                </figure>
+                            </div>
+                            <div class="col-md-7 producto-carrito">
+                                <h6 class="titulo-producto-carrito">Producto inactivo</h6>
+                                <span class="precio-producto-carrito">
+                                    ${{100|number_format(2, '.', ',') }} MXN
+                                </span>
+                                <div class="tiempo-producto-completo">
+                                    <span class="tiempo-producto-reactivar">
+                                        Countdown terminado.<br/>
+                                        ¿Agregarlo de nuevo?
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+</script>
+
+<script type="text/template" id="carrito_template">
+    <!--div id="carrito" class="flotar"-->
+        <h6 class="titulo-logo-carrito">
+            Carrito <span id="logo-carrito"><img src="/images/carrito.png" alt="" height="50"></span>
+        </h6>
+        <div class="carrito">
+            <span class="triangulo-carrito"></span>
+            <h3 class="titulo-carrito">Mis productos</h3>
+            <ul class="list-carrito">
+                <!-- templates backbone -->
+            </ul>
+            <div class="row">
+                <div class="total-carrito rubro col-md-4">Total: </div>
+                <div class="total-carrito col-md-8">${{monto|number_format(2, '.', ',') }} MXN</div>
+                <div class="total-carrito rubro col-md-4">Desc.: </div>
+                <div class="descuento-carrito col-md-8">${{100|number_format(2, '.', ',') }} MXN</div>
+            </div>
+            <button id="hacerPedido">
+                hacer pedido
+            </button>
+            <p class="letrero-carrito">
+                Obten $ 100.00 pesos <br/>de descuento por <br/>cada 3 productos agregados!
+            </p>
+        </div>
+    <!--/div-->
+</script>
+{% endraw %}
 {% endblock %}
 
 {% block javascripts %}
