@@ -99,6 +99,7 @@
             </section>
         </article>    
     </section>
+	{% raw %}
     <script type="text/template" id="modal_producto_template">
     <!--div id="modalProducto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true"-->
         <div class="modal-dialog">
@@ -163,6 +164,7 @@
         </div>
         <!--/article-->
     </script>
+	{% endraw %}
 {% endblock %}
 
 {% block javascripts %}
@@ -234,21 +236,22 @@
             
             
             window.api = {
-                url: '{{path('api_get_categorias')}}',
+                url: '{{path('api_get_productos')}}',
                 status: 'portada',
                 modelo: {
                     id: 0
                 },
             };
 			
-            $(".loader").fadeIn();
-            window.routers.app = new Countdown.Routers.App();
+             $(".loader").fadeIn();
+           	 window.routers.app = new Countdown.Routers.App();
              window.collections.productos = new Countdown.Collections.Productos();
+			 window.collections.carrito = new Countdown.Collections.Carrito();
              window.collections.productos.url=window.api.url;
              var xhr = window.collections.productos.fetch({data:{'categoria':'lo-mas-nuevo'}});
              xhr.done(function(){
-             window.views.listCategoriasView = new Countdown.Views.ListCategoriasView({
-             		collection: window.collections.categorias,
+             	window.views.listCategoriasView = new Countdown.Views.ListCategoriasView({
+             		collection: window.collections.productos,
 				 });
 				 views.listCategoriasView.render();
 				 $(".loader").fadeOut();

@@ -20,8 +20,8 @@ Countdown.Models.Producto = Backbone.Model.extend({
     }
 });
 
-Countdown.Collections.Categorias = Backbone.Collection.extend({
-    model: Countdown.Models.Categoria,
+Countdown.Collections.Productos = Backbone.Collection.extend({
+    model: Countdown.Models.Producto,
     desactivarTodas: function(){
        _.each(this.collection, function(model){ 
           if(model.get('activa')==true){
@@ -31,6 +31,9 @@ Countdown.Collections.Categorias = Backbone.Collection.extend({
     }
 });
 
+Countdown.Collections.Carrito = Backbone.Collection.extend({
+    model: Countdown.Models.Producto
+});
 
 //Item de la lista de productos
 Countdown.Views.ItemProductoView = Backbone.View.extend({
@@ -38,10 +41,11 @@ Countdown.Views.ItemProductoView = Backbone.View.extend({
     className: 'producto',
     template: swig.compile($("#item_producto_template").html()),
     events: {
-        "click .item-categoria": "seleccionada"
+        'click .agregar-carrito': 'agregarCarrito',
+		'click .ver-producto': 'verProducto'
     },
     initialize: function() {
-        this.model.on("change",this.render,this);
+        this.model.on('change',this.render,this);
     },
     render: function() {
         var data = this.model.toJSON();
@@ -49,7 +53,7 @@ Countdown.Views.ItemProductoView = Backbone.View.extend({
         this.$el.html(html);
         return this;
     },
-    seleccionada: function(){
+    agregarCarrito: function(){
         collections.categorias.desactivarTodas();
         this.model.set('activa',true);
     }

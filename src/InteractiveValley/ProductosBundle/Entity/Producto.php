@@ -44,6 +44,20 @@ class Producto
      * @ORM\Column(name="marca", type="string", length=255)
      */
     private $marca;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="modelo", type="string", length=255)
+     */
+    private $modelo;
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="color", type="string", length=50)
+     */
+    private $color;
 
     /**
      * @var string
@@ -603,5 +617,51 @@ class Producto
     public function getIsNew()
     {
         return $this->isNew;
+    }
+
+    /**
+     * Set modelo
+     *
+     * @param string $modelo
+     * @return Producto
+     */
+    public function setModelo($modelo)
+    {
+        $this->modelo = $modelo;
+
+        return $this;
+    }
+
+    /**
+     * Get modelo
+     *
+     * @return string 
+     */
+    public function getModelo()
+    {
+        return $this->modelo;
+    }
+
+    /**
+     * Set color
+     *
+     * @param string $color
+     * @return Producto
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string 
+     */
+    public function getColor()
+    {
+        return $this->color;
     }
 }
