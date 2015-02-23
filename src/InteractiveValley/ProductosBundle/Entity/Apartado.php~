@@ -1,0 +1,92 @@
+<?php
+
+namespace InteractiveValley\ProductosBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Apartado
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="InteractiveValley\ProductosBundle\Repository\ApartadoRepository")
+ * @ORM\HasLifecycleCallbacks()
+ */
+class Apartado
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="clave", type="string", length=255)
+     */
+    private $clave;
+
+    /**
+     * @var InteractiveValley\ProductosBundle\Entity\Producto
+     * @todo producto
+     *
+     * @ORM\ManyToOne(targetEntity="InteractiveValley\ProductosBundle\Entity\Producto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="producto_id", referencedColumnName="id")
+     * })
+     */
+    private $producto;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="cantidad", type="integer")
+     */
+    private $cantidad;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime")
+     */
+    private $updatedAt;
+    
+    /*
+     * Timestable
+     */
+    
+    /**
+     ** @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        if(!$this->getCreatedAt())
+        {
+          $this->createdAt = new \DateTime();
+        }
+        if(!$this->getUpdatedAt())
+        {
+          $this->updatedAt = new \DateTime();
+        }
+    }
+    
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+
+    
+}

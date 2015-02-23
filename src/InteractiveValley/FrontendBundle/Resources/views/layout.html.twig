@@ -140,20 +140,22 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#">Inicio</a></li>
                         <!--li><a href="#recomendaciones">Recomendaciones</a></li-->
                         <li>
-                            <a href="#categorias" id="showCategorias">
+                            <!--a href="#categorias" id="showCategorias"-->
+                            <span id="showCategorias">    
                                 Categorias
                                 <span class="cerrar-categorias">
                                     <i class='fa fa-list'></i>
                                 </span>
-                            </a>
+                            </span>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="#mostrar/carrito" id="showCarrito">Carrito</a>
+                            <!--a href="#mostrar/carrito" id="showCarrito">Carrito</a-->
+                            <span id="showCarrito">Carrito</span>
                         </li>
                         <li id="carrito-1">
                             <img src="/images/carrito.png" alt="" height="50">
@@ -185,7 +187,8 @@
     </footer>
     <span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span>
     <div class="loader"></div>
-</div>
+</div> <!-- fin de app -->
+        
 <div class="modal fade" id="contactoModal" tabindex="-1" role="dialog" aria-labelledby="contactoLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -194,7 +197,7 @@
         <h4 class="modal-title" id="contactoLabel">Contacto</h4>
       </div>
       <div class="modal-body">
-        {{render(controller('FrontendBundle:Default:contacto'))}}
+        {{render(controller('FrontendBundle:Api:contacto'))}}
       </div>
       <div class="modal-footer">
         <img class="ajax-loader pull-left" src="/images/bx_loader.gif" alt="Enviando ..." style="display: none;">
@@ -204,105 +207,18 @@
     </div>
   </div>
 </div>
-{% raw %}
-<script type="text/template" id="item_carrito_activo_template">
-                    <!--li class="item-carrito"-->
-                        <div class="row">
-                            <div class="col-md-4">
-                                <figure class="imagen-producto-carrito">
-                                    <img src="{{producto.thumbnail}}" alt="{{producto.nombre}}"/>
-                                    <figcaption>
-                                        <a href="#producto/{{producto.slug}}">Ver detalles</a>
-                                    </figcaption>
-                                </figure>
-                            </div>
-                            <div class="col-md-7 producto-carrito">
-                                <h6 class="titulo-producto-carrito">{{producto.nombre}}</h6>
-                                <span class="precio-producto-carrito">
-                                    ${{producto.getPrecioFormat() }} MXN
-                                </span>
-                                <div class="tiempo-producto">
-                                    <span class="tiempo-producto-reloj">
-                                        <i class="fa fa-clock-o"></i>
-                                    </span>
-                                    <span class="tiempo-producto-carrito">
-                                        {{producto.nombre}} min 20 sec
-                                    </span>
-                                </div>
-                                <span class="close-producto-carrito">
-                                    <a href="#producto/quitar/carrito/slug">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </span>
-                            </div>
-                        </div>
-                    <!--/li-->
-</script>      
-<script type="text/template" id="item_carrito_inactivo_template">
-                    <!--li class="item-carrito inactive"-->
-                        <div class="row">
-                            <div class="col-md-4">
-                                <figure class="imagen-producto-carrito">
-                                    <img src="http://placehold.it/98x80" alt="producto inactivo"/>
-                                    <span class="reloj-inactivo">
-                                        <i class="fa fa-clock-o"></i>
-                                    </span>
-                                </figure>
-                            </div>
-                            <div class="col-md-7 producto-carrito">
-                                <h6 class="titulo-producto-carrito">Producto inactivo</h6>
-                                <span class="precio-producto-carrito">
-                                    ${{100|number_format(2, '.', ',') }} MXN
-                                </span>
-                                <div class="tiempo-producto-completo">
-                                    <span class="tiempo-producto-reactivar">
-                                        Countdown terminado.<br/>
-                                        ¿Agregarlo de nuevo?
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-</script>
-
-<script type="text/template" id="carrito_template">
-    <!--div id="carrito" class="flotar"-->
-        <h6 class="titulo-logo-carrito">
-            Carrito <span id="logo-carrito"><img src="/images/carrito.png" alt="" height="50"></span>
-        </h6>
-        <div class="carrito">
-            <span class="triangulo-carrito"></span>
-            <h3 class="titulo-carrito">Mis productos</h3>
-            <ul class="list-carrito">
-                <!-- templates backbone -->
-            </ul>
-            <div class="row">
-                <div class="total-carrito rubro col-md-4">Total: </div>
-                <div class="total-carrito col-md-8">${{monto|number_format(2, '.', ',') }} MXN</div>
-                <div class="total-carrito rubro col-md-4">Desc.: </div>
-                <div class="descuento-carrito col-md-8">${{100|number_format(2, '.', ',') }} MXN</div>
-            </div>
-            <button id="hacerPedido">
-                hacer pedido
-            </button>
-            <p class="letrero-carrito">
-                Obten $ 100.00 pesos <br/>de descuento por <br/>cada 3 productos agregados!
-            </p>
-        </div>
-    <!--/div-->
-</script>
-{% endraw %}
+        
 {% endblock %}
 
 {% block javascripts %}
     <script src="{{asset('js/jquery.js')}}"></script>
     <script src="{{asset('js/bootstrap.js')}}"></script>
-    <script src="{{asset('js/underscore-min.js')}}"></script>
-    <script src="{{asset('js/backbone-min.js')}}"></script>
-    <script src="{{asset('js/swig.js')}}"></script>  
+    <script src="{{asset('js/bootstrap-slider.js')}}"></script> 
+    <script src="{{asset('js/jquery.bxslider.min.js')}}"></script> 
+    <script src="{{asset('js/jquery.masonry.min.js')}}"></script>
     <script>
             $(document).ready(function () {
-                $("#showCategorias").on("click", function () {
+                /*$("#showCategorias").on("click", function () {
                     if ($('div.categorias').is(':hidden')) {
                         $('div.categorias').slideDown('fast', function () {
                             $(".cerrar-categorias").html("<i class='fa fa-chevron-down'></i>");
@@ -312,8 +228,8 @@
                             $(".cerrar-categorias").html("<i class='fa fa-list'></i>");
                         });
                     }
-                });
-                $("#showCarrito").on("click", function () {
+                });*/
+                /*$("#showCarrito").on("click", function () {
                     if ($('#carrito').is(':hidden')) {
                         $(".filtro-ordenar-por-precio").hide();
                         $("#valor-precio").animate({'fontSize':'12px'},'fast');
@@ -330,7 +246,7 @@
                             });
                         });
                     }
-                });
+                });*/
                 $("#enviarContacto").on("click",function(){
                     var form = $("#formContacto");
                     $(".ajax-loader").fadeIn("fast");

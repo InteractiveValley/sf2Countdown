@@ -10,13 +10,38 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use InteractiveValley\FrontendBundle\Entity\Contacto;
 use InteractiveValley\FrontendBundle\Form\ContactoType;
-use InteractiveValley\BackendBundle\Entity\Usuario;
-use InteractiveValley\BackendBundle\Form\Frontend\UsuarioType;
 use InteractiveValley\ProductosBundle\Entity\Categoria;
-use InteractiveValley\GaleriasBundle\Entity\Galeria;
+use InteractiveValley\ProductosBundle\Entity\Producto;
+use InteractiveValley\ProductosBundle\Entity\Apartado;
 
 class ApiController extends BaseController {
-
+    
+    private $claveApartado = null;
+    
+    protected function getClaveApartado(){
+        $this->claveApartado = $this->get('session')->get('claveApartado', null);
+        if($this->claveApartado == null){
+            $this->claveApartado = $this->get('session')->get('claveApartado', null);
+            do{
+                $this->claveApartado = sha1(rand(11111, 99999));
+                $resultado = $this->getDoctrine()->getRepository('ProductosBundle:Apartado')
+                                                 ->find($this->claveApartado);
+            }while($resultado==null);
+            $this->get('session')->get('claveApartado', $this->claveApartado);
+        }
+        return $this->claveApartado;
+    }
+    
+    /*
+    protected function getFilters() {
+        return $this->get('session')->get('filters', array());
+    }
+    
+    protected function setFilters($filtros) {
+        $this->get('session')->set('filters', $filtros);
+    }
+    */
+    
     /**
      * @Route("/api/categorias", name="api_get_categorias")
      * @Method({"GET"})
@@ -32,15 +57,15 @@ class ApiController extends BaseController {
         }
         return new JsonResponse($arreglo);
     }
-	
-	private function getArrayCategoria(Categoria $categoria){
-		$arreglo=array();
-		$arreglo['nombre'] = $categoria->getNombre();
+
+    private function getArrayCategoria(Categoria $categoria) {
+        $arreglo = array();
+        $arreglo['nombre'] = $categoria->getNombre();
         $arreglo['slug'] = $categoria->getSlug();
         $arreglo['position'] = $categoria->getPosition();
         $arreglo['isActive'] = $categoria->getIsActive();
-		return $arreglo;
-	}
+        return $arreglo;
+    }
 
     /**
      * @todo Obligatorio enviar un parametro de categorias 
@@ -62,23 +87,23 @@ class ApiController extends BaseController {
             }
         } else {
             $productos = $this->getDoctrine()
-                              ->getRepository('ProductosBundle:Producto')->findAll();
+                            ->getRepository('ProductosBundle:Producto')->findAll();
         }
         $aProductos = array();
         $imagine = $this->get('liip_imagine.cache.manager');
         foreach ($productos as $producto) {
-            $aProductos[] = $this->getArrayProducto($producto,$imagine);
+            $aProductos[] = $this->getArrayProducto($producto, $imagine);
         }
 
         return new JsonResponse(array('productos' => $aProductos));
     }
-	
-	private function getArrayProducto($producto, $imagine = null){
-		if(!$imagine){
-			$imagine = $this->get('liip_imagine.cache.manager');
-		}
-		$arreglo = array();
-		$arreglo['id'] = $producto->getId();
+
+    private function getArrayProducto($producto, $imagine = null) {
+        if (!$imagine) {
+            $imagine = $this->get('liip_imagine.cache.manager');
+        }
+        $arreglo = array();
+        $arreglo['id'] = $producto->getId();
         $arreglo['nombre'] = $producto->getNombre();
         $arreglo['slug'] = $producto->getSlug();
         $arreglo['existencia'] = $producto->getExistencia();
@@ -88,33 +113,33 @@ class ApiController extends BaseController {
         $arreglo['isPromocional'] = $producto->getIsPromocional();
         $arreglo['isNew'] = $producto->getIsNew();
         $arreglo['isActive'] = $producto->getIsActive();
-        if($producto->getIsPromocional()){
-        	$filtro = "imagen_grande";
-        }else{
+        if ($producto->getIsPromocional()) {
+            $filtro = "imagen_grande";
+        } else {
             $filtro = "imagen_chica";
         }
         $arreglo['imagen'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro, true);
         $arreglo['thumbnail'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito', true);
-        $arreglo['galerias'] = $this->getArrayGalerias($producto->getGalerias(),$imagine);
+        $arreglo['galerias'] = $this->getArrayGalerias($producto->getGalerias(), $imagine);
         $arreglo['categoria'] = $this->getArrayCategoria($producto->getCategoria());
-		return $arreglo;
-	}
-	
-	private function getArrayGalerias($galerias, $imagine = null){
-		if(!$imagine){
-			$imagine = $this->get('liip_imagine.cache.manager');
-		}
-		$arreglo = array();
-		$cont = 0;
-        foreach($galerias as $galeria){
-        	$arreglo[$cont] = array(
-            	'imagen'=> $imagine->getBrowserPath($producto->getWebPath(), 'imagen_carrusel', true),
-                'thumbnail'=> $imagine->getBrowserPath($producto->getWebPath(), 'imagen_carrusel_thumbnail', true),
-            );
-			$cont++;
+        return $arreglo;
+    }
+
+    private function getArrayGalerias($galerias, $imagine = null) {
+        if (!$imagine) {
+            $imagine = $this->get('liip_imagine.cache.manager');
         }
-		return $arreglo;
-	}
+        $arreglo = array();
+        $cont = 0;
+        foreach ($galerias as $galeria) {
+            $arreglo[$cont] = array(
+                'imagen' => $imagine->getBrowserPath($producto->getWebPath(), 'imagen_carrusel', true),
+                'thumbnail' => $imagine->getBrowserPath($producto->getWebPath(), 'imagen_carrusel_thumbnail', true),
+            );
+            $cont++;
+        }
+        return $arreglo;
+    }
 
     /**
      * @Route("/api/productos/{slug}", name="api_get_producto")
@@ -122,11 +147,11 @@ class ApiController extends BaseController {
      */
     public function getProductoAction(Request $request, $slug) {
         $producto = $this->getDoctrine()
-                        ->getRepository('ProductosBundle:Producto')->findOneBy(array('slug'=>$slug));
-		
+                        ->getRepository('ProductosBundle:Producto')->findOneBy(array('slug' => $slug));
+
         return new JsonResponse(array(
-			'producto' => $this->getArrayProducto($producto),
-		));
+            'producto' => $this->getArrayProducto($producto),
+        ));
     }
 
     /**
@@ -204,4 +229,107 @@ class ApiController extends BaseController {
         return new JsonResponse(array('existe' => null));
     }
 
+    /**
+     * @Route("/api/carrito/add/{slug}",name="carrito_add")
+     * @Method({"POST"})
+     */
+    public function carritoAddAction(Request $request,$slug) {
+        if ($request->isMethod('POST')) {
+            $cantidad = $request->request->get('cantidad', 1);
+            $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')
+                    ->findOneBy(array('slug' => $slug));
+            if (!$producto) {
+                return new JsonResponse(array('status' => 'no_existe'));
+            } else {
+                if ($producto->getExistencia() > 0) {
+                    if ($producto->getExistencia() > $cantidad) {
+                        $this->addProductoCarrito($producto,$cantidad);
+                        return new JsonResponse(array('status' => 'apartado'));
+                    } else {
+                        return new JsonResponse(array(
+                            'status' => 'no_existencia_solicitada',
+                            'menssage' => 'Existencia actual: ' . $producto->getExistencia() . ', Apartado actual: ' . $producto->getApartado()
+                        ));
+                    }
+                } else {
+                    return new JsonResponse(array('status' => 'no_existencia'));
+                }
+            }
+        }
+        return new JsonResponse(array('status' => 'no_post'));
+    }
+    
+    private function addProductoCarrito(Producto $producto, $cantidad){
+        $clave = $this->getClaveApartado();
+        $producto->setExistencia($producto->getExistencia()-$cantidad);
+        $producto->setReservado($producto->getReservado()+$cantidad);
+        $apartado = new Apartado();
+        $apartado->setClave($clave);
+        $apartado->setCantidad($cantidad);
+        $apartado->setProducto($producto);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($producto);
+        $em->persist($apartado);
+        $em->flush();
+    }
+    
+    /**
+     * @Route("/api/carrito/remove/{slug}",name="carrito_remove")
+     * @Method({"POST"})
+     */
+    public function carritoRemoveAction(Request $request, $slug) {
+        if ($request->isMethod('POST')) {
+            $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')
+                             ->findOneBy(array('slug' => $slug));
+            $clave = $this->getClaveApartado();
+            $apartado = $this->getDoctrine()->getRepository('ProductosBundle:Apartado')
+                             ->findOneBy(array('clave'=>$clave,'producto'=>$producto));
+            if (!$apartado) {
+                return new JsonResponse(array('status' => 'no_existe_apartado'));
+            } else {
+                $producto->setExistencia($producto->getExistencia()+$apartado->getCantidad());
+                $producto->setReservado($producto->getReservado()-$apartado->getCantidad());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($producto);
+                $em->remove($apartado);
+                $em->flush();
+                return new JsonResponse(array('status' => 'apartado_removido'));
+            }
+        }
+        return new JsonResponse(array('status' => 'no_post'));
+    }
+    
+    /**
+     * @Route("/api/carrito/update/{slug}",name="carrito_update")
+     * @Method({"POST"})
+     */
+    public function carritoUpdateAction(Request $request, $slug) {
+        if ($request->isMethod('POST')) {
+            $cantidad = $request->request->get('cantidad');
+            $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')
+                             ->findOneBy(array('slug' => $slug));
+            $clave = $this->getClaveApartado();
+            $apartado = $this->getDoctrine()->getRepository('ProductosBundle:Apartado')
+                             ->findOneBy(array('clave'=>$clave,'producto'=>$producto));
+            if (!$apartado) {
+                return new JsonResponse(array('status' => 'no_existe_apartado'));
+            } else {
+                // revertimos el apartado
+                $producto->setExistencia($producto->getExistencia()+$apartado->getCantidad());
+                $producto->setReservado($producto->getReservado()-$apartado->getCantidad());
+                // realizamos la actualizacion
+                $producto->setExistencia($producto->getExistencia()-$cantidad);
+                $producto->setReservado($producto->getReservado()+$cantidad);
+                //actualizamos el apartado
+                $apartado->setCantidad($cantidad);
+                //actualizamos los datos
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($producto);
+                $em->persist($apartado);
+                $em->flush();
+                return new JsonResponse(array('status' => 'apartado_actualizado'));
+            }
+        }
+        return new JsonResponse(array('status' => 'no_post'));
+    }
 }

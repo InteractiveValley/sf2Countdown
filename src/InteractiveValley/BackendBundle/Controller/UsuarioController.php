@@ -3,7 +3,7 @@
 namespace InteractiveValley\BackendBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use InteractiveValley\BackendBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -17,7 +17,7 @@ use InteractiveValley\BackendBundle\Utils\Richsys as RpsStms;
  *
  * @Route("/backend/usuarios")
  */
-class UsuarioController extends Controller
+class UsuarioController extends BaseController
 {
 
     /**

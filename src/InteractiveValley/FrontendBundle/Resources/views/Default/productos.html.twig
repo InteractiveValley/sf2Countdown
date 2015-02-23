@@ -7,173 +7,17 @@
 {% endblock %}
 
 {% block contenido %}
-    <section id="secundario">
-        <article  class="filtro-categorias container">
-            <div class="row">
-                <div class="col-md-9">
-                    <div class="row filtro">
-                        <div class="col-md-4 filtro-titulo">
-                            <div class="filtro-por-precio">
-                                filtrar por precio
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <input id="sliderPrecio" type="text" class="span2" value="" data-slider-min="50" data-slider-max="2000" data-slider-step="50" data-slider-value="2000" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="hide">
-                        </div>
-                        <div class="col-md-2">
-                            <span id="valor-precio"></span>
-                        </div>
-                    </div>
-                    <div class="row filtro">
-                        <div class="col-md-4 filtro-titulo">
-                            <div class=" filtro-por-color">
-                                filtrar por color
-                            </div>
-                        </div>
-                        <div class="col-md-8 filtro-colores text-center">
-                            <span class="color color-carmesi fa fa-square"></span>
-                            <span class="color color-amarillo fa fa-square"></span>
-                            <span class="color color-cafe fa fa-square"></span>
-                            <span class="color color-azul fa fa-square"></span>
-                            <span class="color color-azul-marino fa fa-square"></span>
-                            <span class="color color-verde fa fa-square"></span>
-                            <span class="color color-fiusa fa fa-square"></span>
-                            <span class="color color-gris fa fa-square"></span>
-                            <span class="color color-blanco fa fa-square-o"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 filtro-ordenar" style="padding-right: 0px;">
-                    <div class="filtro-ordenar-por-precio">
-                        <div class="btn-group">
-                            <button type="button" class="btn" style="background-color: #DF2E72; color: white; border-color: #DF2E72;">Mayor a menor precio</button>
-                            <button type="button" class="btn dropdown-toggle" style="background-color: #DF2E72; color: white; border-color: #DF2E72;" data-toggle="dropdown" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a class="mayor-a-menor" href="#">Mayor a menor precio</a></li>
-                                <li><a class="menor-a-mayor" href="#">Menor a mayor precio</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="filtro-filtrar filtrar-color">
-                        <span class="filtrar active">Filtrar</span>
-                    </div>
-                    <div class="filtro-ver-todos filtrar-color">
-                        <span class="todos"> Ver todos</span>
-                    </div>
-                </div>
-            </div>
-        </article>
-        <article id="lista-de-productos">
-            <section class="productos">
-                {% for producto in productos %}
-                    {% if producto.isPromocional == true %}
-                        {% set imagenproducto = "imagen_grande" %}
-                    {% else %}
-                        {% set imagenproducto = "imagen_chica" %}
-                    {% endif %}
-                    <article class="producto {{imagenproducto}}">
-                        <div class="contenido">
-                            <figure class="imagen-producto">
-                                <img src="{{ producto.galerias[0].webPath | imagine_filter(imagenproducto)}}" alt="imagen de producto"/>
-                                <figcaption>
-                                    <span class="precio-producto">
-                                        ${{producto.precio|number_format(2, '.', ',') }} MXN
-                                    </span>
-                                    <span class="inventario-producto">
-                                        Countdown {{producto.existencia}}
-                                    </span>
-                                    <span class="agregar-carrito" data-id="{{producto.id}}">
-                                        +<i class="fa fa-shopping-cart"></i>
-                                    </span>
-                                    <span class="ver-producto" data-url="{{path('get_producto',{'slug': producto.slug})}}">
-                                        <i class="fa fa-plus-square"></i>
-                                    </span>
-                                </figcaption>
-                            </figure>
-                        </div>
-                    </article>
-                {% endfor %}
-            </section>
-        </article>    
-    </section>
-	{% raw %}
-    <script type="text/template" id="modal_producto_template">
-    <!--div id="modalProducto" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true"-->
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6 modal-producto-galeria">
-                            <ul class="bxslider">
-                                {% for galeria in galerias %}
-                                <li><img src="{{ galeria.imagen }}" /></li>
-                                {% endfor %}    
-                            </ul>
-                        </div>
-                        <div class="col-md-6 modal-producto-contenido">
-                            <h3 class="modal-producto-titulo">{{nombre}}</h3>
-                            <div class="modal-producto-clave-producto">ID: {{}}</div>
-                            <div class="modal-producto-descripcion">
-                                {{descripcion|raw}} 
-                            </div>
-                            <div class="modal-producto-precio">
-                                ${{precio|number_format(2, '.', ',') }} MXN
-                            </div>
-                            <span class="modal-producto-inventario">
-                                Countdown:  {{existencia}}
-                            </span>
-                            <form class="form-inline modal-producto-cantidad">
-                                <div class="form-group">
-                                    <label for="cantidad">Cantidad: </label>
-                                    <input type="text" class="form-control" id="cantidad" placeholder="" style="width:100px;">
-                                    <button class="btn btn-default"><i class="fa fa-plus-square"></i></button>
-                                    <button class="btn btn-default"><i class="fa fa-minus-square"></i></button>
-                                </div>
-                            </form>
-                            <button class="modal-producto-agrergar-carrito" data-id="{{id}}">agregar a carrito</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!--/div-->
-    </script>                        
-    <script type="text/template" id="item_producto_template">
-        <!--article class="producto imagen_grande o imagen_chica"-->
-        <div class="contenido">
-            <figure class="imagen-producto">
-                <img src="{{imagen}}" alt="imagen de producto"/>
-                <figcaption>
-                    <span class="precio-producto">
-                        ${{precio}} MXN
-                    </span>
-                    <span class="inventario-producto">
-                        Countdown {{existencia}}
-                    </span>
-                    <span class="agregar-carrito" data-id="{{id}}">
-                        +<i class="fa fa-shopping-cart"></i>
-                    </span>
-                    <span class="ver-producto" data-slug="{{slug}}">
-                        <i class="fa fa-plus-square"></i>
-                    </span>
-                </figcaption>
-            </figure>
-        </div>
-        <!--/article-->
-    </script>
-	{% endraw %}
+    
+        
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="{{asset('js/bootstrap-slider.js')}}"></script> 
     <script src="{{asset('js/jquery.bxslider.min.js')}}"></script> 
-    <script src="{{asset('bundles/frontend/js/app_countdown.js')}}"></script> 
-    <script src="{{asset('bundles/frontend/js/app_productos.js')}}"></script>
     <script src="{{asset('js/jquery.masonry.min.js')}}"></script>
+    <script src="{{asset('js/app.js')}}"></script> 
+    <script src="{{asset('js/router.js')}}"></script>
     <script type="text/javascript">
         $(function () {
 
@@ -249,7 +93,7 @@
 			 window.collections.carrito = new Countdown.Collections.Carrito();
              window.collections.productos.url=window.api.url;
              var xhr = window.collections.productos.fetch({data:{'categoria':'lo-mas-nuevo'}});
-             xhr.done(function(){
+             xhr.done(funndction(){
              	window.views.listCategoriasView = new Countdown.Views.ListCategoriasView({
              		collection: window.collections.productos,
 				 });
