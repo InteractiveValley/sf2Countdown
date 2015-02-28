@@ -19,8 +19,8 @@
   "preview": {
         "Project Index (static)": "https://{{domain}}/{{index}}",
         "Current File (static)": "https://{{domain}}/{{filepath}}",
-        "Frontend URL": "http://{{domain}}:3000/",
-        "Backend URL": "http://{{domain}}:3000/backend",
+        "Frontend URL": "http://{{domain}}:3000/app_dev.php",
+        "Backend URL": "http://{{domain}}:3000/app_dev.php/backend",
 	    "PhpMyAdmin URL": "http://{{domain}}:3000/phpmyadmin"
   }
 }

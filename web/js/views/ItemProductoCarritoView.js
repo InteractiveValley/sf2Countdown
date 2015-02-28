@@ -16,6 +16,7 @@ define([
             //template: _.template( PrincipalViewTemplate),
             //template: swig.compile( CarritoViewTemplate ),
             initialize: function() {
+				console.log('inicializando itemproductocarritoview');
                 this.is_active = true;
                 this.reloj = new CronometroModel();
                 this.model.on('change', this.render, this);
@@ -81,9 +82,11 @@ define([
             render:function () {
                 var data = this.model.toJSON();
                 if(this.is_active){
-                    this.$el.html(swig.compile(ItemProductoCarritoViewTemplate,{'producto':data}));
+					this.$el.removeClass('inactive');
+                    this.$el.html(_.template(ItemProductoCarritoViewTemplate,{'producto':data}));
                 }else{
-                    this.$el.html(swig.compile(ItemProductoCarritoInactivoViewTemlate,{'producto':data}));
+					this.$el.addClass('inactive');
+                    this.$el.html(_.template(ItemProductoCarritoInactivoViewTemlate,{'producto':data}));
                 }
                 return this;
             },

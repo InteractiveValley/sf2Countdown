@@ -12,9 +12,10 @@ define([
             id: 'carrito',
             className: 'flotar',
             tagName: 'div',
-            //template: _.template( PrincipalViewTemplate),
-            template: swig.compile( CarritoViewTemplate ),
+            template: _.template( CarritoViewTemplate ),
+            //template: swig.compile( CarritoViewTemplate ),
             initialize: function() {
+				console.log('inicializando carritoview');
                 this.status = '';
                 if(!app.collections.carrito){
                     app.collections.carrito = new CarritoCollection();

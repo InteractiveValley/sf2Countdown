@@ -17,7 +17,8 @@ function($, _, swig, Backbone, CarritoView, ModalProductoView, SectionPrincipalV
 
     routes: {
         "":                         "inicio",
-        "categoria/:slug":          "categoria"
+        "categoria/:slug":          "categoria",
+		
     },
 
     initialize: function () {
@@ -32,6 +33,8 @@ function($, _, swig, Backbone, CarritoView, ModalProductoView, SectionPrincipalV
             app.views.producto.render();
         }
         app.views.appView.$el.append(app.views.producto.el);
+		
+		//this.pageslider = new PageSlider($('#division-principal'));
     },
     inicio: function () {
         app.status = 'principal';
@@ -41,8 +44,10 @@ function($, _, swig, Backbone, CarritoView, ModalProductoView, SectionPrincipalV
             app.views.principal.render();
         }
         app.views.appView.$el.find('#division-principal').html(app.views.principal.el);
+        //this.pageslider.slidePage(app.views.principal.el);
     },
     categoria: function(slug){
+		
         //renderiza una sola vez
         if(!app.views.secundario){
             app.views.secundario = new SectionSecundarioView();
@@ -52,6 +57,8 @@ function($, _, swig, Backbone, CarritoView, ModalProductoView, SectionPrincipalV
             app.status = 'secundario';
             app.views.appView.$el.find('#division-principal').html(app.views.secundario.el);
         }
+		app.collections.productos.fetch({data: {'categoria': slug}});
+		//this.pageslider.slidePage(app.views.secundario.el);
     },
     employeeDetails: function (id) {
         var employee = new Employee({id: id});

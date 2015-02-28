@@ -15,20 +15,23 @@ define([
                 },
                 initialize: function () {
                     this.on("change:cantidad", function (self) {
-                        self.set({importe_with_format: this.getImporteFormat()});
-                        self.set({cantidad_with_format: this.getCantidadFormat()});
+                        self.set({importe_with_format: self.getImporteFormat()});
+                        self.set({cantidad_with_format: self.getCantidadFormat()});
                      });
                     this.set({precio_with_format: this.getPrecioFormat()});
                 },
                 getImporteFormat: function(){
-                    this.set({importe: this.get('precio')*this.get('cantidad')});
-                    return formatNumber.new(this.get('importe'),"$");
+					var self = this;
+                    this.set({importe: self.get('precio')*self.get('cantidad')});
+                    return formatNumber.new(self.get('importe'),"$");
                 },
                 getPrecioFormat: function(){
-                    return formatNumber.new(this.get('precio'),"$");
+					var self = this;
+                    return formatNumber.new(self.get('precio'),"$");
                 },
                 getCantidadFormat: function(){
-                    return formatNumber.new(this.get('cantidad'),"");
+					var self = this;
+                    return formatNumber.new(self.get('cantidad'),"");
                 }
             });
             return ProductoModel;

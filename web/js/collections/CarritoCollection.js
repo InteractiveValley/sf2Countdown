@@ -8,26 +8,28 @@ define([
             url: app.root + "/productos",
             model: ProductoModel,
             defaults:{
-                carrito: {},
-            },
+				total: 0.0,
+				descuento: 0.0,
+				cuantos: 0
+			},
             getTotalesCarrito: function(){
-                this.carrito.total =0.0;
-                this.carrito.descuento = 0.0;
-                this.carrito.cuantos = 0;
+                this.total =0.0;
+                this.descuento = 0.0;
+                this.cuantos = 0;
                 var self = this;
                 this.each(function(producto){
-                   self.carrito.cuantos += producto.get('cantidad');
-                   self.carrito.total += producto.get('importe'); 
+                   self.cuantos += producto.get('cantidad');
+                   self.total += producto.get('importe'); 
                 });
-                this.carrito.descuento = Math.ceil(carrito.cuantos/3)*100;
+                this.descuento = Math.ceil(this.cuantos/3)*100;
                 return this.getFormateadosTotales();
             },
             getFormateadosTotales: function(){
                 var self = this;
-		return {
-                    total: formatNumber.new(self.carrito.total,"$"),
-                    descuento: formatNumber.new(self.carrito.descuento,"$"),
-                    cuantos: formatNumber.new(self.carrito.cuantos,"")
+				return {
+                    total: formatNumber.new(self.total,"$"),
+                    descuento: formatNumber.new(self.descuento,"$"),
+                    cuantos: formatNumber.new(self.cuantos,"")
                 };
             }
         });

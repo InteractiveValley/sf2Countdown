@@ -4,22 +4,18 @@ define([
     'swig',
     'Backbone',
     'models/ProductoModel',
-    'models/CronometroModel',
-    'text!templates/ItemProductoCarritoInactivoView.tpl',
-    'text!templates/ItemProductoCarritoView.tpl'
+    'text!templates/ItemProductoView.tpl'
 ],
-    function ($, _, swig, Backbone, ProductoModel, CronometroModel,  ItemProductoCarritoInactivoViewTemlate,ItemProductoCarritoViewTemplate) {
+    function ($, _, swig, Backbone, ProductoModel  ,ItemProductoViewTemplate) {
         var ItemProductoCarritoView = Backbone.View.extend({
-            tagName: 'li',
-            className: 'item-carrito',
+            tagName: 'article',
+            className: 'producto',
             model: ProductoModel,
-            //template: _.template( PrincipalViewTemplate),
-            //template: swig.compile( CarritoViewTemplate ),
+            template: _.template( ItemProductoViewTemplate ),
             initialize: function() {
+				console.log('inicializando itemproductoview');
                 this.is_active = true;
-                this.reloj = new CronometroModel();
                 this.model.on('change', this.render, this);
-                this.reloj.on('change:contador',this.renderReloj,this);
             },
             events:{
                'click .close-producto-carrito': 'quitarProductoCarrito',

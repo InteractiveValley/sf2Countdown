@@ -10,7 +10,7 @@ define([
             tagName: 'div',
             //template: _.template( PrincipalViewTemplate),
             initialize: function(){
-                
+                console.log('inicializando appview');
             },
             events:{
                'click .item-categoria': 'activarCategoria',

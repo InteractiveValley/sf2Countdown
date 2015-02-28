@@ -31,7 +31,7 @@ var app = {
     models: {},
     collections: {},
     routers: {},
-    root: 'http://staging3.lynxoft.net/apps/checkengine/web/app_dev.php/api/v1',
+    root: 'http://love-iris.codio.io:3000/app_dev.php/api',
     status: '',
     showCarrito: false,
     user: {},

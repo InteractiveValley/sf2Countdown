@@ -75,14 +75,16 @@ class ApiController extends BaseController {
     public function getProductosAction(Request $request) {
         if ($request->query->has('categoria')) {
             $idCategoria = $request->query->get('categoria');
-            if ($idCategoria == "lo-mas-nuevo") {
+			
+            if ($idCategoria == "lo-nuevo") {
                 $productos = $this->getDoctrine()
-                                ->getRepository('ProductosBundle:Producto')->findBy(array(
+                                  ->getRepository('ProductosBundle:Producto')->findBy(array(
                     'isNew' => true
                 ));
             } else {
                 $categoria = $this->getDoctrine()
-                                ->getRepository('ProductosBundle:Categoria')->find($idCategoria);
+                                  ->getRepository('ProductosBundle:Categoria')->find($idCategoria);
+				var_dump($categoria); die;
                 $productos = $categoria->getProductos();
             }
         } else {

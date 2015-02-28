@@ -10,7 +10,7 @@ define([
             },
             initialize: function () {
                  this.contador = this.semilla * 60;
-                 this.timerID = setInterval(function(){this.tick();}.bind(this), 1000); 
+                 this.timerID = setInterval(function(){this.tick();}, 1000); 
             },
             tick: function(){  
                 this.contador--;
