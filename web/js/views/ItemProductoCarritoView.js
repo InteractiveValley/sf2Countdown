@@ -1,18 +1,16 @@
 define([
     'jquery', 
     'underscore',
-    'swig',
     'Backbone',
     'models/ProductoModel',
     'models/CronometroModel',
     'text!templates/ItemProductoCarritoInactivoView.tpl',
     'text!templates/ItemProductoCarritoView.tpl'
 ],
-    function ($, _, swig, Backbone, ProductoModel, CronometroModel,  ItemProductoCarritoInactivoViewTemlate,ItemProductoCarritoViewTemplate) {
+    function ($, _, Backbone, ProductoModel, CronometroModel,  ItemProductoCarritoInactivoViewTemlate,ItemProductoCarritoViewTemplate) {
         var ItemProductoCarritoView = Backbone.View.extend({
             tagName: 'li',
             className: 'item-carrito',
-            model: ProductoModel,
             //template: _.template( PrincipalViewTemplate),
             //template: swig.compile( CarritoViewTemplate ),
             initialize: function() {

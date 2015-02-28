@@ -1,13 +1,12 @@
 define([
     'jquery', 
     'underscore',
-    'swig',
     'Backbone',
     'collections/CarritoCollection',
     'views/ItemProductoCarritoView',
     'text!templates/CarritoView.tpl'
 ],
-    function ($, _, swig, Backbone, CarritoCollection, ItemProductoCarritoView, CarritoViewTemplate) {
+    function ($, _, Backbone, CarritoCollection, ItemProductoCarritoView, CarritoViewTemplate) {
         var CarritoView = Backbone.View.extend({
             id: 'carrito',
             className: 'flotar',

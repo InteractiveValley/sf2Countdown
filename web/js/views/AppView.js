@@ -1,10 +1,9 @@
 define([
     'jquery', 
     'underscore',
-    'swig',
     'Backbone'
 ],
-    function ($, _, swig, Backbone) {
+    function ($, _, Backbone) {
         var AppView = Backbone.View.extend({
             el: '#app',
             tagName: 'div',

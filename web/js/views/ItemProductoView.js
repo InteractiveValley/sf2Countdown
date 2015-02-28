@@ -1,58 +1,34 @@
 define([
     'jquery', 
     'underscore',
-    'swig',
     'Backbone',
     'models/ProductoModel',
     'text!templates/ItemProductoView.tpl'
 ],
-    function ($, _, swig, Backbone, ProductoModel  ,ItemProductoViewTemplate) {
-        var ItemProductoCarritoView = Backbone.View.extend({
+    function ($, _, Backbone, ProductoModel  ,ItemProductoViewTemplate) {
+        var ItemProductoView = Backbone.View.extend({
             tagName: 'article',
             className: 'producto',
-            model: ProductoModel,
             template: _.template( ItemProductoViewTemplate ),
             initialize: function() {
-				console.log('inicializando itemproductoview');
+                console.log('inicializando itemproductoview');
                 this.is_active = true;
                 this.model.on('change', this.render, this);
             },
             events:{
-               'click .close-producto-carrito': 'quitarProductoCarrito',
-               'click .tiempo-producto-reactivar': 'reactivarProductoCarrito'
+               'click .agregar-carrito':    'agregarCarrito',
+               'click .ver-producto':       'verProducto'
             },
-            quitarProductoCarrito: function(e){
+            agregarCarrito: function(e){
                 e.preventDefault();
                 e.stopPropagation();
                 var self = this;
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    url: window.api.url + '/api/carrito/remove/' + self.model.get('slug'),
-                    data: {'cantidad': self.model.get('cantidad')},
-                    success: function(data){
-                        if(data.status == 'no_existe_apartado'){
-                            alert("Apartado no existe");
-                            self.destroy_view();
-                        }else{
-                            self.destroy_view();
-                        }
-                    },
-                    error: function(data){
-                        console.log(data);
-                        alert("Error al quitar producto del carrito");
-                    }
-                });
-            },
-            reactivarProductoCarrito: function(e){
-                e.preventDefault();
-                e.stopPropagation();
-                var self = this;
+                var cantidad = 1;
                 $.ajax({
                     type: 'POST',
                     dataType: 'json',
                     url: window.api.url + '/api/carrito/add/' + self.model.get('slug'),
-                    data: {'cantidad': self.model.get('cantidad')},
+                    data: {'cantidad': cantidad},
                     success: function(data){
                         if(data.status == 'no_existe'){
                             alert("El producto no existe");
@@ -62,10 +38,11 @@ define([
                         }else if(data.status == 'no_existencia_solicitada' ){
                             alert(data.message);
                         }else{
-                            alert('El producto fu reactivado');
+                            alert('El producto fu agregado');
                             console.log('producto '+ data.status);
-                            self.reloj = new CronometroModel();
-                            self.reloj.on('change:contador',self.renderReloj,self);
+                            self.model.set({'cantidad': cantidad});
+                            app.collections.carrito.add(self.model.toJSON());
+                            self.destroy_view();
                         }
                     },
                     error: function(data){
@@ -74,25 +51,15 @@ define([
                     }
                 });
             },
+            verProducto: function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                app.routers.router.navigate('producto/'+this.model.get('slug'),{trigger: true});
+            },
             render:function () {
                 var data = this.model.toJSON();
-                if(this.is_active){
-                    this.$el.html(swig.compile(ItemProductoCarritoViewTemplate,{'producto':data}));
-                }else{
-                    this.$el.html(swig.compile(ItemProductoCarritoInactivoViewTemlate,{'producto':data}));
-                }
+                this.$el.html(this.template({'producto':data}));
                 return this;
-            },
-            renderReloj: function(){
-                if(this.reloj.get('contador')==0){
-                    this.is_active = false;
-                    this.render();
-                    this.$el.addClass('inactive').removeClass('active');
-                    this.reloj.limpiarIntervalo();
-                }else{
-                    var text = this.reloj.getTimeFormat();
-                    this.$el.find('.tiempo-producto-carrito').text(text);
-                }
             },
             destroy_view: function() { 
                 // COMPLETELY UNBIND THE VIEW 
@@ -103,7 +70,7 @@ define([
                 Backbone.View.prototype.remove.call(this); 
             }
         });
-        return ItemProductoCarritoView;
+        return ItemProductoView;
 });
 
 

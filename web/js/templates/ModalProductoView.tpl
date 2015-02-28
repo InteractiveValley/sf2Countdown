@@ -5,22 +5,22 @@
                     <div class="row">
                         <div class="col-md-6 modal-producto-galeria">
                             <ul class="bxslider">
-                                {% for galeria in galerias %}
-                                <li><img src="{{ galeria.imagen }}" /></li>
-                                {% endfor %}    
+                                <% _.each( producto.galerias, function( galeria ){ %>
+                                <li><img src="<%= galeria.imagen %>" /></li>
+                                <% }); %>    
                             </ul>
                         </div>
                         <div class="col-md-6 modal-producto-contenido">
-                            <h3 class="modal-producto-titulo">{{nombre}}</h3>
-                            <div class="modal-producto-clave-producto">ID: {{}}</div>
+                            <h3 class="modal-producto-titulo"><%= producto.nombre %></h3>
+                            <div class="modal-producto-clave-producto">ID: <%= producto.modelo %></div>
                             <div class="modal-producto-descripcion">
-                                {{descripcion|raw}} 
+                                <%= producto.descripcion %> 
                             </div>
                             <div class="modal-producto-precio">
-                                ${{precio|number_format(2, '.', ',') }} MXN
+                               <%= producto.precio_with_format %> MXN
                             </div>
                             <span class="modal-producto-inventario">
-                                Countdown:  {{existencia}}
+                                Countdown:  <%= producto.existencia %>
                             </span>
                             <form class="form-inline modal-producto-cantidad">
                                 <div class="form-group">
@@ -30,7 +30,7 @@
                                     <button class="btn btn-default"><i class="fa fa-minus-square"></i></button>
                                 </div>
                             </form>
-                            <button class="modal-producto-agrergar-carrito" data-id="{{id}}">agregar a carrito</button>
+                            <button class="modal-producto-agrergar-carrito" data-id="<%= producto.id %>">agregar a carrito</button>
                         </div>
                     </div>
                 </div>

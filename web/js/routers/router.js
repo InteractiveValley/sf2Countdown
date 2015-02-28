@@ -4,6 +4,8 @@ define([
     'underscore',
     'swig',
     'Backbone',
+    // colleciones
+    'collections/ProductosCollection',
     // vistas
     'views/CarritoView',
     'views/ModalProductoView',
@@ -11,14 +13,15 @@ define([
     'views/SectionSecundarioView'
 ],
 
-function($, _, swig, Backbone, CarritoView, ModalProductoView, SectionPrincipalView, SectionSecundarioView) {
+function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoView, SectionPrincipalView, SectionSecundarioView) {
 
   var AppRouter = Backbone.Router.extend({
 
     routes: {
         "":                         "inicio",
         "categoria/:slug":          "categoria",
-		
+	"producto/carrito/:slug":   "showProductoCarrito",
+        "producto/:slug":           "showProducto"
     },
 
     initialize: function () {
@@ -27,14 +30,6 @@ function($, _, swig, Backbone, CarritoView, ModalProductoView, SectionPrincipalV
             app.views.carrito.render();
         }
         app.views.appView.$el.find('#carrito').html(app.views.carrito.$el.html());
-        
-        if(!app.views.producto){
-            app.views.producto = new ModalProductoView({model: null});
-            app.views.producto.render();
-        }
-        app.views.appView.$el.append(app.views.producto.el);
-		
-		//this.pageslider = new PageSlider($('#division-principal'));
     },
     inicio: function () {
         app.status = 'principal';
@@ -47,18 +42,38 @@ function($, _, swig, Backbone, CarritoView, ModalProductoView, SectionPrincipalV
         //this.pageslider.slidePage(app.views.principal.el);
     },
     categoria: function(slug){
-		
+        //renderiza una sola vez
+	if (!app.collections.productos) {
+            app.collections.productos = new ProductosCollection();
+        }
         //renderiza una sola vez
         if(!app.views.secundario){
-            app.views.secundario = new SectionSecundarioView();
+            app.views.secundario = new SectionSecundarioView({collection: app.collections.productos});
             app.views.secundario.render();
         }
         if(app.status != 'secundario'){
             app.status = 'secundario';
             app.views.appView.$el.find('#division-principal').html(app.views.secundario.el);
         }
-		app.collections.productos.fetch({data: {'categoria': slug}});
-		//this.pageslider.slidePage(app.views.secundario.el);
+        debugger;
+	app.collections.productos.fetch({data: {'categoria': slug}});
+        //app.collections.productos.fetch();
+	
+    },
+    showProducto: function(slug){
+        var models = app.collections.productos.where({'slug': slug});
+        if(app.views.producto){
+            app.views.producto.destroy_view();
+            app.views.producto = new ModalProductoView({model: models[0]});
+            app.views.producto.render();
+        }
+        if(!app.views.producto){
+            app.views.producto = new ModalProductoView({model: models[0]});
+            app.views.producto.render();
+        }else{
+            app.views.producto.delegateEvents();
+        }
+        app.views.appView.$el.append(app.views.producto.el);
     },
     employeeDetails: function (id) {
         var employee = new Employee({id: id});

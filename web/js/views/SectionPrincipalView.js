@@ -1,11 +1,10 @@
 define([
     'jquery', 
     'underscore',
-    'swig',
     'Backbone',
     'text!templates/SectionPrincipalView.tpl'
 ],
-    function ($, _, swig, Backbone,SectionPrincipalViewTemplate) {
+    function ($, _, Backbone,SectionPrincipalViewTemplate) {
         var SectionPrincipalView = Backbone.View.extend({
             tagName: 'section',
             template: _.template( SectionPrincipalViewTemplate ),

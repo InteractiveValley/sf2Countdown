@@ -83,26 +83,30 @@ class ApiController extends BaseController {
                 ));
             } else {
                 $categoria = $this->getDoctrine()
-                                  ->getRepository('ProductosBundle:Categoria')->find($idCategoria);
-				var_dump($categoria); die;
-                $productos = $categoria->getProductos();
+                                  ->getRepository('ProductosBundle:Categoria')
+                                  ->findBy(array('slug'=>$idCategoria));
+                if(!$categoria){
+                    $productos = $categoria->getProductos();
+                }else{
+                    $productos = array();
+                }
             }
         } else {
             $productos = $this->getDoctrine()
                             ->getRepository('ProductosBundle:Producto')->findAll();
         }
         $aProductos = array();
-        $imagine = $this->get('liip_imagine.cache.manager');
+        $imagine = $this->container->get('liip_imagine.cache.manager');
         foreach ($productos as $producto) {
             $aProductos[] = $this->getArrayProducto($producto, $imagine);
         }
 
-        return new JsonResponse(array('productos' => $aProductos));
+        return new JsonResponse($aProductos);
     }
 
     private function getArrayProducto($producto, $imagine = null) {
         if (!$imagine) {
-            $imagine = $this->get('liip_imagine.cache.manager');
+            $imagine = $this->container->get('liip_imagine.cache.manager');
         }
         $arreglo = array();
         $arreglo['id'] = $producto->getId();
@@ -120,8 +124,8 @@ class ApiController extends BaseController {
         } else {
             $filtro = "imagen_chica";
         }
-        $arreglo['imagen'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro, true);
-        $arreglo['thumbnail'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito', true);
+        $arreglo['imagen'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
+        $arreglo['thumbnail'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
         $arreglo['galerias'] = $this->getArrayGalerias($producto->getGalerias(), $imagine);
         $arreglo['categoria'] = $this->getArrayCategoria($producto->getCategoria());
         return $arreglo;
@@ -129,14 +133,14 @@ class ApiController extends BaseController {
 
     private function getArrayGalerias($galerias, $imagine = null) {
         if (!$imagine) {
-            $imagine = $this->get('liip_imagine.cache.manager');
+            $imagine = $this->container->get('liip_imagine.cache.manager');
         }
         $arreglo = array();
         $cont = 0;
         foreach ($galerias as $galeria) {
             $arreglo[$cont] = array(
-                'imagen' => $imagine->getBrowserPath($producto->getWebPath(), 'imagen_carrusel', true),
-                'thumbnail' => $imagine->getBrowserPath($producto->getWebPath(), 'imagen_carrusel_thumbnail', true),
+                'imagen' => $imagine->getBrowserPath($galeria->getWebPath(), 'imagen_carrusel'),
+                'thumbnail' => $imagine->getBrowserPath($galeria->getWebPath(), 'imagen_carrusel_thumbnail'),
             );
             $cont++;
         }
@@ -151,9 +155,7 @@ class ApiController extends BaseController {
         $producto = $this->getDoctrine()
                         ->getRepository('ProductosBundle:Producto')->findOneBy(array('slug' => $slug));
 
-        return new JsonResponse(array(
-            'producto' => $this->getArrayProducto($producto),
-        ));
+        return new JsonResponse($this->getArrayProducto($producto));
     }
 
     /**
