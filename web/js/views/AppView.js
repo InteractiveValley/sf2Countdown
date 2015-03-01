@@ -18,7 +18,7 @@ define([
             },
             activarCategoria: function(e){
                 $(".item-categoria a.link-categoria").removeClass('active');
-                $(e.target).find("a").addClass('active');
+                $(e.currentTarget).find("a").addClass('active');
             },
             showCategorias: function(e){
                 e.preventDefault();

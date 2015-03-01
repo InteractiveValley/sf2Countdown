@@ -9,7 +9,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <input id="sliderPrecio" type="text" class="span2" value="" data-slider-min="50" data-slider-max="2000" data-slider-step="50" data-slider-value="2000" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="hide">
+                            <input id="sliderPrecio" type="slider" class="span2" value="" data-slider-min="50" data-slider-max="2000" data-slider-step="50" data-slider-value="2000" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="hide">
                         </div>
                         <div class="col-md-2">
                             <span id="valor-precio"></span>

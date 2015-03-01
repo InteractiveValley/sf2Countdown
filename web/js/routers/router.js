@@ -54,26 +54,33 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         if(app.status != 'secundario'){
             app.status = 'secundario';
             app.views.appView.$el.find('#division-principal').html(app.views.secundario.el);
+        }else{
+            
         }
-        debugger;
-	app.collections.productos.fetch({data: {'categoria': slug}});
+        
+	var xhr = app.collections.productos.fetch({data: {'categoria': slug}});
+        xhr.done(function(data){
+            console.log(data);
+            app.views.secundario.masonry();
+        }).fail(function(data){
+            console.log(data);
+            console.log("Se no se obtuvieron datos");
+        });
         //app.collections.productos.fetch();
 	
     },
     showProducto: function(slug){
+        debugger;
         var models = app.collections.productos.where({'slug': slug});
-        if(app.views.producto){
-            app.views.producto.destroy_view();
-            app.views.producto = new ModalProductoView({model: models[0]});
-            app.views.producto.render();
-        }
         if(!app.views.producto){
             app.views.producto = new ModalProductoView({model: models[0]});
             app.views.producto.render();
         }else{
-            app.views.producto.delegateEvents();
+            app.views.producto.cambiarModel(models[0]);
+            app.views.producto.render();
         }
-        app.views.appView.$el.append(app.views.producto.el);
+        //app.views.appView.$el.append(app.views.producto.$el.html());
+        app.views.producto.showModal();
     },
     employeeDetails: function (id) {
         var employee = new Employee({id: id});

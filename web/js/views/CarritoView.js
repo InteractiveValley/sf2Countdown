@@ -14,7 +14,7 @@ define([
             template: _.template( CarritoViewTemplate ),
             //template: swig.compile( CarritoViewTemplate ),
             initialize: function() {
-				console.log('inicializando carritoview');
+		console.log('inicializando carritoview');
                 this.status = '';
                 if(!app.collections.carrito){
                     app.collections.carrito = new CarritoCollection();
@@ -40,6 +40,10 @@ define([
             },
             addOne: function(model){
               var itemProductoCarritoView = new ItemProductoCarritoView({model: model});
+              if(!app.views.apartados){
+                  app.views.apartados = [];
+              }
+              app.views.apartados.push(itemProductoCarritoView);
               itemProductoCarritoView.render();
               this.$el.find('.list-carrito').append(itemProductoCarritoView.el);
               if(this.status == ''){

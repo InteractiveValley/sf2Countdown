@@ -3,25 +3,15 @@ define([
     'underscore',
     'Backbone',
     'models/ProductoModel',
-    'text!templates/ModalProductoView.tpl'
+    'text!templates/ModalProductoView.tpl',
+    'bootstrap'
 ],
         function ($, _, Backbone, ProductoModel, ModalProductoViewTemplate) {
             var ModalProductoView = Backbone.View.extend({
-                tagName: 'div',
-                className: 'modal fade',
+                el: $("#modalProducto"),
                 template: _.template(ModalProductoViewTemplate),
-                // agregando atributos al modal
-                attributes: function () {
-                    return {
-                        'tabindex': "-1",
-                        'role': "dialog",
-                        'aria-labelledby': "",
-                        'aria-hidden': "true"
-                    };
-                },
                 initialize: function () {
                     console.log('inicializando modalproductoview');
-                    this.id = 'modalProducto';
                 },
                 events: {
                     'click .modal-producto-agrergar-carrito': 'agregarCarrito'
@@ -59,9 +49,16 @@ define([
                     });
                 },
                 render: function () {
+                    console.log('render modalproducto');
                     var data = this.model.toJSON();
                     this.$el.html(this.template({'producto': data}));
                     return this;
+                },
+                showModal: function(){
+                  $(this.el).modal('show');  
+                },
+                cambiarModel: function(model){
+                  this.model = model;
                 },
                 destroy_view: function () {
                     // COMPLETELY UNBIND THE VIEW 

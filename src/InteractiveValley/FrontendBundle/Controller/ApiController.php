@@ -21,13 +21,13 @@ class ApiController extends BaseController {
     protected function getClaveApartado(){
         $this->claveApartado = $this->get('session')->get('claveApartado', null);
         if($this->claveApartado == null){
-            $this->claveApartado = $this->get('session')->get('claveApartado', null);
+            //$this->claveApartado = $this->get('session')->get('claveApartado', null);
             do{
                 $this->claveApartado = sha1(rand(11111, 99999));
                 $resultado = $this->getDoctrine()->getRepository('ProductosBundle:Apartado')
-                                                 ->find($this->claveApartado);
-            }while($resultado==null);
-            $this->get('session')->get('claveApartado', $this->claveApartado);
+                                                 ->findOneBy(array('clave'=>$this->claveApartado));
+            }while($resultado!=null);
+            $this->get('session')->set('claveApartado', $this->claveApartado);
         }
         return $this->claveApartado;
     }
@@ -79,16 +79,16 @@ class ApiController extends BaseController {
             if ($idCategoria == "lo-nuevo") {
                 $productos = $this->getDoctrine()
                                   ->getRepository('ProductosBundle:Producto')->findBy(array(
-                    'isNew' => true
-                ));
+                                    'isNew' => true
+                                  ));
             } else {
                 $categoria = $this->getDoctrine()
                                   ->getRepository('ProductosBundle:Categoria')
-                                  ->findBy(array('slug'=>$idCategoria));
+                                  ->findOneBy(array('slug'=>$idCategoria));
                 if(!$categoria){
-                    $productos = $categoria->getProductos();
-                }else{
                     $productos = array();
+                }else{
+                    $productos = $categoria->getProductos();
                 }
             }
         } else {
@@ -102,6 +102,35 @@ class ApiController extends BaseController {
         }
 
         return new JsonResponse($aProductos);
+    }
+    
+    /**
+     * @todo Obligatorio enviar un parametro de categorias 
+     * @Route("/api/carrito/productos", name="api_get_productos_carrito")
+     * @Method({"GET"})
+     */
+    public function getProductosCarritoAction(Request $request) {
+        $clave = $this->getClaveApartado();
+        $apartados = $this->getDoctrine()
+                          ->getRepository('ProductosBundle:Apartado')->findBy(array(
+                              'clave'=> $clave
+                          ));
+        $aProductos = array();
+        $imagine = $this->container->get('liip_imagine.cache.manager');
+        foreach ($apartados as $apartado) {
+            $aProductos[] = $this->getArrayApartado($apartado, $imagine);
+        }
+        return new JsonResponse($aProductos);
+    }
+    
+    private function getArrayApartado($apartado, $imagine = null) {
+        if (!$imagine) {
+            $imagine = $this->container->get('liip_imagine.cache.manager');
+        }
+        $arreglo = array();
+        $arreglo = $this->getArrayProducto($apartado->getProducto(), $imagine);
+        $arreglo['minutos'] = 25;
+        return $arreglo;
     }
 
     private function getArrayProducto($producto, $imagine = null) {
