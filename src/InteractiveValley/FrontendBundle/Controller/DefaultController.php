@@ -74,7 +74,7 @@ class DefaultController extends BaseController {
             'is_show' => $isShow,
         );
     }
-
+    
     /**
      * @Route("/categorias/{slug}", name="categoria_productos")
      * @Template("FrontendBundle:Default:productos.html.twig")

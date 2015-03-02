@@ -13,6 +13,7 @@ define([
             initialize: function() {
                 console.log('inicializando itemproductoview');
                 this.is_active = true;
+                this.model.on('change:in_carrito', this.visible,this);
                 this.model.on('change', this.render, this);
             },
             events:{
@@ -42,7 +43,7 @@ define([
                             console.log('producto '+ data.status);
                             self.model.set({'cantidad': cantidad});
                             app.collections.carrito.add(self.model.toJSON());
-                            self.destroy_view();
+                            self.model.set({'in_carrito':true});
                         }
                     },
                     error: function(data){
@@ -60,6 +61,21 @@ define([
                 var data = this.model.toJSON();
                 this.$el.html(this.template({'producto':data}));
                 return this;
+            },
+            enCarrito: function(e){
+              e.preventDefault();
+              e.stopPropagation();
+              if(this.model.get('in_carrito')){
+                  var self = this;
+                  setTimeout(function(){
+                      $(self.el).fadeOut('fast');
+                  },500);
+              }else{
+                  var self = this;
+                  setTimeout(function(){
+                      $(self.el).fadeIn('fast');
+                  },500);
+              }
             },
             destroy_view: function() { 
                 // COMPLETELY UNBIND THE VIEW 

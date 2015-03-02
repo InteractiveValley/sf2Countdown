@@ -307,6 +307,27 @@ class ApiController extends BaseController {
     }
     
     /**
+     * @Route("/api/revisar/apartados", name="api_get_revisar_apartados")
+     * @Method({"GET"})
+     */
+    public function revisarApartadosAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $apartados = $em->getRepository('ProductosBundle:Apartado')->findAll();
+        $cont = 0;
+        foreach($apartados as $apartado){
+            $fecha1 = $apartado->getCreatedAt();
+            $fecha2 = new \DateTime();
+            $intervalo = $fecha1->diff($fecha2);
+            $minutos = $intervalo->format("%i"); //minutos de intervalo
+            if($minutos > $this->container->getParameter('richpolis.tiempo.permitido')){
+                $this->removeProductoCarrito($apartado->getProducto(), $apartado, $em);
+                $cont++;
+            }
+        }
+        return new JsonResponse(array('apartados_quitados'=>$cont));
+    }
+    
+    /**
      * @Route("/api/carrito/remove/{slug}",name="carrito_remove")
      * @Method({"POST"})
      */
@@ -320,16 +341,23 @@ class ApiController extends BaseController {
             if (!$apartado) {
                 return new JsonResponse(array('status' => 'no_existe_apartado'));
             } else {
-                $producto->setExistencia($producto->getExistencia()+$apartado->getCantidad());
-                $producto->setReservado($producto->getReservado()-$apartado->getCantidad());
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($producto);
-                $em->remove($apartado);
-                $em->flush();
+                $this->removeProductoCarrito($producto, $apartado, $em);
                 return new JsonResponse(array('status' => 'apartado_removido'));
             }
         }
         return new JsonResponse(array('status' => 'no_post'));
+    }
+    
+    protected function removeProductoCarrito(Producto $producto, $apartado, &$em = null){
+        if(!$em){
+            $em = $this->getDoctrine()->getManager();
+        }
+        $producto->setExistencia($producto->getExistencia()+$apartado->getCantidad());
+        $producto->setReservado($producto->getReservado()-$apartado->getCantidad());
+        $em->persist($producto);
+        $em->remove($apartado);
+        $em->flush();
     }
     
     /**

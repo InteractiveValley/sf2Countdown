@@ -60,6 +60,11 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         
 	var xhr = app.collections.productos.fetch({data: {'categoria': slug}});
         xhr.done(function(data){
+            if(!app.views.productos){
+                _.each(app.views.productos, function(itemProductoVista){
+                    
+                });
+            }
             console.log(data);
             app.views.secundario.masonry();
         }).fail(function(data){
