@@ -5,7 +5,7 @@ define([
 ],
         function (_, Backbone, ProductoModel) {
             var CarritoCollection = Backbone.Collection.extend({
-                url: app.root + "/productos",
+                url: app.root + "/carrito/productos",
                 model: ProductoModel,
                 defaults: {
                     total: 0.0,

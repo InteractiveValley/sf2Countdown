@@ -14,7 +14,7 @@ define([
             //template: _.template( PrincipalViewTemplate),
             //template: swig.compile( CarritoViewTemplate ),
             initialize: function() {
-				console.log('inicializando itemproductocarritoview');
+		console.log('inicializando itemproductocarritoview');
                 this.is_active = true;
                 this.reloj = new CronometroModel();
                 this.model.on('change', this.render, this);
@@ -78,17 +78,19 @@ define([
                 });
             },
             render:function () {
+                console.log("render itemproductocarritoview");
                 var data = this.model.toJSON();
                 if(this.is_active){
-					this.$el.removeClass('inactive');
+                    this.$el.removeClass('inactive');
                     this.$el.html(_.template(ItemProductoCarritoViewTemplate,{'producto':data}));
                 }else{
-					this.$el.addClass('inactive');
+                    this.$el.addClass('inactive');
                     this.$el.html(_.template(ItemProductoCarritoInactivoViewTemlate,{'producto':data}));
                 }
                 return this;
             },
             renderReloj: function(){
+                console.log("render cronometromodel");
                 if(this.reloj.get('contador')==0){
                     this.is_active = false;
                     this.render();

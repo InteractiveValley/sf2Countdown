@@ -22,6 +22,7 @@ define([
                 this.collection = app.collections.carrito;
                 this.collection.on('add', this.addOne, this);
                 this.collection.on('reset', this.render, this);
+                app.collections.carrito.fetch();
             },
             events:{
                'click #hacerPedido': 'hacerPedido'
@@ -32,6 +33,7 @@ define([
                 app.routers.router.navigate('pago',{trigger: true});
             },
             render:function () {
+                console.log("render carritoview");
                 this.status = 'render';
                 this.collection.forEach(this.addOne,this);
                 this.renderTotales();
@@ -39,6 +41,7 @@ define([
                 return this;
             },
             addOne: function(model){
+              console.log("render itemproductocarrito "+ model.get('slug'));
               var itemProductoCarritoView = new ItemProductoCarritoView({model: model});
               if(!app.views.apartados){
                   app.views.apartados = [];

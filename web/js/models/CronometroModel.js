@@ -9,8 +9,11 @@ define([
                 semilla: 25
             },
             initialize: function () {
+                var self = this;
                  this.contador = this.semilla * 60;
-                 this.timerID = setInterval(function(){this.tick();}, 1000); 
+                 this.timerID = setInterval(function(){
+                     self.tick();
+                 }, 1000); 
             },
             tick: function(){  
                 this.contador--;
