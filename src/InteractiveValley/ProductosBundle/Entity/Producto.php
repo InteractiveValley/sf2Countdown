@@ -76,7 +76,7 @@ class Producto
     /**
      * @var integer
      *
-     * @ORM\Column(name="reservado", type="integer")
+     * @ORM\Column(name="reservado", type="integer", nullable=true)
      */
     private $reservado;
 
@@ -176,6 +176,39 @@ class Producto
         return self::$sIva;
     }
     
+    const COLOR_ROJO_CARMESI    = '#9F0700';
+    const COLOR_AMARILLO        = '#FA9000';
+    const COLOR_CAFE            = '#7F5400';
+    const COLOR_AZUL            = '#1DA5FF';
+    const COLOR_AZUL_MARINO     = '#084664';
+    const COLOR_VERDE           = '#3CAE55';
+    const COLOR_FIUSA           = '#F500FC';
+    const COLOR_GRIS            = '#A0A0A0';
+    const COLOR_BLANCO          = '#FFFFFF';
+    
+    
+    static public $sColores=array(
+        self::COLOR_ROJO_CARMESI    => 'Rojo Carmesi',
+        self::COLOR_AMARILLO        => 'Amarillo',
+        self::COLOR_CAFE        => 'Cafe',
+        self::COLOR_AZUL        => 'Azul',
+        self::COLOR_AZUL_MARINO => 'Azul marino',
+        self::COLOR_VERDE       => 'Verde',
+        self::COLOR_FIUSA       => 'Fiusa',
+        self::COLOR_GRIS        => 'Gris',
+        self::COLOR_BLANCO      => 'Blanco'
+    );
+    static function getPreferedColor(){
+        return array(self::COLOR_BLANCO);
+    }
+
+    public function getStringColor(){
+        return self::$sColores[$this->getColor()];
+    }
+    static function getArrayColores(){
+        return self::$sColores;
+    }
+    
     function __toString() {
         return $this->nombre;
     }
@@ -229,6 +262,7 @@ class Producto
         $this->isPromocional = false;
         $this->isNew = false;
         $this->unidadMedida = "PZ";
+        $this->reservado = 0;
     }
 
     /**

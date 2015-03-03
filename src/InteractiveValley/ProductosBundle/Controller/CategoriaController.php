@@ -51,9 +51,9 @@ class CategoriaController extends Controller
         $entity = new Categoria();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $entity->setSlug(RpsStms::slugify($entity->getNombre()));
             $em->persist($entity);
             $em->flush();
 

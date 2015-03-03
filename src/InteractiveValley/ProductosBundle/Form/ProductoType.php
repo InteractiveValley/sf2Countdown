@@ -27,6 +27,7 @@ class ProductoType extends AbstractType
                     )
                 ))
             ->add('marca','text',array('attr'=>array('class'=>'form-control')))
+            ->add('modelo','text',array('attr'=>array('class'=>'form-control')))    
             ->add('unidadMedida','text',array('attr'=>array('class'=>'form-control')))
             ->add('existencia','text',array('attr'=>array('class'=>'form-control')))
             ->add('reservado','text',array('attr'=>array('class'=>'form-control')))
@@ -39,6 +40,15 @@ class ProductoType extends AbstractType
                 'attr'=>array(
                     'class'=>'validate[required] form-control placeholder',
                     'placeholder'=>'IVA',
+                )))
+            ->add('color','choice',array(
+                'label'=>'Color',
+                'empty_value'=>false,
+                'choices'=>Producto::getArrayColores(),
+                'preferred_choices'=>Producto::getPreferedColor(),
+                'attr'=>array(
+                    'class'=>'validate[required] form-control placeholder',
+                    'placeholder'=>'Color',
                 )))
             ->add('slug','hidden')
             ->add('categoria','entity',array(
