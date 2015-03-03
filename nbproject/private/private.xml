@@ -9,6 +9,7 @@
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/web/js/ejemplo-backbone.js</file>
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/web/js/views/ItemProductoCarritoView.js</file>
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/web/js/templates/CarritoView.tpl</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Controller/CategoriaController.php</file>
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/web/js/routers/router.js</file>
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/web/js/models/CronometroModel.js</file>
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/web/js/views/AppView.js</file>
@@ -17,7 +18,9 @@
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/web/js/views/ItemProductoView.js</file>
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/web/js/templates/ItemProductoView.tpl</file>
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/web/js/views/SectionSecundarioView.js</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Entity/Producto.php</file>
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/FrontendBundle/Resources/views/Default/index.html.twig</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/ProductosBundle/Entity/Categoria.php</file>
         </group>
     </open-files>
 </project-private>

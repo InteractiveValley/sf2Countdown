@@ -10,7 +10,7 @@
             </ul>
             <div class="row">
                 <div class="total-carrito rubro col-md-4">Total: </div>
-                <div class="total-carrito col-md-8"><%= carrito.total %> MXN</div>
+                <div class="total-carrito total col-md-8"><%= carrito.total %> MXN</div>
                 <div class="total-carrito rubro col-md-4">Desc.: </div>
                 <div class="descuento-carrito col-md-8"><%= carrito.descuento %> MXN</div>
             </div>

@@ -29,7 +29,7 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
             app.views.carrito = new CarritoView();
             app.views.carrito.render();
         }
-        app.views.appView.$el.find('#carrito').html(app.views.carrito.$el.html());
+        //app.views.appView.$el.find('#carrito').html(app.views.carrito.$el.html());
     },
     inicio: function () {
         app.status = 'principal';

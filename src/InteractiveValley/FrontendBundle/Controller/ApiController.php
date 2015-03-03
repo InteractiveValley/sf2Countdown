@@ -130,6 +130,7 @@ class ApiController extends BaseController {
         $arreglo = array();
         $arreglo = $this->getArrayProducto($apartado->getProducto(), $imagine);
         $arreglo['minutos'] = 25;
+        $arreglo['cantidad'] = $apartado->getCantidad();
         return $arreglo;
     }
 

@@ -78,12 +78,14 @@ define([
                 });
             },
             render:function () {
-                console.log("render itemproductocarritoview");
+                console.log("render itemproductocarritoview " + this.model.get('slug'));
                 var data = this.model.toJSON();
                 if(this.is_active){
+                    console.log("render active " + this.model.get('slug'));
                     this.$el.removeClass('inactive');
                     this.$el.html(_.template(ItemProductoCarritoViewTemplate,{'producto':data}));
                 }else{
+                    console.log("render inactive " + this.model.get('slug'));
                     this.$el.addClass('inactive');
                     this.$el.html(_.template(ItemProductoCarritoInactivoViewTemlate,{'producto':data}));
                 }

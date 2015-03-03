@@ -19,7 +19,7 @@ define([
                     var self = this;
                     this.each(function (producto) {
                         self.cuantos += producto.get('cantidad');
-                        self.total += producto.get('importe');
+                        self.total += (producto.get('precio')*producto.get('cantidad'));
                     });
                     this.descuento = Math.ceil(this.cuantos / 3) * 100;
                     return this.getFormateadosTotales();

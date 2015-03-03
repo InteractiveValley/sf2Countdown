@@ -46,12 +46,12 @@ define([
                     
                 },
                 sliderPrecio: function(){
-                    /*var self = this;
+                    var self = this;
                     this.$el.find("#sliderPrecio").slider({'tooltip': 'show'}).on('slide', function (ev) {
-                        $(self.el).find("#valor-precio").text( formatNumber.new(ev.value,"$"));
+                        self.$el.find("#valor-precio").text( formatNumber.new(ev.value,"$"));
                     }).on("slideStop", function (ev) {
 
-                    });*/
+                    });
                 },
                 masonry: function(){
                     this.$el.find('.productos').masonry({
@@ -59,6 +59,7 @@ define([
                         itemSelector: '.producto',
                         columnWidth: 247
                     });
+                    windows.resize();
                 }
                 
             });

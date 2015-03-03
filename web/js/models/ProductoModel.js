@@ -7,7 +7,7 @@ define([
                 urlRoot: app.root + "/productos",
                 defaults: {
                     'nombre': '',
-                    cantidad: 0,
+                    cantidad: 1,
                     importe: 0,
                     importe_with_format: '',
                     cantidad_with_format: '',
