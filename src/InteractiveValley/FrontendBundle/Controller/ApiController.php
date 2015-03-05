@@ -139,25 +139,27 @@ class ApiController extends BaseController {
             $imagine = $this->container->get('liip_imagine.cache.manager');
         }
         $arreglo = array();
-        $arreglo['id'] = $producto->getId();
-        $arreglo['nombre'] = $producto->getNombre();
-        $arreglo['slug'] = $producto->getSlug();
-        $arreglo['existencia'] = $producto->getExistencia();
-        $arreglo['reservado'] = $producto->getReservado();
-        $arreglo['precio'] = $producto->getPrecio();
-        $arreglo['iva'] = $producto->getIva();
+        $arreglo['id']          = $producto->getId();
+        $arreglo['nombre']      = $producto->getNombre();
+        $arreglo['descripcion'] = $producto->getDescripcion();
+        $arreglo['modelo']      = $producto->getModelo();
+        $arreglo['slug']        = $producto->getSlug();
+        $arreglo['existencia']  = $producto->getExistencia();
+        $arreglo['reservado']   = $producto->getReservado();
+        $arreglo['precio']      = $producto->getPrecio();
+        $arreglo['iva']         = $producto->getIva();
         $arreglo['isPromocional'] = $producto->getIsPromocional();
-        $arreglo['isNew'] = $producto->getIsNew();
-        $arreglo['isActive'] = $producto->getIsActive();
+        $arreglo['isNew']       = $producto->getIsNew();
+        $arreglo['isActive']    = $producto->getIsActive();
         if ($producto->getIsPromocional()) {
             $filtro = "imagen_grande";
         } else {
             $filtro = "imagen_chica";
         }
-        $arreglo['imagen'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
-        $arreglo['thumbnail'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
-        $arreglo['galerias'] = $this->getArrayGalerias($producto->getGalerias(), $imagine);
-        $arreglo['categoria'] = $this->getArrayCategoria($producto->getCategoria());
+        $arreglo['imagen']      = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
+        $arreglo['thumbnail']   = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
+        $arreglo['galerias']    = $this->getArrayGalerias($producto->getGalerias(), $imagine);
+        $arreglo['categoria']   = $this->getArrayCategoria($producto->getCategoria());
         return $arreglo;
     }
 
