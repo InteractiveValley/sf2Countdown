@@ -11,14 +11,14 @@ define([
         var ItemProductoCarritoView = Backbone.View.extend({
             tagName: 'li',
             className: 'item-carrito',
-            //template: _.template( PrincipalViewTemplate),
-            //template: swig.compile( CarritoViewTemplate ),
             initialize: function() {
 		console.log('inicializando itemproductocarritoview');
-                this.is_active = true;
                 this.reloj = new CronometroModel();
                 this.model.on('change', this.render, this);
                 this.reloj.on('change:contador',this.renderReloj,this);
+                this.status = 'inicializacion';
+                this.model.set({'in_carrito':true});
+                this.status = '';
             },
             events:{
                'click .close-producto-carrito': 'quitarProductoCarrito',
@@ -28,24 +28,29 @@ define([
                 e.preventDefault();
                 e.stopPropagation();
                 var self = this;
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    url: window.api.url + '/api/carrito/remove/' + self.model.get('slug'),
-                    data: {'cantidad': self.model.get('cantidad')},
-                    success: function(data){
-                        if(data.status == 'no_existe_apartado'){
-                            alert("Apartado no existe");
-                            self.destroy_view();
-                        }else{
-                            self.destroy_view();
+                if (confirm('Desea quitar el producto de su carrito?')){
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: window.api.url + '/api/carrito/remove/' + self.model.get('slug'),
+                        data: {'cantidad': self.model.get('cantidad')},
+                        success: function(data){
+                            if(data.status == 'no_existe_apartado'){
+                                alert("Apartado no existe");
+                                self.reloj.limpiarIntervalo();
+                                self.destroy_view();
+                            }else{
+                                self.reloj.limpiarIntervalo();
+                                self.destroy_view();
+                            }
+                            app.views.carrito.renderTotales();
+                        },
+                        error: function(data){
+                            console.log(data);
+                            alert("Error al quitar producto del carrito");
                         }
-                    },
-                    error: function(data){
-                        console.log(data);
-                        alert("Error al quitar producto del carrito");
-                    }
-                });
+                    });
+                }
             },
             reactivarProductoCarrito: function(e){
                 e.preventDefault();
@@ -78,32 +83,35 @@ define([
                 });
             },
             render:function () {
-                console.log("render itemproductocarritoview " + this.model.get('slug'));
-                var data = this.model.toJSON();
-                if(this.is_active){
-                    console.log("render active " + this.model.get('slug'));
-                    this.$el.removeClass('inactive');
-                    this.$el.html(_.template(ItemProductoCarritoViewTemplate,{'producto':data}));
-                }else{
-                    console.log("render inactive " + this.model.get('slug'));
-                    this.$el.addClass('inactive');
-                    this.$el.html(_.template(ItemProductoCarritoInactivoViewTemlate,{'producto':data}));
+                if(this.status == ''){
+                    var data = this.model.toJSON();
+                    if(this.model.get('in_carrito')){
+                        console.log("render active " + this.model.get('slug'));
+                        this.$el.removeClass('inactive');
+                        this.$el.html(_.template(ItemProductoCarritoViewTemplate,{'producto':data}));
+                    }else{
+                        console.log("render inactive " + this.model.get('slug'));
+                        this.$el.addClass('inactive');
+                        this.$el.html(_.template(ItemProductoCarritoInactivoViewTemlate,{'producto':data}));
+                    }
+                    return this;
                 }
-                return this;
             },
             renderReloj: function(){
                 console.log("render cronometromodel");
                 if(this.reloj.get('contador')==0){
-                    this.is_active = false;
-                    this.render();
                     this.$el.addClass('inactive').removeClass('active');
+                    this.model.set({'in_carrito':false});
                     this.reloj.limpiarIntervalo();
+                    app.views.carrito.renderTotales();
                 }else{
                     var text = this.reloj.getTimeFormat();
                     this.$el.find('.tiempo-producto-carrito').text(text);
                 }
             },
-            destroy_view: function() { 
+            destroy_view: function() {
+                // eliminar el modelo de la coleccion de carrito. 
+                app.collections.carrito.remove(this.model);
                 // COMPLETELY UNBIND THE VIEW 
                 this.undelegateEvents(); 
                 this.$el.removeData().unbind(); 

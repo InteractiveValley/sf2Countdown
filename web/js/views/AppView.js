@@ -41,7 +41,7 @@ define([
                     $("#valor-precio").animate({'fontSize':'12px'},'fast');
                     $("#division-principal,section.productos").animate({'width': '-=266px'},'fast',function(){
                         $("#division-principal,section.productos").resize();
-                        $("#carrito").animate({'width':'266px'},'fast').fadeIn('fast');
+                        $("#carrito").animate({'width':'266px'},'fast').show('fast');
                     });
                     app.showCarrito=true;
                 } else {

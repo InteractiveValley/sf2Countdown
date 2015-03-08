@@ -151,11 +151,12 @@ class ApiController extends BaseController {
         $arreglo['isPromocional'] = $producto->getIsPromocional();
         $arreglo['isNew']       = $producto->getIsNew();
         $arreglo['isActive']    = $producto->getIsActive();
-        if ($producto->getIsPromocional()) {
+        /*if ($producto->getIsPromocional()) {
             $filtro = "imagen_grande";
         } else {
             $filtro = "imagen_chica";
-        }
+        }*/
+        $filtro = "imagen_chica";
         $arreglo['imagen']      = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
         $arreglo['thumbnail']   = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
         $arreglo['galerias']    = $this->getArrayGalerias($producto->getGalerias(), $imagine);

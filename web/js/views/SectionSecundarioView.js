@@ -43,11 +43,16 @@ define([
                     this.$el.find('.productos').append(itemProductoView.el);
                 },
                 limpiarProductos: function(){
-                    
+                    _.each(app.views.productos, function(itemProductoVista){
+                        itemProductoVista.destroy_view();
+                    });
                 },
                 sliderPrecio: function(){
                     var self = this;
-                    this.$el.find("#sliderPrecio").slider({'tooltip': 'show'}).on('slide', function (ev) {
+                    this.$el.find("#sliderPrecio").slider({'tooltip': 'show'});
+                    this.$el.find(".slider-horizontal").css({'width': '100%'});
+                    this.$el.find("#valor-precio").text( formatNumber.new(2000,"$"));
+                    this.$el.find("#sliderPrecio").on('slide', function (ev) {
                         self.$el.find("#valor-precio").text( formatNumber.new(ev.value,"$"));
                     }).on("slideStop", function (ev) {
 

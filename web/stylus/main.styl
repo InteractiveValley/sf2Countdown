@@ -112,9 +112,12 @@ article.producto
 	margin 3px
 	overflow hidden
 	border 1px solid color_gris_oscuro
+	box-sizing border-box
 	&.imagen_chica
 		width 238px
 		height 238px
+	&.promocional
+		box-shadow 0 0 4px 1px #DF2E72
 	&.imagen_grande
 		width 484px
 		height 484px
@@ -132,6 +135,15 @@ article.producto
 			position absolute
 			transition all .3s ease-out
 			width 100%
+	& .imagen-producto-cantidad-carrito
+		position absolute 
+		right 0px
+		top 0px
+		display block 
+		height 20px
+		width 20px
+		color white 
+		background-color color_rosa
 	&:hover .imagen-producto figcaption
 		bottom 0px
 		opacity 1
@@ -358,6 +370,9 @@ ul.list-carrito
 section.productos
 	text-align center
 	width 100%
+	min-height 400px
+	&.cargando
+		background url('/images/bx_loader.gif') center center no-repeat
 
 
 .buscador-envio

@@ -8,7 +8,7 @@ define([
     function ($, _, Backbone, ProductoModel  ,ItemProductoViewTemplate) {
         var ItemProductoView = Backbone.View.extend({
             tagName: 'article',
-            className: 'producto',
+            className: 'producto imagen_chica',
             template: _.template( ItemProductoViewTemplate ),
             initialize: function() {
                 console.log('inicializando itemproductoview');
@@ -60,6 +60,9 @@ define([
             render:function () {
                 var data = this.model.toJSON();
                 this.$el.html(this.template({'producto':data}));
+                if(this.model.get('isPromocional')){
+                   this.$el.addClass('promocional');
+                }
                 return this;
             },
             enCarrito: function(e){

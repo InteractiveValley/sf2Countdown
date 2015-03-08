@@ -54,19 +54,14 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         if(app.status != 'secundario'){
             app.status = 'secundario';
             app.views.appView.$el.find('#division-principal').html(app.views.secundario.el);
-        }else{
-            
         }
+        
+        app.views.secundario.limpiarProductos();
+        app.views.secundario.$el.find('section.productos').addClass('cargando');
         
 	var xhr = app.collections.productos.fetch({data: {'categoria': slug}});
         xhr.done(function(data){
-            if(!app.views.productos){
-                _.each(app.views.productos, function(itemProductoVista){
-                    
-                });
-            }
-            console.log(data);
-            app.views.secundario.masonry();
+            app.views.secundario.$el.find('section.productos').removeClass('cargando');
         }).fail(function(data){
             console.log(data);
             console.log("Se no se obtuvieron datos");

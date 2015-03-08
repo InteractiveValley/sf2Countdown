@@ -3,6 +3,7 @@
                             <div class="col-md-4">
                                 <figure class="imagen-producto-carrito">
                                     <img src="<%= producto.thumbnail %>" alt="<%= producto.nombre %>"/>
+                                    <span class="imagen-producto-cantidad-carrito"><%= producto.cantidad %></span>
                                     <figcaption>
                                         <a href="#producto/carrito/<%= producto.slug %>">Ver detalles</a>
                                     </figcaption>

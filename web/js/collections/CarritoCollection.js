@@ -18,10 +18,12 @@ define([
                     this.cuantos = 0;
                     var self = this;
                     this.each(function (producto) {
-                        self.cuantos += producto.get('cantidad');
-                        self.total += (producto.get('precio')*producto.get('cantidad'));
+                        if(producto.get('in_carrito')){
+                            self.cuantos += producto.get('cantidad');
+                            self.total += (producto.get('precio')*producto.get('cantidad'));
+                        }
                     });
-                    this.descuento = Math.ceil(this.cuantos / 3) * 100;
+                    this.descuento = Math.floor(this.cuantos / 3) * 100;
                     return this.getFormateadosTotales();
                 },
                 getFormateadosTotales: function () {

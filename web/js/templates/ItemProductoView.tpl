@@ -1,4 +1,4 @@
-<!--article class="producto imagen_grande o imagen_chica"-->
+        <!--article class="producto imagen_grande o imagen_chica"-->
         <div class="contenido">
             <figure class="imagen-producto">
                 <img src="<% print(producto.imagen); %>" alt="imagen de producto"/>
