@@ -96,7 +96,7 @@ class ProductoController extends Controller
     public function categoriaAction($slug) {
         $em = $this->getDoctrine()->getManager();
         $categoria = $em->getRepository('ProductosBundle:Categoria')
-                ->findOneBy(array('slug' => $slug));
+                		->findOneBy(array('slug' => $slug));
         if (!$categoria) {
             throw $this->createNotFoundException('Unable to find Categoria entity.');
         }

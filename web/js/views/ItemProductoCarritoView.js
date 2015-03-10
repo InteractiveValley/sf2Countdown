@@ -32,7 +32,7 @@ define([
                     $.ajax({
                         type: 'POST',
                         dataType: 'json',
-                        url: window.api.url + '/api/carrito/remove/' + self.model.get('slug'),
+                        url: app.root + '/carrito/remove/' + self.model.get('slug'),
                         data: {'cantidad': self.model.get('cantidad')},
                         success: function(data){
                             if(data.status == 'no_existe_apartado'){
@@ -59,7 +59,7 @@ define([
                 $.ajax({
                     type: 'POST',
                     dataType: 'json',
-                    url: window.api.url + '/api/carrito/add/' + self.model.get('slug'),
+                    url: app.root + '/carrito/add/' + self.model.get('slug'),
                     data: {'cantidad': self.model.get('cantidad')},
                     success: function(data){
                         if(data.status == 'no_existe'){

@@ -28,7 +28,7 @@ define([
                 $.ajax({
                     type: 'POST',
                     dataType: 'json',
-                    url: window.api.url + '/api/carrito/add/' + self.model.get('slug'),
+                    url: app.root + '/carrito/add/' + self.model.get('slug'),
                     data: {'cantidad': cantidad},
                     success: function(data){
                         if(data.status == 'no_existe'){
