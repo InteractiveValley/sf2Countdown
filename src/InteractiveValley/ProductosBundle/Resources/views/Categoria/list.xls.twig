@@ -15,7 +15,7 @@
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.slug }}</td>
                 <td>{{ ((entity.isActive == true)?'Si':'No') }}</td>
-                <td>{{ entity.fechaAlta | date('d-m-Y') }}</td>
+                <td>{{ entity.createdAt | date('d-m-Y') }}</td>
             </tr>
         {% endfor %}
     </tbody>

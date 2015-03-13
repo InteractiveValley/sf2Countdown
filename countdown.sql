@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `categorias` (
 `id` int(11) NOT NULL,
   `nombre` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `fecha_alta` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
   `slug` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `position` int(11) NOT NULL,
   `is_active` tinyint(1) NOT NULL
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `categorias` (
 -- Volcado de datos para la tabla `categorias`
 --
 
-INSERT INTO `categorias` (`id`, `nombre`, `fecha_alta`, `slug`, `position`, `is_active`) VALUES
+INSERT INTO `categorias` (`id`, `nombre`, `created_at`, `slug`, `position`, `is_active`) VALUES
 (6, 'Categoria 1', '2015-01-24 23:52:28', 'categoria-1', 1, 1),
 (7, 'Categoria 2', '2015-01-24 23:52:28', 'categoria-2', 3, 1),
 (8, 'Categoria 3', '2015-01-24 23:52:28', 'categoria-3', 2, 1);
@@ -132,8 +132,8 @@ CREATE TABLE IF NOT EXISTS `direcciones` (
   `estado` int(11) NOT NULL,
   `contacto` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `paqueteria` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `fecha_alta` datetime DEFAULT NULL,
-  `fecha_modificacion` datetime DEFAULT NULL
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -260,8 +260,8 @@ CREATE TABLE IF NOT EXISTS `productos` (
   `reservado` int(11) NOT NULL,
   `precio` decimal(10,0) NOT NULL,
   `iva` decimal(10,0) NOT NULL,
-  `fecha_alta` datetime DEFAULT NULL,
-  `fecha_modificacion` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `slug` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL,
   `is_producto_promocional` tinyint(1) NOT NULL,
@@ -272,7 +272,7 @@ CREATE TABLE IF NOT EXISTS `productos` (
 -- Volcado de datos para la tabla `productos`
 --
 
-INSERT INTO `productos` (`id`, `categoria_id`, `nombre`, `descripcion`, `marca`, `unidad_medida`, `existencia`, `reservado`, `precio`, `iva`, `fecha_alta`, `fecha_modificacion`, `slug`, `is_active`, `is_producto_promocional`, `es_nuevo`) VALUES
+INSERT INTO `productos` (`id`, `categoria_id`, `nombre`, `descripcion`, `marca`, `unidad_medida`, `existencia`, `reservado`, `precio`, `iva`, `created_at`, `updated_at`, `slug`, `is_active`, `is_producto_promocional`, `es_nuevo`) VALUES
 (1, 8, 'producto 1', 'Producto 1 utilizado en gran variedad de cosas como en pruebas para este desarrollo.', 'Laguna', 'PZ', 100, 0, '12', '1', '2015-01-24 17:41:51', '2015-02-11 13:33:51', 'producto-1', 1, 0, 1),
 (2, 6, 'Producto 2', 'Este producto tiene la siguiente descripcion de ejemplo<span class="Apple-tab-span" style="white-space:pre">	</span>', 'Algo', 'LT', 102, 2, '100', '1', '2015-01-24 17:52:00', '2015-02-11 18:34:08', 'producto-2', 1, 0, 1),
 (3, 8, 'Producto 4', 'Este es el producto numero cuatro de la categoria la verdad no se de donde.&nbsp;', 'Marca 1', 'PZ', 100, 0, '150', '1', '2015-02-11 12:32:00', '2015-02-11 13:34:01', 'producto-4', 1, 1, 1),

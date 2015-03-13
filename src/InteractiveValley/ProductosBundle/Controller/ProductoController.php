@@ -23,7 +23,7 @@ use InteractiveValley\GaleriasBundle\Entity\Galeria;
 class ProductoController extends Controller
 {
     
-    private $categorias = null;
+    private $modelos = null;
     
     protected function getFilters() {
         return $this->get('session')->get('filters', array());
@@ -31,42 +31,42 @@ class ProductoController extends Controller
     protected function setFilters($filtros) {
         $this->get('session')->set('filters', $filtros);
     }
-    protected function getCategoriaDefault() {
+    protected function getModeloDefault() {
         $filters = $this->getFilters();
         $cat = null;
-        if (isset($filters['categorias'])) {
-            $categorias = $this->getCategoriasProductos();
-            foreach ($categorias as $categoria) {
-                if ($categoria->getId() == $filters['categorias']) {
-                    $cat = $categoria;
+        if (isset($filters['modelos'])) {
+            $modelos = $this->getModelosProductos();
+            foreach ($modelos as $modelo) {
+                if ($modelo->getId() == $filters['modelos']) {
+                    $cat = $modelo;
                     break;
                 }
             }
         } else {
-            $categorias = $this->getCategoriasProductos();
-            $this->setFilters(array('categorias' => $categorias[0]->getId()));
-            $cat = $categorias[0];
+            $modelos = $this->getModelosProductos();
+            $this->setFilters(array('modelos' => $modelos[0]->getId()));
+            $cat = $modelos[0];
         }
         return $cat;
     }
-    protected function getCategoriasProductos() {
+    protected function getModelosProductos() {
         $em = $this->getDoctrine()->getManager();
-        if ($this->categorias == null) {
-            $this->categorias = $em->getRepository('ProductosBundle:Categoria')
+        if ($this->modelos == null) {
+            $this->modelos = $em->getRepository('ProductosBundle:Modelo')
                     ->findAll();
         }
-        return $this->categorias;
+        return $this->modelos;
     }
-    protected function getCategoriaActual($categoriaId) {
-        $categorias = $this->getCategoriasProductos();
-        $categoriaActual = null;
-        foreach ($categorias as $categoria) {
-            if ($categoria->getId() == $categoriaId) {
-                $categoriaActual = $categoria;
+    protected function getModeloActual($modeloId) {
+        $modelos = $this->getModelosProductos();
+        $modeloActual = null;
+        foreach ($modelos as $modelo) {
+            if ($modelo->getId() == $modeloId) {
+                $modeloActual = $modelo;
                 break;
             }
         }
-        return $categoriaActual;
+        return $modeloActual;
     }
 
 
@@ -79,33 +79,33 @@ class ProductoController extends Controller
      */
     public function indexAction()
     {
-        $categoria = $this->getCategoriaDefault();
+        $modelo = $this->getModeloDefault();
         return array(
-            'categoria' =>  $categoria,
-            'entities'  =>  $categoria->getProductos(),
+            'modelo' =>  $modelo,
+            'entities'  =>  $modelo->getProductos(),
         );
     }
     
     /**
-     * Lista todos los productos de una categoria.
+     * Lista todos los productos de una modelo.
      *
-     * @Route("/categoria/{slug}", name="productos_categoria")
+     * @Route("/modelo/{slug}", name="productos_modelo")
      * @Method("GET")
      * @Template("ProductosBundle:Producto:index.html.twig")
      */
-    public function categoriaAction($slug) {
+    public function modeloAction($slug) {
         $em = $this->getDoctrine()->getManager();
-        $categoria = $em->getRepository('ProductosBundle:Categoria')
+        $modelo = $em->getRepository('ProductosBundle:Modelo')
                 		->findOneBy(array('slug' => $slug));
-        if (!$categoria) {
-            throw $this->createNotFoundException('Unable to find Categoria entity.');
+        if (!$modelo) {
+            throw $this->createNotFoundException('Unable to find Modelo entity.');
         }
         $filters = $this->getFilters();
-        $filters['categorias'] = $categoria->getId();
+        $filters['modelos'] = $modelo->getId();
         $this->setFilters($filters);
         return array(
-            'categoria' =>  $categoria,
-            'entities'  =>  $categoria->getProductos(),
+            'modelo' =>  $modelo,
+            'entities'  =>  $modelo->getProductos(),
         );
     }
     
@@ -124,7 +124,6 @@ class ProductoController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $this->setNombreSluggable($entity,true);
             $em->persist($entity);
             $em->flush();
 
@@ -167,7 +166,7 @@ class ProductoController extends Controller
     public function newAction()
     {
         $entity = new Producto();
-        $entity->setCategoria($this->getCategoriaDefault());
+        $entity->setModelo($this->getModeloDefault());
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -526,36 +525,5 @@ class ProductoController extends Controller
         $centrado = new \Imagine\Image\Point($width, $height);
         $collage->paste($image,$centrado);
         $collage->save($path);        
-    }
-    
-    private function setNombreSluggable(Producto $entity, $isNew = false){
-        $em = $this->getDoctrine()->getManager();
-        $entity->setSlugAtValue();
-        $slug = $entity->getSlug();
-        $id = 0;
-        if(!$isNew){ $id = $entity->getId(); }
-        $resultados = $em->getRepository('ProductosBundle:Producto')
-                         ->findNombreSluggable($slug,$id);
-        if(count($resultados)>0){
-            $cont=0;
-            $encontrado = false;
-            do{
-                //buscamos el slug correcto
-                $slugBuscar = $slug .($cont>0?'-'.$cont:'');
-                foreach($resultados as $resultado){
-                    if($resultado->getSlug() == $slugBuscar){
-                        $encontrado=true;
-                        break;
-                    }else{
-                        $encontrado = false;
-                    }
-                }
-                //entonces empecemos a buscar otro slug
-                $cont++;
-            }while($encontrado);
-            $slug = $slugBuscar;    
-        }   
-        $entity->setSlug($slug);
-        return true;
     }
 }

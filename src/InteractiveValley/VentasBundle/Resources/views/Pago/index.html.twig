@@ -60,7 +60,7 @@
                                             <td>{{ entity.usuario.nombre }}</td>
                                             <td>{{ entity.importe }}</td>
                                             <td>{{ entity.iva }}</td>
-                                            <td>{{ entity.fechaAlta | date('d-m-Y') }}</td>
+                                            <td>{{ entity.createdAt | date('d-m-Y') }}</td>
                                             <td>
                                                 <button onclick="javascript:editarRegistro('{{ path('pagos_edit', { 'id': entity.id }) }}')" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> </button>
                                                 <button onclick="javascript:editarRegistro('{{ path('pagos_show', { 'id': entity.id }) }}', '#registro-{{entity.id}}')" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i> </button>

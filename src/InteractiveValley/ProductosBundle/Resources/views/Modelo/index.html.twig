@@ -1,0 +1,67 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Modelo list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Inventario</th>
+                <th>Precio</th>
+                <th>Iva</th>
+                <th>Slug</th>
+                <th>Ispromocional</th>
+                <th>Isnew</th>
+                <th>Isactive</th>
+                <th>Position</th>
+                <th>Createdat</th>
+                <th>Updatedat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('modelos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.descripcion }}</td>
+                <td>{{ entity.marca }}</td>
+                <td>{{ entity.modelo }}</td>
+                <td>{{ entity.inventario }}</td>
+                <td>{{ entity.precio }}</td>
+                <td>{{ entity.iva }}</td>
+                <td>{{ entity.slug }}</td>
+                <td>{{ entity.isPromocional }}</td>
+                <td>{{ entity.isNew }}</td>
+                <td>{{ entity.isActive }}</td>
+                <td>{{ entity.position }}</td>
+                <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('modelos_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('modelos_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('modelos_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

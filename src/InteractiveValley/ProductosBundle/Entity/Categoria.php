@@ -42,9 +42,9 @@ class Categoria
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_alta", type="datetime", nullable=true)
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
-    private $fechaAlta;
+    private $createdAt;
     
     /**
      * @var integer
@@ -61,9 +61,9 @@ class Categoria
     private $isActive;
     
     /**
-     * @ORM\OneToMany(targetEntity="InteractiveValley\ProductosBundle\Entity\Producto", mappedBy="categoria")
+     * @ORM\OneToMany(targetEntity="InteractiveValley\ProductosBundle\Entity\Modelo", mappedBy="categoria")
      */
-    protected $productos;
+    protected $modelos;
     
     function __toString() {
         return $this->nombre;
@@ -78,9 +78,9 @@ class Categoria
      */
     public function setCreatedAtValue()
     {
-        if(!$this->getFechaAlta())
+        if(!$this->getCreatedAt())
         {
-          $this->fechaAlta = new \DateTime();
+          $this->createdAt = new \DateTime();
         }
     }
     
@@ -130,26 +130,26 @@ class Categoria
     }
 
     /**
-     * Set fechaAlta
+     * Set createdAt
      *
-     * @param \DateTime $fechaAlta
+     * @param \DateTime $createdAt
      * @return Categoria
      */
-    public function setFechaAlta($fechaAlta)
+    public function setCreatedAt($createdAt)
     {
-        $this->fechaAlta = $fechaAlta;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     /**
-     * Get fechaAlta
+     * Get createdAt
      *
      * @return \DateTime 
      */
-    public function getFechaAlta()
+    public function getCreatedAt()
     {
-        return $this->fechaAlta;
+        return $this->createdAt;
     }
 
     /**
@@ -173,39 +173,6 @@ class Categoria
     public function getSlug()
     {
         return $this->slug;
-    }
-
-    /**
-     * Add productos
-     *
-     * @param \InteractiveValley\ProductosBundle\Entity\Producto $productos
-     * @return Categoria
-     */
-    public function addProducto(\InteractiveValley\ProductosBundle\Entity\Producto $productos)
-    {
-        $this->productos[] = $productos;
-
-        return $this;
-    }
-
-    /**
-     * Remove productos
-     *
-     * @param \InteractiveValley\ProductosBundle\Entity\Producto $productos
-     */
-    public function removeProducto(\InteractiveValley\ProductosBundle\Entity\Producto $productos)
-    {
-        $this->productos->removeElement($productos);
-    }
-
-    /**
-     * Get productos
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getProductos()
-    {
-        return $this->productos;
     }
 
     /**

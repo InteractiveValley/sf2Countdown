@@ -15,7 +15,7 @@
                 <td>{{ entity.usuario.nombre }}</td>
                 <td>{{ entity.importe }}</td>
                 <td>{{ entity.iva }}</td>
-                <td>{{ entity.fechaAlta | date('d-m-Y') }}</td>
+                <td>{{ entity.createdAt | date('d-m-Y') }}</td>
             </tr>
         {% endfor %}
     </tbody>
