@@ -61,9 +61,12 @@ class Categoria
     private $isActive;
     
     /**
-     * @ORM\OneToMany(targetEntity="InteractiveValley\ProductosBundle\Entity\Modelo", mappedBy="categoria")
+     * @var \Array de Modelo
+     * @todo Modelos de la categoria
+     *
+     * @ORM\ManyToMany(targetEntity="InteractiveValley\ProductosBundle\Entity\Modelo")
      */
-    protected $modelos;
+    private $modelos;
     
     function __toString() {
         return $this->nombre;
@@ -219,5 +222,38 @@ class Categoria
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Add modelos
+     *
+     * @param \InteractiveValley\ProductosBundle\Entity\Modelo $modelos
+     * @return Categoria
+     */
+    public function addModelo(\InteractiveValley\ProductosBundle\Entity\Modelo $modelos)
+    {
+        $this->modelos[] = $modelos;
+
+        return $this;
+    }
+
+    /**
+     * Remove modelos
+     *
+     * @param \InteractiveValley\ProductosBundle\Entity\Modelo $modelos
+     */
+    public function removeModelo(\InteractiveValley\ProductosBundle\Entity\Modelo $modelos)
+    {
+        $this->modelos->removeElement($modelos);
+    }
+
+    /**
+     * Get modelos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getModelos()
+    {
+        return $this->modelos;
     }
 }

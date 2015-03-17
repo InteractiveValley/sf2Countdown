@@ -80,9 +80,13 @@ class ProductoController extends Controller
     public function indexAction()
     {
         $modelo = $this->getModeloDefault();
+        
+        $productos = $this->getDoctrine()->getRepository('ProductosBundle:Producto')
+                          ->getProductosForModelo($modelo);
+        
         return array(
             'modelo' =>  $modelo,
-            'entities'  =>  $modelo->getProductos(),
+            'entities'  =>  $productos,
         );
     }
     
@@ -96,7 +100,7 @@ class ProductoController extends Controller
     public function modeloAction($slug) {
         $em = $this->getDoctrine()->getManager();
         $modelo = $em->getRepository('ProductosBundle:Modelo')
-                		->findOneBy(array('slug' => $slug));
+                     ->findOneBy(array('slug' => $slug));
         if (!$modelo) {
             throw $this->createNotFoundException('Unable to find Modelo entity.');
         }
@@ -126,7 +130,18 @@ class ProductoController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-
+            
+            $modelo = $entity->getModelo();
+            $productos = $this->getDoctrine()->getRepository('ProductosBundle:Producto')
+                              ->getProductosForModelo($modelo);
+            $inventario = 0;
+            foreach($productos as $producto){
+                $inventario += $producto->getInventario();
+            }
+            $modelo->setInventario($inventario);
+            $em->persist($modelo);
+            $em->flush();
+            
             return $this->redirect($this->generateUrl('productos_show', array('id' => $entity->getId())));
         }
 
@@ -149,6 +164,7 @@ class ProductoController extends Controller
         $form = $this->createForm(new ProductoType(), $entity, array(
             'action' => $this->generateUrl('productos_create'),
             'method' => 'POST',
+            'em' => $this->getDoctrine()->getManager(),
         ));
 
         //$form->add('submit', 'submit', array('label' => 'Create'));
@@ -166,6 +182,13 @@ class ProductoController extends Controller
     public function newAction()
     {
         $entity = new Producto();
+        $max = $this->getDoctrine()->getRepository('ProductosBundle:Producto')
+                    ->getMaxPosicion();
+        if (!is_null($max)) {
+            $entity->setPosition($max + 1);
+        } else {
+            $entity->setPosition(1);
+        }
         $entity->setModelo($this->getModeloDefault());
         $form   = $this->createCreateForm($entity);
 
@@ -245,6 +268,7 @@ class ProductoController extends Controller
         $form = $this->createForm(new ProductoType(), $entity, array(
             'action' => $this->generateUrl('productos_update', array('id' => $entity->getId())),
             'method' => 'PUT',
+            'em' => $this->getDoctrine()->getManager(),
         ));
 
         //$form->add('submit', 'submit', array('label' => 'Update'));
@@ -273,9 +297,19 @@ class ProductoController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $this->setNombreSluggable($entity);
             $em->flush();
-
+            
+            $modelo = $entity->getModelo();
+            $productos = $this->getDoctrine()->getRepository('ProductosBundle:Producto')
+                              ->getProductosForModelo($modelo);
+            $inventario = 0;
+            foreach($productos as $producto){
+                $inventario += $producto->getInventario();
+            }
+            $modelo->setInventario($inventario);
+            $em->persist($modelo);
+            $em->flush();
+            
             return $this->redirect($this->generateUrl('productos_edit', array('id' => $id)));
         }
 
@@ -525,5 +559,38 @@ class ProductoController extends Controller
         $centrado = new \Imagine\Image\Point($width, $height);
         $collage->paste($image,$centrado);
         $collage->save($path);        
+    }
+    
+    /**
+     * Ordenar las posiciones de las categorias de productos.
+     *
+     * @Route("/ordenar/registros", name="productos_ordenar")
+     * @Method("PATCH")
+     */
+    public function ordenarRegistrosAction(Request $request) {
+        if ($request->isXmlHttpRequest()) {
+            $registro_order = $request->query->get('registro');
+            $em = $this->getDoctrine()->getManager();
+            $result['ok'] = true;
+            foreach ($registro_order as $order => $id) {
+                $registro = $em->getRepository('ProductosBundle:Producto')->find($id);
+                if ($registro->getPosition() != ($order + 1)) {
+                    try {
+                        $registro->setPosition($order + 1);
+                        $em->flush();
+                    } catch (Exception $e) {
+                        $result['mensaje'] = $e->getMessage();
+                        $result['ok'] = false;
+                    }
+                }
+            }
+            $response = new \Symfony\Component\HttpFoundation\JsonResponse();
+            $response->setData($result);
+            return $response;
+        } else {
+            $response = new \Symfony\Component\HttpFoundation\JsonResponse();
+            $response->setData(array('ok' => false));
+            return $response;
+        }
     }
 }

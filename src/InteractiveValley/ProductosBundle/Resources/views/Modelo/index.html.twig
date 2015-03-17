@@ -1,67 +1,184 @@
-{% extends '::base.html.twig' %}
+{% extends 'BackendBundle::layout.html.twig' %}
 
-{% block body -%}
-    <h1>Modelo list</h1>
+{% block stylesheets %}
+  {{ parent() }}
+  <!-- Datatables -->
+  <link rel="stylesheet" href="{{asset('js/datatables/css/dataTables.bootstrap.css')}}">
+  <!-- jQuery UI -->
+  <link rel="stylesheet" href="{{asset('css/jquery-ui-1.9.2.custom.min.css')}}"> 
+  <!-- prettyPhoto -->
+  <link rel="stylesheet" href="{{asset('css/prettyPhoto.css')}}">  
+  <!-- Uniform -->
+  <link rel="stylesheet" href="{{asset('css/uniform.default.html')}}"> 
+  <!-- Widgets stylesheet -->
+  <link rel="stylesheet" href="{{asset('css/widgets.css')}}">   
+    <!-- Gritter Notifications stylesheet -->
+  <link rel="stylesheet" href="{{asset('css/jquery.gritter.css')}}"> 
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Descripcion</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Inventario</th>
-                <th>Precio</th>
-                <th>Iva</th>
-                <th>Slug</th>
-                <th>Ispromocional</th>
-                <th>Isnew</th>
-                <th>Isactive</th>
-                <th>Position</th>
-                <th>Createdat</th>
-                <th>Updatedat</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('modelos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.nombre }}</td>
-                <td>{{ entity.descripcion }}</td>
-                <td>{{ entity.marca }}</td>
-                <td>{{ entity.modelo }}</td>
-                <td>{{ entity.inventario }}</td>
-                <td>{{ entity.precio }}</td>
-                <td>{{ entity.iva }}</td>
-                <td>{{ entity.slug }}</td>
-                <td>{{ entity.isPromocional }}</td>
-                <td>{{ entity.isNew }}</td>
-                <td>{{ entity.isActive }}</td>
-                <td>{{ entity.position }}</td>
-                <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('modelos_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('modelos_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% endblock %}
 
-        <ul>
-        <li>
-            <a href="{{ path('modelos_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+{% block mainbar %}
+          <!-- Main bar -->
+    <div class="mainbar">
+      
+      <!-- Page heading -->
+      <div class="page-head">
+        <h2 class="pull-left">{{categoria.nombre}} - Modelos</h2>
+        <div class="clearfix"></div>
+        <!-- Breadcrumb -->
+        <div class="bread-crumb">
+          <a href="{{path('backend_homepage')}}"><i class="fa fa-home"></i>Dashboard</a--> 
+          <Divider>
+          <span class="divider">/</span> 
+          <a href="{{path('categorias_show',{'id':categoria.id})}}">{{categoria.nombre}}</a>
+          <span class="divider">/</span> 
+          <a href="{{path('modelos')}}" class="bread-current">Modelos</a>
+          <a href="{{path('modelos_new')}}" class="btn btn-info pull-right" style="color: white; margin-left: 5px;">Crear modelo</a>
+        </div>
+        
+        <div class="clearfix"></div>
+
+      </div>
+      <!-- Page heading ends -->
+
+      <!-- Matter -->
+
+      <div class="matter">
+        <div class="container">
+
+          <!-- Table -->
+
+            <div class="row">
+
+              <div class="col-md-12">
+
+                <div class="widget">
+
+                <div class="widget-head">
+                  <div class="pull-left">Registro de modelos</div>
+                  <div class="clearfix"></div>
+                </div>
+
+                  <div class="widget-content">
+                    <!-- Cuantos registros son: {{ entities | length > 0 }} -->
+                    <table id="datatable" class="table table-striped table-bordered table-hover">
+                      <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Categoria</th>
+                            <th>Imagen</th>
+                            <th>Producto</th>
+                            <th>Existencia</th>
+                            <th>Precio</th>
+                            <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      {% for entity in entities %}
+                            <tr id="registro-{{entity.id}}">
+                                <td><a href="{{ path('modelos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                                <td>
+                                    <ul>
+                                        {% for categoria in entity.categorias %}
+                                            <li>{{ categoria.nombre }}</li>
+                                        {% endfor %}    
+                                    </ul>
+                                </td>
+                                <td>
+                                    {% if entity.productos | length > 0 %}
+                                        {% if entity.productos[0].galerias | length > 0 %}
+                                            <img src="{{ entity.productos[0].galerias[0].webPath }}" style="max-width: 120px; max-width: 120px;"/>
+                                        {% else %}    
+                                            sin imagen
+                                        {% endif %}
+                                    {% else %}    
+                                        sin imagen
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{entity.nombre}}<br/>
+                                    <ul>
+                                        <li>Articulo promocional: {{ entity.isPromocional | isActive | raw }}</li>
+                                        <li>En la seccion de nuevo: {{ entity.isNew | isActive | raw }}</li>
+                                        <li>Activo?: {{ entity.isActive | isActive | raw }}</li>
+                                    </ul>
+                                </td>
+                                <td>{{ entity.inventario | number_format(2,".",",") }}</td>
+                                <td>$ {{ entity.precio | number_format(2,".",",") }}</td>
+                                <td>
+                                    <button onclick="javascript:editarRegistro('{{ path('modelos_edit', { 'id': entity.id }) }}')" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> </button>
+                                    <button onclick="javascript:editarRegistro('{{ path('modelos_show', { 'id': entity.id }) }}','#registro-{{entity.id}}')" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i> </button>
+                                    <button onclick="javascript:editarRegistro('{{ path('productos_modelo', { 'slug': entity.slug }) }}')" class="btn btn-xs btn-info"><i class="fa fa-files-o"></i> </button>
+                                </td>
+                                
+                            </tr>
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+
+                    <div class="widget-foot">
+                       <br><br>
+                      <div class="clearfix"></div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+        </div>
+      </div>
+
+    <!-- Matter ends -->
+
+    </div>
+
+   <!-- Mainbar ends -->        
+   <div class="clearfix"></div>
+  
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+
+<script src="{{asset('js/jquery-ui-1.9.2.custom.min.js')}}"></script> <!-- jQuery UI -->
+<script src="{{asset('js/jquery.prettyPhoto.js')}}"></script> <!-- prettyPhoto -->
+
+<!-- jQuery Notification - Noty -->
+<script src="{{asset('js/jquery.noty.js')}}"></script> <!-- jQuery Notify -->
+<script src="{{asset('js/themes/default.js')}}"></script> <!-- jQuery Notify -->
+<script src="{{asset('js/layouts/bottom.js')}}"></script> <!-- jQuery Notify -->
+<script src="{{asset('js/layouts/topRight.js')}}"></script> <!-- jQuery Notify -->
+<script src="{{asset('js/layouts/top.js')}}"></script> <!-- jQuery Notify -->
+
+<!-- DataTables  -->
+<script src="{{asset('js/datatables/js/jquery.dataTables.js')}}"></script>
+
+<script src="{{asset('js/jquery.uniform.min.html')}}"></script> <!-- jQuery Uniform -->
+<script src="{{asset('js/jquery.slimscroll.min.js')}}"></script> <!-- jQuery SlimScroll -->
+<script src="{{asset('js/bootbox.min.js')}}"></script> <!-- Filter for support page -->
+<script src="{{asset('js/custom.js')}}"></script> <!-- Custom codes -->
+
+<script>
+var editarRegistro = function(url){
+        location.href=url;
+};
+
+$(document).ready(function() {
+    $('#datatable').dataTable({
+        "sPaginationType": "full_numbers",
+        "sNext":"Siguiente",
+        "sLast":"Ultimo",
+        "sFirst":"Primero",
+        "sPrevious": "Anterior",
+    });
+});
+</script>
+
+    
+{% endblock %}
+

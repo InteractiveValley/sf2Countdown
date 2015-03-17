@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="{{ asset('css/fileuploader.css') }}" type="text/css"/>
   <link rel="stylesheet" href="{{ asset('css/prettyPhoto.css') }}" type="text/css"/>
   <link rel="stylesheet" href="{{ asset('css/admin.css') }}" type="text/css"/>
-
 {% endblock %}
 
 {% block mainbar %}
@@ -25,160 +24,129 @@
             <div class="clearfix"></div>
             <!-- Breadcrumb -->
             <div class="bread-crumb">
-                <a href="{{path('backend_homepage')}}"><i class="fa fa-home"></i>Dashboard</a--> 
-                    <Divider>
-                        <span class="divider">/</span> 
-                        <a href="{{path('productos')}}" class="bread-current">Productos</a>
-                        <a href="{{path('productos_new')}}" class="btn btn-info pull-right" style="color: white; margin-left: 5px;">Crear pagina</a>
-                        </div>
+                <a href="{{path('backend_homepage')}}"><i class="fa fa-home"></i>Dashboard</a> 
+                <span class="divider">/</span> 
+                <a href="{{path('categorias')}}">Categorias</a>
+                <span class="divider">/</span> 
+                <a href="{{path('modelos_show',{'id':entity.modelo.id})}}">{{entity.modelo.nombre}}</a>
+                <span class="divider">/</span>
+                <a href="{{path('productos')}}">Productos</a>
+                <a href="{{path('productos_new')}}" class="btn btn-info pull-right" style="color: white; margin-left: 5px;">Crear producto</a>
+            </div>
 
-                        <div class="clearfix"></div>
+            <div class="clearfix"></div>
 
-                        </div>
-                        <!-- Page heading ends -->
+        </div>
+        <!-- Page heading ends -->
 
-                        <!-- Matter -->
+        <!-- Matter -->
 
-                        <div class="matter">
-                            <div class="container" id="contenidoPagina">
-                                <div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="widget">
-                                                <div class="widget-head">
-                                                    <div class="pull-left">{{entity.nombre}}</div>
-                                                    <div class="clearfix"></div>
+        <div class="matter">
+            <div class="container" id="contenidoPagina">
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="widget">
+                                <div class="widget-head">
+                                    <div class="pull-left">{{entity.modelo.nombre ~ ' sku ' ~ entity.modelo.modelo ~ ' color ' ~ entity.stringColor }}</div>
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="widget-content">
+                                    <div class="padd">
+                                        <div class="tabbable" style="margin-bottom: 18px;">
+                                            <ul class="nav nav-tabs">
+                                                <li class="active"><a href="#sistema" data-toggle="tab">Sistema</a></li>
+                                                <li><a href="#galeria" data-toggle="tab">Galeria</a></li>
+                                            </ul>
+                                            <div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
+                                                <div class="tab-pane active" id="sistema">
+                                                    <table>
+                                                        <tbody><tr>
+                                                                <td>Id:</td>
+                                                                <td>{{entity.id}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Modelo:</td>
+                                                                <td>{{entity.modelo.nombre}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Imagen:</td>
+                                                                <td>
+                                                                    {% if entity.galerias | length > 0 %}
+                                                                        <img src="{{ entity.galerias[0].webPath }}" style="max-width: 400px;"/>
+                                                                    {% else %}    
+                                                                        sin imagen
+                                                                    {% endif %}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Existencia:</td>
+                                                                <td>{{entity.inventario | number_format(2,".",",") }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Color:</td>
+                                                                <td>{{entity.stringColor }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
-
-                                                <div class="widget-content">
-                                                    <div class="padd">
-                                                        <div class="tabbable" style="margin-bottom: 18px;">
-                                                            <ul class="nav nav-tabs">
-                                                                <li class="active"><a href="#sistema" data-toggle="tab">Sistema</a></li>
-                                                                <li><a href="#galeria" data-toggle="tab">Galeria</a></li>
-                                                            </ul>
-                                                            <div class="tab-content" style="padding-bottom: 9px; border-bottom: 1px solid #ddd;">
-                                                                <div class="tab-pane active" id="sistema">
-                                                                    <table>
-                                                                        <tbody><tr>
-                                                                                <td>Id:</td>
-                                                                                <td>{{entity.id}}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>Categoria:</td>
-                                                                                <td>{{entity.categoria.nombre}}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>Imagen:</td>
-                                                                                <td>
-                                                                                    {% if entity.galerias | length > 0 %}
-                                                                                        <img src="{{ entity.galerias[0].webPath }}" style="max-width: 400px;"/>
-                                                                                    {% else %}    
-                                                                                        sin imagen
-                                                                                    {% endif %}
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>Producto:</td>
-                                                                                <td>{{entity.nombre}}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>Slug:</td>
-                                                                                <td>{{entity.slug}}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>Descripcion:</td>
-                                                                                <td>{{ entity.descripcion | raw }}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>Existencia:</td>
-                                                                                <td>{{entity.existencia | number_format(2,".",",") }}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>Reservado:</td>
-                                                                                <td>{{ entity.reservado | number_format(2,".",",") }}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>Precio:</td>
-                                                                                <td>${{ entity.precio | number_format(2,".",",") }}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>Iva:</td>
-                                                                                <td>{{ entity.iva | number_format(2,".",",") }}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>Es articulo promocional:</td>
-                                                                                <td>{{ entity.isPromocional | isActive | raw }}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>Esta en la categoria "Lo nuevo":</td>
-                                                                                <td>{{ entity.isNew | isActive | raw }}</td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>Activo:</td>
-                                                                                <td>{{ entity.isActive | isActive | raw }}</td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                                <div class="tab-pane" id="galeria">
-                                                                    <div class="container-galeria">    
-                                                                            {# seccion de codigo html #}
-                                                                            <div id="lista_imagenes" style=" min-height: 400px; overflow: hidden;">
-                                                                                {% include 'GaleriasBundle:Galeria:galerias.html.twig' with {'galerias': entity.galerias, 'url_delete': url_delete } %}
-                                                                            </div>
-                                                                            <table style="width: 99%; margin: 0 auto;">
-                                                                                <tr width="50%">
-                                                                                    <td>
-                                                                                        <div id="upload"></div>
-                                                                                        Extenciones disponibles:   "jpeg","png","gif","jpg"
-                                                                                        <!--List Files-->
-                                                                                        <ul id="files" ></ul>
-                                                                                        <div class="clear"></div>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr width="50%">
-                                                                                    <td>
-                                                                                        <!--button onclick="javascript:editarRegistro('{{path('galerias_new')}}?tipo=link_video&clase=pagina&idContenedor={{entity.id}}&return={{path('productos_show',{'id':entity.id})}}#galeria')" class="botonUploadVideoLink">Crear Video Link</button-->
-                                                                                        <button onclick="javascript:crearVideoLink()" class="botonUploadVideoLink">Crear Video Link</button>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </table>
+                                                <div class="tab-pane" id="galeria">
+                                                    <div class="container-galeria">    
+                                                        {# seccion de codigo html #}
+                                                        <div id="lista_imagenes" style=" min-height: 400px; overflow: hidden;">
+                                                            {% include 'GaleriasBundle:Galeria:galerias.html.twig' with {'galerias': entity.galerias, 'url_delete': url_delete } %}
+                                                        </div>
+                                                        <table style="width: 99%; margin: 0 auto;">
+                                                            <tr>
+                                                                <td width="50%" valign="top">
+                                                                    <div id="upload"></div>
+                                                                    Extenciones disponibles:   "jpeg","png","gif","jpg"
+                                                                    <!--List Files-->
+                                                                    <ul id="files" ></ul>
+                                                                    <div class="clear"></div>
+                                                                </td>
+                                                                <td width="50%" valign="top">
+                                                                    <!--button onclick="javascript:editarRegistro('{{path('galerias_new')}}?tipo=link_video&clase=pagina&idContenedor={{entity.id}}&return={{path('productos_show',{'id':entity.id})}}#galeria')" class="botonUploadVideoLink">Crear Video Link</button-->
+                                                                    <button onclick="javascript:crearVideoLink()" class="botonUploadVideoLink">Crear Video Link</button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
 
 
 
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>  
                                                     </div>
                                                 </div>
-                                                <div class="widget-foot">
-                                                    <button id="botonRegresar" class="btn btn-default" onclick="javascript:regresar('{{path('productos')}}')">Regresar</button>
-                                                    <button id="botonEditar" class="btn btn-info" onclick="javascript:editarRegistro('{{path('productos_edit',{id: entity.id})}}')">Editar</button>
-                                                    <div style="float: left; margin-right: 3px;">
-                                                        <form id="formEliminar" action="{{ path('productos_delete', { 'id': entity.id }) }}" method="post">
-                                                            <input name="_method" value="DELETE" type="hidden"/>
-															{{ form_widget(delete_form) }}
-														</form>
-														<button class="btn btn-danger " onclick="eliminarRegistro();">Eliminar</button>
-                                                    </div>        
-                                                </div>
-                                            </div>  
-                                        </div>    
+                                            </div>
+                                        </div>  
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                                <div class="widget-foot">
+                                    <button id="botonRegresar" class="btn btn-default" onclick="javascript:regresar('{{path('productos')}}')">Regresar</button>
+                                    <button id="botonEditar" class="btn btn-info" onclick="javascript:editarRegistro('{{path('productos_edit',{id: entity.id})}}')">Editar</button>
+                                    <div style="float: left; margin-right: 3px;">
+                                        <form id="formEliminar" action="{{ path('productos_delete', { 'id': entity.id }) }}" method="post">
+                                            <input name="_method" value="DELETE" type="hidden"/>
+                                            {{ form_widget(delete_form) }}
+                                        </form>
+                                        <button class="btn btn-danger " onclick="eliminarRegistro();">Eliminar</button>
+                                    </div>        
+                                </div>
+                            </div>  
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <!-- Matter ends -->
+        <!-- Matter ends -->
 
-                        </div>
+    </div>
 
-                        <!-- Mainbar ends -->        
-                        <div class="clearfix"></div>
+    <!-- Mainbar ends -->        
+    <div class="clearfix"></div>
 
-{% include 'GaleriasBundle:Galeria:formulariosGaleria.html.twig' %}
+    {% include 'GaleriasBundle:Galeria:formulariosGaleria.html.twig' %}
 
 {% endblock %}
 

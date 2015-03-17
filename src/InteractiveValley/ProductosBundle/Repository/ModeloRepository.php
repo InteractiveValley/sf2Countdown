@@ -31,4 +31,20 @@ class ModeloRepository extends EntityRepository
         }
         return $query->getQuery()->getResult();
     }
+    
+    public function queryFindByCategoria($categoria){
+        $query= $this->getEntityManager()->createQueryBuilder();
+        $query->select('m')
+                ->from('InteractiveValley\ProductosBundle\Entity\Modelo', 'm')
+                ->join('m.categorias', 'c')
+                ->where('c.slug=:slug')
+                ->setParameter('slug', $categoria->getSlug())
+                ->orderBy('c.position', 'ASC');
+        return $query->getQuery();
+    }
+    
+    public function findByCategoria($categoria){
+        $query= $this->queryFindByCategoria($categoria);
+        return $query->getResult();
+    }
 }

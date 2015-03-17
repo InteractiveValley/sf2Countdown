@@ -97,7 +97,7 @@ class CategoriaController extends Controller
     {
         $entity = new Categoria();
         $max = $this->getDoctrine()->getRepository('ProductosBundle:Categoria')
-                ->getMaxPosicion();
+                    ->getMaxPosicion();
         if (!is_null($max)) {
             $entity->setPosition($max + 1);
         } else {

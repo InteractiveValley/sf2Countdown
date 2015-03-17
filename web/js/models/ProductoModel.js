@@ -12,7 +12,8 @@ define([
                     importe_with_format: '',
                     cantidad_with_format: '',
                     precio_with_format: '',
-                    in_carrito: false
+                    in_carrito: false,
+                    visible: true,
                 },
                 initialize: function () {
                     this.on("change:cantidad", function (self) {

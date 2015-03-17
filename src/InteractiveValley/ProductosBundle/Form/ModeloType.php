@@ -5,7 +5,8 @@ namespace InteractiveValley\ProductosBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use InteractiveValley\ProductosBundle\Entity\Producto;
+use Doctrine\ORM\EntityRepository;
+use InteractiveValley\ProductosBundle\Entity\Modelo;
 
 class ModeloType extends AbstractType
 {
@@ -32,18 +33,20 @@ class ModeloType extends AbstractType
             ->add('iva','choice',array(
                 'label'=>'IVA',
                 'empty_value'=>false,
-                'choices'=>Producto::getArrayIva(),
-                'preferred_choices'=>Producto::getPreferedIva(),
+                'choices'=>Modelo::getArrayIva(),
+                'preferred_choices'=>Modelo::getPreferedIva(),
                 'attr'=>array(
                     'class'=>'validate[required] form-control placeholder',
                     'placeholder'=>'IVA',
                 )))
             ->add('slug','hidden')
-            ->add('categoria','entity',array(
+            ->add('categorias','entity',array(
                 'class'=> 'ProductosBundle:Categoria',
-                'label'=>'Categoria',
+                'label'=>'Categorias',
                 'required'=>true,
                 'property'=>'nombre',
+                'expanded' => false, 
+                'multiple' => true,
                 'query_builder' => function(EntityRepository $er) {
                     return $er->createQueryBuilder('u')
                         ->orderBy('u.position', 'ASC');
@@ -54,7 +57,7 @@ class ModeloType extends AbstractType
                     'data-bind'=>'value: categoria',
                     )
                 ))
-            ->add('isPromocional',null,array('label'=>'¿Imagen grande?','attr'=>array(
+            ->add('isPromocional',null,array('label'=>'¿Es promocion?','attr'=>array(
                 'class'=>'checkbox-inline',
                 'placeholder'=>'Es activo',
                 'data-bind'=>'value: isPromocional'

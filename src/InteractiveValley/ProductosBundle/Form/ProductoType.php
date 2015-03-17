@@ -5,8 +5,8 @@ namespace InteractiveValley\ProductosBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
 use InteractiveValley\ProductosBundle\Entity\Producto;
+use InteractiveValley\ProductosBundle\Form\DataTransformer\ModeloToNumberTransformer;
 
 class ProductoType extends AbstractType
 {
@@ -16,6 +16,9 @@ class ProductoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $em = $options['em'];
+	$modeloTransformer = new ModeloToNumberTransformer($em);
+        
         $builder
             ->add('inventario','text',array('attr'=>array('class'=>'form-control')))
             ->add('color','choice',array(
@@ -27,21 +30,8 @@ class ProductoType extends AbstractType
                     'class'=>'validate[required] form-control placeholder',
                     'placeholder'=>'Color',
                 )))
-            ->add('modelo','entity',array(
-                'class'=> 'ProductosBundle:Modelo',
-                'label'=>'Modelo',
-                'required'=>true,
-                'property'=>'nombre',
-                'query_builder' => function(EntityRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->orderBy('u.position', 'ASC');
-                },
-                'attr'=>array(
-                    'class'=>'form-control placeholder',
-                    'placeholder'=>'Modelo',
-                    'data-bind'=>'value: modelo',
-                    )
-                ))
+            ->add('position','hidden')
+            ->add($builder->create('modelo','hidden')->addModelTransformer($modeloTransformer))
         ;
     }
     
@@ -52,7 +42,10 @@ class ProductoType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'InteractiveValley\ProductosBundle\Entity\Producto'
-        ));
+        ))
+        ->setRequired(array('em'))
+	->setAllowedTypes(array('em'=>'Doctrine\Common\Persistence\ObjectManager'))
+        ;
     }
 
     /**

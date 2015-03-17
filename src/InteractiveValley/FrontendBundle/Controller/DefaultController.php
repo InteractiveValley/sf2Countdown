@@ -21,7 +21,8 @@ class DefaultController extends BaseController {
      */
     public function indexAction(Request $request) {
         $categorias = $this->getDoctrine()
-                        ->getRepository('ProductosBundle:Categoria')->findAll();
+                            ->getRepository('ProductosBundle:Categoria')
+                            ->findBy(array(),array('position'=>'ASC'));
 
         return array('categorias' => $categorias);
     }
@@ -36,7 +37,6 @@ class DefaultController extends BaseController {
             'isNew' => true
         ));
         $categoria = array('id' => 0, 'nombre' => 'Lo nuevo');
-
         return array(
             'productos' => $productos,
             'categoria' => $categoria
@@ -61,14 +61,14 @@ class DefaultController extends BaseController {
      */
     public function categoriasAction(Request $request) {
         $categorias = $this->getDoctrine()
-                        ->getRepository('ProductosBundle:Categoria')->findAll();
+                        ->getRepository('ProductosBundle:Categoria')
+                        ->findBy(array(),array('position'=>'ASC'));
         $route = $request->query->get('route', '');
         if ($route == "categoria_productos") {
             $isShow = true;
         } else {
             $isShow = false;
         }
-
         return array(
             'categorias' => $categorias,
             'is_show' => $isShow,

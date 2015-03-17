@@ -20,24 +20,22 @@
 {% block mainbar %}
           <!-- Main bar -->
     <div class="mainbar">
-      
       <!-- Page heading -->
       <div class="page-head">
-        <h2 class="pull-left">{{categoria.nombre}} - Productos</h2>
+        <h2 class="pull-left">{{modelo.nombre}} - Productos</h2>
         <div class="clearfix"></div>
         <!-- Breadcrumb -->
         <div class="bread-crumb">
-          <a href="{{path('backend_homepage')}}"><i class="fa fa-home"></i>Dashboard</a--> 
-          <Divider>
+          <a href="{{path('backend_homepage')}}"><i class="fa fa-home"></i>Dashboard</a> 
           <span class="divider">/</span> 
-          <a href="{{path('categorias_show',{'id':categoria.id})}}">{{categoria.nombre}}</a>
+          <a href="{{path('categorias')}}">Categorias</a>
+          <span class="divider">/</span> 
+          <a href="{{path('modelos_show',{'id':modelo.id})}}">{{modelo.nombre}}</a>
           <span class="divider">/</span> 
           <a href="{{path('productos')}}" class="bread-current">Productos</a>
           <a href="{{path('productos_new')}}" class="btn btn-info pull-right" style="color: white; margin-left: 5px;">Crear producto</a>
         </div>
-        
         <div class="clearfix"></div>
-
       </div>
       <!-- Page heading ends -->
 
@@ -65,21 +63,19 @@
                       <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Categoria</th>
+                            <th>Modelo</th>
                             <th>Imagen</th>
-                            <th>Producto</th>
                             <th>Existencia</th>
-                            <th>Reservado</th>
-                            <th>Precio</th>
+                            <th>Color</th>
                             <th>Actions</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody id="cuerpoTabla">
                       {% for entity in entities %}
                             <tr id="registro-{{entity.id}}">
                                 <td><a href="{{ path('productos_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                                 <td>
-                                    {{ entity.categoria.nombre }}
+                                    {{ entity.modelo.nombre }}
                                 </td>
                                 <td>
                                     {% if entity.galerias | length > 0 %}
@@ -88,17 +84,8 @@
                                         sin imagen
                                     {% endif %}
                                 </td>
-                                <td>
-                                    {{entity.nombre}}<br/>
-                                    <ul>
-                                        <li>Articulo promocional: {{ entity.isPromocional | isActive | raw }}</li>
-                                        <li>En la seccion de nuevo: {{ entity.isNew | isActive | raw }}</li>
-                                        <li>Activo?: {{ entity.isActive | isActive | raw }}</li>
-                                    </ul>
-                                </td>
-                                <td>{{ entity.existencia | number_format(2,".",",") }}</td>
-                                <td>{{ entity.reservado | number_format(2,".",",") }}</td>
-                                <td>$ {{ entity.precio | number_format(2,".",",") }}</td>
+                                <td>{{ entity.inventario | number_format(2,".",",") }}</td>
+                                <td>{{ entity.stringColor }}</td>
                                 <td>
                                     <button onclick="javascript:editarRegistro('{{ path('productos_edit', { 'id': entity.id }) }}')" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> </button>
                                     <button onclick="javascript:editarRegistro('{{ path('productos_show', { 'id': entity.id }) }}','#registro-{{entity.id}}')" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i> </button>
@@ -157,11 +144,23 @@
 <script src="{{asset('js/custom.js')}}"></script> <!-- Custom codes -->
 
 <script>
-var editarRegistro = function(url){
-        location.href=url;
-};
+    var editarRegistro = function(url){
+            location.href=url;
+    };
 
-$(document).ready(function() {
+    var eliminarRegistro = function () {
+    {% if is_granted('ROLE_ADMIN') %}
+          bootbox.confirm("Esta seguro de eliminar el registro?", function (result) {
+              if (result) {
+                  $("#formEliminar").submit();
+              }
+          });
+    {% else %}
+          noty({text: 'No tienes los permisos suficientes para realizar esta accion', layout: 'bottom', type: 'warning', timeout: 2000});
+    {% endif %}      
+    };
+
+/*$(document).ready(function() {
     $('#datatable').dataTable({
         "sPaginationType": "full_numbers",
         "sNext":"Siguiente",
@@ -169,7 +168,53 @@ $(document).ready(function() {
         "sFirst":"Primero",
         "sPrevious": "Anterior",
     });
-});
+});*/
+
+    $(document).ready(function () {
+        iniciarlizarSorteable();
+    });
+      
+    function iniciarlizarSorteable(){
+        $("#cuerpoTabla").sortable({
+            items: "tr",
+            cursor: 'move',
+            opacity: 0.6,
+            update: function() {
+                sendOrderToServer();
+            }
+        });
+        $("#cuerpoTabla").disableSelection();
+    }
+    function sendOrderToServer() {
+        $(".loader").fadeIn();
+        var order = $("#cuerpoTabla").sortable('serialize');
+        $.ajax({
+            url: '{{path('productos_ordenar')}}?' + order,
+            type: 'PATCH',
+            data: order,
+            dataType: 'json',
+            success: function(data){
+                noty({
+                    text: 'Actualizacion realizada',
+                    layout:'topRight',
+                    type:'success',
+                    timeout:2000
+                });
+                console.log(data);
+                $(".loader").fadeOut();
+            },
+            error: function(data){
+                noty({
+                    text: 'Error de actualizacion',
+                    layout:'topRight',
+                    type:'error',
+                    timeout:2000
+                });
+                console.log(data);
+                $(".loader").fadeOut();
+            },
+        });
+    }
 </script>
 
     

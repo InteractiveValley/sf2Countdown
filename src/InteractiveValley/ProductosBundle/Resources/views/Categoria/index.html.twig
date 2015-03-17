@@ -62,7 +62,7 @@
                                             <td>
                                                 <button onclick="javascript:editarRegistro('{{ path('categorias_edit', { 'id': entity.id }) }}')" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> </button>
                                                 <button onclick="javascript:editarRegistro('{{ path('categorias_show', { 'id': entity.id }) }}', '#registro-{{entity.id}}')" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i> </button>
-                                                <button onclick="javascript:editarRegistro('{{ path('productos_categoria', { 'slug': entity.slug }) }}')" class="btn btn-xs btn-info"><i class="fa fa-files-o"></i> </button>
+                                                <button onclick="javascript:editarRegistro('{{ path('modelos_categoria', { 'slug': entity.slug }) }}')" class="btn btn-xs btn-info"><i class="fa fa-files-o"></i> </button>
                                             </td>
                                         </tr>
                                     {% endfor %}
@@ -118,63 +118,53 @@
     {% else %}
           noty({text: 'No tienes los permisos suficientes para realizar esta accion', layout: 'bottom', type: 'warning', timeout: 2000});
     {% endif %}      
-      };
-
-
-      $(document).ready(function () {
-          /*$('#datatable').dataTable({
-              "sPaginationType": "full_numbers",
-              "sNext": "Siguiente",
-              "sLast": "Ultimo",
-              "sFirst": "Primero",
-              "sPrevious": "Anterior",
-          });*/
+    };
+    
+    $(document).ready(function () {
         iniciarlizarSorteable();
-      });
+    });
       
-      function iniciarlizarSorteable(){
-            $("#cuerpoTabla").sortable({
-                items: "tr",
-                cursor: 'move',
-                opacity: 0.6,
-                update: function() {
-                    sendOrderToServer();
-                }
-            });
-            $("#cuerpoTabla").disableSelection();
-        }
-        function sendOrderToServer() {
-            debugger;
-            $(".loader").fadeIn();
-            var order = $("#cuerpoTabla").sortable('serialize');
-            $.ajax({
-               url: '{{path('categorias_ordenar')}}?' + order,
-               type: 'PATCH',
-               data: order,
-               dataType: 'json',
-               success: function(data){
-                  noty({
-                        text: 'Actualizacion realizada',
-                        layout:'topRight',
-                        type:'success',
-                        timeout:2000
-                  });
-                  console.log(data);
-                  $(".loader").fadeOut();
-               },
-               error: function(data){
-                   noty({
-                        text: 'Error de actualizacion',
-                        layout:'topRight',
-                        type:'error',
-                        timeout:2000
-                    });
-                   console.log(data);
-                   $(".loader").fadeOut();
-               },
-            });
-
-        }
+    function iniciarlizarSorteable(){
+        $("#cuerpoTabla").sortable({
+            items: "tr",
+            cursor: 'move',
+            opacity: 0.6,
+            update: function() {
+                sendOrderToServer();
+            }
+        });
+        $("#cuerpoTabla").disableSelection();
+    }
+    function sendOrderToServer() {
+        $(".loader").fadeIn();
+        var order = $("#cuerpoTabla").sortable('serialize');
+        $.ajax({
+            url: '{{path('categorias_ordenar')}}?' + order,
+            type: 'PATCH',
+            data: order,
+            dataType: 'json',
+            success: function(data){
+                noty({
+                    text: 'Actualizacion realizada',
+                    layout:'topRight',
+                    type:'success',
+                    timeout:2000
+                });
+                console.log(data);
+                $(".loader").fadeOut();
+            },
+            error: function(data){
+                noty({
+                    text: 'Error de actualizacion',
+                    layout:'topRight',
+                    type:'error',
+                    timeout:2000
+                });
+                console.log(data);
+                $(".loader").fadeOut();
+            },
+        });
+    }
       
 </script>
 

@@ -29,10 +29,13 @@
         <div class="clearfix"></div>
         <!-- Breadcrumb -->
         <div class="bread-crumb">
-            <a href="{{path('productos')}}"><i class="fa fa-home"></i>Productos</a> 
-            <!-- Divider -->
+            <a href="{{path('backend_homepage')}}"><i class="fa fa-home"></i>Dashboard</a> 
             <span class="divider">/</span> 
-            <a href="{{path('productos_new')}}" class="bread-current">Nueva producto</a>
+            <a href="{{path('categorias')}}">Categorias</a>
+            <span class="divider">/</span> 
+            <a href="{{path('modelos_show',{'id':entity.modelo.id})}}">{{entity.modelo.nombre}}</a>
+            <span class="divider">/</span> 
+            <a href="{{path('productos_new')}}" class="bread-current">Nuevo producto</a>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -46,7 +49,7 @@
                     <div class="widget">
 
                         <div class="widget-head">
-                            <div class="pull-left">Nueva producto</div>
+                            <div class="pull-left">{{entity.modelo.nombre ~ ' sku ' ~ entity.modelo.modelo ~ ' Nuevo producto' }}</div>
                             <div class="clearfix"></div>
                         </div>
 

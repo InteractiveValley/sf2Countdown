@@ -1,0 +1,631 @@
+@import 'nib'
+@import 'normalize'
+
+
+box-sizing()
+	-webkit-box-sizing arguments
+	-moz-box-sizing arguments
+	box-sizing arguments
+	
+opacity(n)
+	opacity n
+	if support-for-ie
+		filter unquote('progid:DXImageTransform.Microsoft.Alpha(Opacity=' + round(n * 100) + ')')
+
+color_rojo = #E34A3A
+color_verde_claro = #56C5B6
+color_verde_oscuro = #27AA98
+color_gris_claro = #F4F4F4
+color_gris_oscuro = #C3C3C3
+color_naranja_claro = #EB9A53
+color_naranja_oscuro = #E68229
+color_rosa = #DF2E72
+
+/* colores filtro */
+
+filtro_color_carmesi = #9F0700
+filtro_color_amarillo = #FA9000
+filtro_color_cafe = #7F5400
+filtro_color_azul = #1DA5FF
+filtro_color_azul_marino = #084664
+filtro_color_verde = #3CAE55
+filtro_color_fiusa = #F500FC
+filtro_color_gris = #A0A0A0
+
+article.filtro-categorias
+		border-top 1px solid color_gris_oscuro
+		border-bottom 1px solid color_gris_oscuro
+		position relative
+	& .filtro
+		height 2.9em
+		line-height 2.9em
+		&:last-child
+			border-top 1px solid color_gris_oscuro
+	& .filtro-titulo
+		text-transform uppercase
+		font-size .8em
+		background-color color_gris_claro
+	& #valor-precio
+		color color_rosa
+	& .color
+		font-size 2em
+		margin 8px 4px 0px
+		float left
+		cursor pointer
+		&.color-carmesi
+			color filtro_color_carmesi
+		&.color-amarillo
+			color filtro_color_amarillo
+		&.color-cafe
+			color filtro_color_cafe
+		&.color-azul
+			color filtro_color_azul
+		&.color-azul_marino
+			color filtro_color_azul
+		&.color-verde
+			color filtro_color_verde
+		&.color-fiusa
+			color filtro_color_fiusa
+		&.color-gris
+			color filtro_color_gris
+		&.inactive
+			opacity 0.5
+	& .filtro-ordenar
+		position absolute
+		top 0px
+		right 0px
+		& .filtro-ordenar-por-precio
+			position absolute
+			top 8px
+			right 0px
+			& .btn-grupo
+				width 100%
+				height 3em
+				& .btn-verde-countdown
+					color white
+					background-color color_verde_claro
+					border-color color_verde_claro
+		& .filtro-filtrar
+		& .filtro-ver-todos
+			position absolute
+			top 3em 
+			height 3em
+			width 50%
+			line-height 3em
+			background-color color_gris_oscuro
+			& span 
+				display block
+				text-align center
+				cursor pointer
+				&.active 
+					background-color color_rosa
+					color white
+		& .filtro-filtrar
+			left 0px
+		& .filtro-ver-todos
+			right 0px
+			
+			
+
+article.producto
+	float left
+	margin 3px
+	overflow hidden
+	border 1px solid color_gris_oscuro
+	box-sizing border-box
+	&.imagen_chica
+		width 238px
+		height 238px
+	&.promocional
+		box-shadow 0 0 4px 1px #DF2E72
+	&.imagen_grande
+		width 484px
+		height 484px
+		& .agregar-carrito
+			right 45%
+	& .imagen-producto
+		margin 0px
+		position relative
+		& figcaption
+			background-color white
+			bottom -50px
+			height 50px
+			left 0px
+			opacity 0
+			position absolute
+			transition all .3s ease-out
+			width 100%
+	& .imagen-producto-cantidad-carrito
+		position absolute 
+		right 0px
+		top 0px
+		display block 
+		height 20px
+		width 20px
+		color white 
+		background-color color_rosa
+	&:hover .imagen-producto figcaption
+		bottom 0px
+		opacity 1
+	& .precio-producto
+		color color_rosa
+		font-size 1.2em
+		height 30px 
+		left 1px
+		position absolute
+		top 1px
+		display block
+	& .inventario-producto
+		bottom 1px
+		color color_rosa
+		font-size .9em
+		height 30px
+		line-height 30px
+		left 1px
+		position absolute
+		display block
+	& .agregar-carrito
+		background-color white
+		color color_gris_oscuro
+		cursor pointer
+		display block
+		font-size 1.2em
+		position absolute 
+		right 50px
+		top 1px
+	& .ver-producto
+		background-color color_rosa
+		bottom 1px
+		color white
+		cursor pointer
+		display block
+		font-size .9em
+		height 20px
+		position absolute
+		right 0px
+		width 20px
+
+
+article.producto-detalle
+	& .producto-detail
+		text-align center
+		margin 0 auto
+		& .titulo-producto
+			color color_rosa
+			text-align center
+			text-transform capitalize
+		& .descripcion-producto
+			font-size 1em
+			text-align left
+			width 100%
+		& .precio-producto
+			color color_verde_oscuro
+			font-size 1.2em
+			height 30px 
+			width 100%
+			margin-top 3em
+			display block
+		& .inventario-producto
+			background-color color_verde_oscuro
+			color white
+			font-size 1em
+			height 30px
+			width 100%
+			margin-top 2em
+			& span
+				display inline-block
+				vertical-align top
+		& .agregarCarrito
+			background-color color_rosa
+			color white
+			display block
+			font-size 1em
+			height 30px 
+			line-height 30px
+			width 100%
+			margin-top 2em
+			cursor pointer
+			display block
+		
+body
+	font-size 16px
+	& > .container > header
+		background-color color_gris_claro
+		width 100%
+		margin 0 auto
+	& > .container > footer
+		width 100%
+		margin 0 auto
+
+button#hacerPedido
+	background-color color_rosa
+	color white
+	height 50px
+	line-height 45px
+	text-transform capitalize
+	width 90%
+	margin 0px 5% 10px
+
+button[type="submit"]
+	background-color color rosa
+	border none
+	border-radius .5em
+	padding .5em
+
+nav 
+	background-color color_gris_oscuro
+
+footer
+	height 2.1em
+	border-top 1px solid color_gris_oscuro
+	border-bottom 1px solid color_gris_oscuro
+	color black
+	& a
+		color black
+		text-decoration none
+		font-size .8em
+
+figure
+	margin 0	
+
+ul.list-categorias
+	padding 0
+	& li.item-categoria
+		box-sizing border-box
+		display inline-block
+		height 2em
+		line-height 2em
+		margin .3em .5em
+		min-width 6.25em
+		text-align center
+		vertical-align top
+		& a
+			background-color transparent
+			border-radius .5em
+			color black
+			display block
+			padding 0px .5em
+			transition background-color .3s ease-out
+			&:hover
+			&.active
+				background-color color_rosa
+				text-decoration none
+				color white
+
+ul.list-carrito
+	padding 0
+	& li.item-carrito
+		/**/
+		border-top 1px solid color_rosa
+		list-style none
+		margin .5em 0px
+		padding .5em 0px
+		width 100%
+		&:last-child
+			border-bottom 1px solid color_rosa
+		&.inactive .imagen-producto-carrito
+			opacity 0.5
+		& .imagen-producto-carrito
+			margin 0px 0px 0px 5px
+			overflow hidden
+			width 98px
+			height 80px
+			position relative
+			& figcaption
+				background-color color_rosa
+				bottom -80px
+				color white
+				font-size 14px
+				height 30px
+				left 0px
+				line-height 30px
+				position absolute
+				text-align center
+				transition bottom .5s ease-out
+				width 100%
+				& a
+					color white
+					&:hover
+						text-decoration none
+			& .reloj-inactivo
+				position absolute
+				top 0px
+				left 0px
+				color color_rosa
+		& .producto-carrito
+			position relative
+			margin-left 10px
+			color black
+			& .titulo-producto-carrito
+				margin 0
+				font-size .8em
+			& .precio-producto-carrito
+				display block
+				font-size .8em
+			& .tiempo-producto-carrito
+				display block
+				font-size .8em
+			& .tiempo-producto-reloj
+				color color_rosa
+			& .close-producto-carrito
+				position absolute
+				top -10px
+				right 0px
+				font-size 1.1em
+				font-weight normal
+				& a
+					color color_rosa
+			& .tiempo-producto-completo
+				background-color color_rosa
+				& .tiempo-producto-reactivar
+					display block
+					color white
+					font-size .8em
+					text-align center
+					padding 5px 0px
+					cursor pointer
+	& li.item-carrito:hover .imagen-producto-carrito figcaption
+		bottom 0px
+
+section.productos
+	text-align center
+	width 100%
+	min-height 400px
+	&.cargando
+		background url('/images/bx_loader.gif') center center no-repeat
+
+
+.buscador-envio
+	background-color color_rosa
+	height 2.68em
+	color white
+	& .input-group
+		padding .2em
+		& input[type="text"]
+		& button
+			background-color color_rosa
+			color white
+			border 1px solid white
+			
+	
+.buscador-usuario
+	height 2.68em
+	& .input-group
+		padding .2em
+		& button
+			background-color color_rosa
+			color white
+			border 1px solid white
+	
+
+.categorias 
+	width 100%
+	padding 0px 1em 1em
+
+.color-rosa
+	color color_rosa	
+
+.container-project
+	margin 0 auto
+	max-width 1020px
+	box-sizing border-box
+
+.errores
+	ul
+		padding 0px
+		& li
+			color color_rosa
+			font-size 14px
+
+.link-cuenta
+	padding .3em
+	font-size 0px
+	& .link-cuenta-usuario
+		color color_rosa
+		display inline-block
+		font-size 14px
+		line-height 14px
+		margin-top 10px
+		padding 2px 0px 2px 4px 
+		vertical-align top
+		&:first-child
+			border-right 1px solid color_rosa
+			padding-right 4px
+
+.links-footer
+	displa inline-block
+	vertical-align top
+	line-height 1em
+	padding .2em
+	margin-top .2em
+	& .link-footer-first
+		border-right 1px solid color_gris_oscuro
+		padding-right .4em
+
+.letrero-carrito
+	color color_rosa
+	padding 1em 2em
+	font-size .9em
+	text-align center
+
+.total-carrito
+	color black
+	font-size 1em
+	margin 10px 0px 5px
+	text-align right
+	text-transform uppercase
+	font-weight normal
+	&.rubro
+		font-size .9em
+		text-align right
+
+.modal-producto-galeria
+	position relative
+
+.modal-producto-contenido
+	text-align center
+	& .modal-producto-titulo
+		color color_rosa
+		font-size 1.2em
+		margin-top 0px
+		margin-bottom 0px
+		text-align left
+	& .modal-producto-clave-producto
+		color color_rosa
+		font-size .8em
+		text-align left
+		margin-bottom 1em
+	& .modal-producto-descripcion
+		font-size 1em
+		text-align justify
+		margin-bottom .5em
+	& .modal-producto-precio
+		color color_rosa
+		font-size 1.3em
+		margin-bottom .5em
+	& .modal-producto-inventario
+		background-color color_rosa
+		color white
+		display block
+		font-size 1.2em
+		margin 0 auto .5em
+		padding 5px
+		width 300px
+	& .modal-producto-cantidad 
+		margin-bottom .5em
+	& .modal-producto-agrergar-carrito
+		text-transform uppercase
+		padding .5em
+		border none
+	& .modal-producto-cantidad label
+		color color_rosa
+	& .modal-producto-cantidad button
+	& .modal-producto-agrergar-carrito
+		background-color color_rosa
+		color white
+
+
+.descuento-carrito
+	color color_rosa
+	font-size 1em
+	margin 5px 0px 10px
+	text-align right
+	text-transform uppercase
+	font-weight normal
+
+.titulo-carrito
+	color black
+	font-size .8em
+	line-height 4em
+	margin 2px 0px
+	text-align center
+	text-transform uppercase
+	font-weight normal
+	
+
+.totop
+	background-color rgba(black,0.8)
+	bottom 0px
+	height 3em
+	line-height 2.8em
+	position fixed
+	right 20%
+	text-align center
+	width 3em
+	border-radius 50%
+	display none
+	& a
+		color white
+		display block
+
+.padding 
+	padding 1em	2em
+
+.well
+	padding .5em
+
+#carrito
+	position relative
+	display none
+	border-top 1px solid color_gris_oscuro
+	& h6.titulo-logo-carrito
+		width 100%
+		position relative
+		height 3em
+		line-height 3em
+		text-align center
+		text-transform capitalize
+		font-size 1em
+		margin 0px
+		& #logo-carrito
+			position absolute
+			top -2px
+			right 0px
+	& .carrito
+		position absolute
+		width 266px
+		background-color white
+		border-left 4px solid color_rosa
+		top 48px
+		right 0px
+		z-index 2000
+		& .triangulo-carrito
+			width 0
+			height 0
+			border-left 10px solid transparent
+			border-right 10px solid transparent
+			border-top 10px solid color_rosa
+			font-size 0
+			line-height 0
+			position absolute
+			top 0px
+			right 13px
+
+
+#division-principal
+#carrito 
+	&.flotar
+		float left
+
+#mensajeBienvenida
+	background-color color_verde_claro
+	color white
+	border-top .5em solid color_verde_oscuro
+	border-bottom .5em solid color_verde_oscuro
+
+@media (max-width: 480px)
+	footer.footer
+		display none
+
+
+.modal-dialog
+	position absolute
+	top 50% !important
+	transform translate(-55%, -50%) !important
+	margin auto 5%
+	width 90%
+	height 80%
+
+.modal-content
+	min-height 100%
+	position absolute
+	top 0
+	bottom 0
+	left 0
+	right 0
+
+.modal-body
+	position absolute
+	top 5px
+	// height of header
+	bottom 5px
+	// height of footer
+	left 0
+	right 0
+	overflow-y auto
+
+.modal-footer
+	position absolute
+	bottom 0
+	left 0
+	right 0

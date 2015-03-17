@@ -95,16 +95,16 @@ class Direccion
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_alta", type="datetime",nullable=true)
+     * @ORM\Column(name="created_at", type="datetime",nullable=true)
      */
-    private $fechaAlta;
+    private $createdAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_modificacion", type="datetime",nullable=true)
+     * @ORM\Column(name="updated_at", type="datetime",nullable=true)
      */
-    private $fechaModificacion;
+    private $updatedAt;
 
     /**
      * @var InteractiveValley\BackendBundle\Entity\Usuario
@@ -146,13 +146,13 @@ class Direccion
      */
     public function setCreatedAtValue()
     {
-        if(!$this->getFechaAlta())
+        if(!$this->getCreatedAt())
         {
-          $this->fechaAlta = new \DateTime();
+          $this->createdAt = new \DateTime();
         }
-        if(!$this->getFechaModificacion())
+        if(!$this->getUpdatedAt())
         {
-          $this->fechaModificacion = new \DateTime();
+          $this->updatedAt = new \DateTime();
         }
     }
 
@@ -161,7 +161,7 @@ class Direccion
      */
     public function setUpdatedAtValue()
     {
-        $this->fechaModificacion = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
 
@@ -406,49 +406,49 @@ class Direccion
     }
 
     /**
-     * Set fechaAlta
+     * Set createdAt
      *
-     * @param \DateTime $fechaAlta
+     * @param \DateTime $createdAt
      * @return Direccion
      */
-    public function setFechaAlta($fechaAlta)
+    public function setCreatedAt($createdAt)
     {
-        $this->fechaAlta = $fechaAlta;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     /**
-     * Get fechaAlta
+     * Get createdAt
      *
      * @return \DateTime 
      */
-    public function getFechaAlta()
+    public function getCreatedAt()
     {
-        return $this->fechaAlta;
+        return $this->createdAt;
     }
 
     /**
-     * Set fechaModificacion
+     * Set updatedAt
      *
-     * @param \DateTime $fechaModificacion
+     * @param \DateTime $updatedAt
      * @return Direccion
      */
-    public function setFechaModificacion($fechaModificacion)
+    public function setUpdatedAt($updatedAt)
     {
-        $this->fechaModificacion = $fechaModificacion;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     /**
-     * Get fechaModificacion
+     * Get updatedAt
      *
      * @return \DateTime 
      */
-    public function getFechaModificacion()
+    public function getUpdatedAt()
     {
-        return $this->fechaModificacion;
+        return $this->updatedAt;
     }
 
     /**

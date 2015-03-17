@@ -79,9 +79,9 @@ class DetVenta
      */
     public function setCreatedAtValue()
     {
-        if(!$this->getFechaAlta())
+        if(!$this->getCreatedAt())
         {
-          $this->fechaAlta = new \DateTime();
+          $this->createdAt = new \DateTime();
         }
     }
     

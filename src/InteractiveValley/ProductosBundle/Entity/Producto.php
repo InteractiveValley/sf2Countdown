@@ -149,4 +149,185 @@ class Producto
     {
         $this->galerias = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set color
+     *
+     * @param string $color
+     * @return Producto
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string 
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * Set inventario
+     *
+     * @param integer $inventario
+     * @return Producto
+     */
+    public function setInventario($inventario)
+    {
+        $this->inventario = $inventario;
+
+        return $this;
+    }
+
+    /**
+     * Get inventario
+     *
+     * @return integer 
+     */
+    public function getInventario()
+    {
+        return $this->inventario;
+    }
+
+    /**
+     * Set position
+     *
+     * @param integer $position
+     * @return Producto
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return integer 
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Producto
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Producto
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set modelo
+     *
+     * @param \InteractiveValley\ProductosBundle\Entity\Modelo $modelo
+     * @return Producto
+     */
+    public function setModelo(\InteractiveValley\ProductosBundle\Entity\Modelo $modelo = null)
+    {
+        $this->modelo = $modelo;
+
+        return $this;
+    }
+
+    /**
+     * Get modelo
+     *
+     * @return \InteractiveValley\ProductosBundle\Entity\Modelo 
+     */
+    public function getModelo()
+    {
+        return $this->modelo;
+    }
+
+    /**
+     * Add galerias
+     *
+     * @param \InteractiveValley\GaleriasBundle\Entity\Galeria $galerias
+     * @return Producto
+     */
+    public function addGaleria(\InteractiveValley\GaleriasBundle\Entity\Galeria $galerias)
+    {
+        $this->galerias[] = $galerias;
+
+        return $this;
+    }
+
+    /**
+     * Remove galerias
+     *
+     * @param \InteractiveValley\GaleriasBundle\Entity\Galeria $galerias
+     */
+    public function removeGaleria(\InteractiveValley\GaleriasBundle\Entity\Galeria $galerias)
+    {
+        $this->galerias->removeElement($galerias);
+    }
+
+    /**
+     * Get galerias
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGalerias()
+    {
+        return $this->galerias;
+    }
 }

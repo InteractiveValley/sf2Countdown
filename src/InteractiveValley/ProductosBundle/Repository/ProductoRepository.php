@@ -12,6 +12,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductoRepository extends EntityRepository
 {
+    
+    public function getMaxPosicion(){
+        $em=$this->getEntityManager();
+       
+        $query=$em->createQuery('
+            SELECT MAX(c.position) as value 
+            FROM ProductosBundle:Categoria c 
+            ORDER BY c.position ASC
+        ');
+        
+        $max=$query->getResult();
+        return $max[0]['value'];
+    }
+    
     public function findNombreSluggable($slug, $excepto = 0){
         $query= $this->getEntityManager()->createQueryBuilder();
         if($excepto > 0){
@@ -29,6 +43,17 @@ class ProductoRepository extends EntityRepository
                 ->setParameter('slug',$slug."%")
                 ->orderBy('p.nombre', 'DESC'); 
         }
+        return $query->getQuery()->getResult();
+    }
+    
+    public function getProductosForModelo($modelo){
+        $query= $this->getEntityManager()->createQueryBuilder();
+        $query->select('p')
+                ->from('InteractiveValley\ProductosBundle\Entity\Producto', 'p')
+                ->join('p.modelo', 'm')
+                ->where('m.slug=:slug')
+                ->setParameter('slug',$modelo->getSlug())
+                ->orderBy('p.position', 'ASC');
         return $query->getQuery()->getResult();
     }
 }

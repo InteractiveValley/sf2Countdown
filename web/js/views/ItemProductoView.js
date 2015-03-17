@@ -13,7 +13,7 @@ define([
             initialize: function() {
                 console.log('inicializando itemproductoview');
                 this.is_active = true;
-                this.model.on('change:in_carrito', this.visible,this);
+                this.model.on('change:visible', this.visible,this);
                 this.model.on('change', this.render, this);
             },
             events:{
@@ -65,10 +65,10 @@ define([
                 }
                 return this;
             },
-            enCarrito: function(e){
+            visible: function(e){
               e.preventDefault();
               e.stopPropagation();
-              if(this.model.get('in_carrito')){
+              if(this.model.get('visible')){
                   var self = this;
                   setTimeout(function(){
                       $(self.el).fadeOut('fast');

@@ -101,13 +101,6 @@ class Modelo
     private $isActive;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="position", type="integer")
-     */
-    private $position;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="createdAt", type="datetime")
@@ -122,18 +115,18 @@ class Modelo
     private $updatedAt;
 
     /**
-     * @var InteractiveValley\ProductosBundle\Entity\Categoria
-     * @todo Categoria del modelo
+     * @var integer
+     * @todo Categorias del modelo. 
      *
-     * @ORM\ManyToOne(targetEntity="InteractiveValley\ProductosBundle\Entity\Categoria", inversedBy="modelos")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="categoria_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToMany(targetEntity="InteractiveValley\ProductosBundle\Entity\Categoria")
+     * @ORM\JoinTable(name="categorias_modelos")
+     * @ORM\OrderBy({"position" = "ASC"})
      */
-    private $categoria;
+    private $categorias;
     
     /**
      * @ORM\OneToMany(targetEntity="InteractiveValley\ProductosBundle\Entity\Producto", mappedBy="modelo")
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     private $productos;
 
@@ -194,4 +187,389 @@ class Modelo
         $this->slug = RpsStms::slugify($this->getNombre());
     }
     
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->categorias = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->productos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isActive = true;
+        $this->inventario = 0;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     * @return Modelo
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string 
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     * @return Modelo
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string 
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * Set marca
+     *
+     * @param string $marca
+     * @return Modelo
+     */
+    public function setMarca($marca)
+    {
+        $this->marca = $marca;
+
+        return $this;
+    }
+
+    /**
+     * Get marca
+     *
+     * @return string 
+     */
+    public function getMarca()
+    {
+        return $this->marca;
+    }
+
+    /**
+     * Set modelo
+     *
+     * @param string $modelo
+     * @return Modelo
+     */
+    public function setModelo($modelo)
+    {
+        $this->modelo = $modelo;
+
+        return $this;
+    }
+
+    /**
+     * Get modelo
+     *
+     * @return string 
+     */
+    public function getModelo()
+    {
+        return $this->modelo;
+    }
+
+    /**
+     * Set inventario
+     *
+     * @param integer $inventario
+     * @return Modelo
+     */
+    public function setInventario($inventario)
+    {
+        $this->inventario = $inventario;
+
+        return $this;
+    }
+
+    /**
+     * Get inventario
+     *
+     * @return integer 
+     */
+    public function getInventario()
+    {
+        return $this->inventario;
+    }
+
+    /**
+     * Set precio
+     *
+     * @param string $precio
+     * @return Modelo
+     */
+    public function setPrecio($precio)
+    {
+        $this->precio = $precio;
+
+        return $this;
+    }
+
+    /**
+     * Get precio
+     *
+     * @return string 
+     */
+    public function getPrecio()
+    {
+        return $this->precio;
+    }
+
+    /**
+     * Set iva
+     *
+     * @param string $iva
+     * @return Modelo
+     */
+    public function setIva($iva)
+    {
+        $this->iva = $iva;
+
+        return $this;
+    }
+
+    /**
+     * Get iva
+     *
+     * @return string 
+     */
+    public function getIva()
+    {
+        return $this->iva;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Modelo
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set isPromocional
+     *
+     * @param boolean $isPromocional
+     * @return Modelo
+     */
+    public function setIsPromocional($isPromocional)
+    {
+        $this->isPromocional = $isPromocional;
+
+        return $this;
+    }
+
+    /**
+     * Get isPromocional
+     *
+     * @return boolean 
+     */
+    public function getIsPromocional()
+    {
+        return $this->isPromocional;
+    }
+
+    /**
+     * Set isNew
+     *
+     * @param boolean $isNew
+     * @return Modelo
+     */
+    public function setIsNew($isNew)
+    {
+        $this->isNew = $isNew;
+
+        return $this;
+    }
+
+    /**
+     * Get isNew
+     *
+     * @return boolean 
+     */
+    public function getIsNew()
+    {
+        return $this->isNew;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return Modelo
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return Modelo
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Modelo
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Add categorias
+     *
+     * @param \InteractiveValley\ProductosBundle\Entity\Categoria $categorias
+     * @return Modelo
+     */
+    public function addCategoria(\InteractiveValley\ProductosBundle\Entity\Categoria $categorias)
+    {
+        $this->categorias[] = $categorias;
+
+        return $this;
+    }
+
+    /**
+     * Remove categorias
+     *
+     * @param \InteractiveValley\ProductosBundle\Entity\Categoria $categorias
+     */
+    public function removeCategoria(\InteractiveValley\ProductosBundle\Entity\Categoria $categorias)
+    {
+        $this->categorias->removeElement($categorias);
+    }
+
+    /**
+     * Get categorias
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategorias()
+    {
+        return $this->categorias;
+    }
+
+    /**
+     * Add productos
+     *
+     * @param \InteractiveValley\ProductosBundle\Entity\Producto $productos
+     * @return Modelo
+     */
+    public function addProducto(\InteractiveValley\ProductosBundle\Entity\Producto $productos)
+    {
+        $this->productos[] = $productos;
+
+        return $this;
+    }
+
+    /**
+     * Remove productos
+     *
+     * @param \InteractiveValley\ProductosBundle\Entity\Producto $productos
+     */
+    public function removeProducto(\InteractiveValley\ProductosBundle\Entity\Producto $productos)
+    {
+        $this->productos->removeElement($productos);
+    }
+
+    /**
+     * Get productos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProductos()
+    {
+        return $this->productos;
+    }
 }

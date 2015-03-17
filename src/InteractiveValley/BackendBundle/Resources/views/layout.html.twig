@@ -5,7 +5,7 @@
 {% block stylesheets %}
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}">
-    <link rel="stylesheet" href="{{asset('css/font-awesome.css')}}">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-responsive.html')}}">
     <link rel="stylesheet" href="{{asset('css/admin.css')}}">
@@ -16,6 +16,7 @@
     {% set route = app.request.get('_route') %}
 
     {% set categorias = "" %}
+    {% set modelos = "" %}
     {% set productos = "" %}
     {% set galerias = "" %}  
     {% set direcciones = "" %}
@@ -28,6 +29,8 @@
 
     {% if route == "categorias" %}
         {% set categorias = "class=open" %}
+    {% elseif route == "modelos" %}
+        {% set modelos = "class=open" %}
     {% elseif route == "productos" %}
         {% set productos = "class=open" %}
     {% elseif route == "galerias" %}
@@ -115,10 +118,15 @@
                     </a>
                 </li>
                 <li>
+                    <a {{modelos}}  href="{{path('modelos')}}">
+                        <i class="fa fa-th-list"></i> <span>Modelos</span>
+                    </a>
+                </li>
+                <!--li>
                     <a {{productos}}  href="{{path('productos')}}">
                         <i class="fa fa-th-list"></i> <span>Productos</span>
                     </a>
-                </li>
+                </li-->
                 <!--li>
                     <a {{galerias}} href="{{path('galerias')}}">
                         <i class="fa fa-tumblr"></i> <span>Galerias</span>
@@ -131,22 +139,22 @@
                 </li>
                 <li>
                     <a {{direcciones}} href="{{path('direcciones')}}">
-                        <i class="fa fa-user"></i> <span>Direcciones</span>
+                        <i class="fa fa-road"></i> <span>Direcciones</span>
                     </a>
                 </li>
                 <li>
                     <a {{ventas}} href="{{path('ventas')}}">
-                        <i class="fa fa-user"></i> <span>Ventas</span>
+                        <i class="fa fa-cart-plus"></i> <span>Ventas</span>
                     </a>
                 </li>
                 <li>
                     <a {{detventas}} href="{{path('detventas')}}">
-                        <i class="fa fa-user"></i> <span>Detalle de ventas</span>
+                        <i class="fa fa-cubes"></i> <span>Detalle de ventas</span>
                     </a>
                 </li>
                 <li>
                     <a {{pagos}} href="{{path('pagos')}}">
-                        <i class="fa fa-user"></i> <span>Pagos</span>
+                        <i class="fa fa-credit-card"></i> <span>Pagos</span>
                     </a>
                 </li>
                 <li>

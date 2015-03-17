@@ -2,17 +2,9 @@
     <thead>
         <tr>
             <th>Id</th>
-            <th>Categoria</th>
-            <th>Producto</th>
-            <th>Slug</th>
-            <th>Descripcion</th>
-            <th>Marca</th>
-            <th>UOM</th>
+            <th>Modelo</th>
             <th>Existencia</th>
-            <th>Reservado</th>
-            <th>Precio</th>
-            <th>Iva</th>
-            <th>Activo</th>
+            <th>Color</th>
             <th>Creado</th>
             <th>Actualizado</th>
         </tr>
@@ -22,16 +14,8 @@
             <tr>
                 <td>{{ entity.id }}</td>
                 <td>{{ entity.categoria.nombre }}</td>
-                <td>{{ entity.nombre }}</td>
-                <td>{{ entity.slug }}</td>
-                <td>{{ entity.descripcion | raw }}</td>
-                <td>{{ entity.marca }}</td>
-                <td>{{ entity.unidadMedida }}</td>
-                <td>{{ entity.existencia | number_format(2,".",",") }}</td>
-                <td>{{ entity.reservado | number_format(2,".",",") }}</td>
-                <td>$ {{ entity.precio | number_format(2,".",",") }}</td>
-                <td>{{ entity.iva | number_format(2,".",",") }}</td>
-                <td>{{ ((entity.isActive)?'Si':'No')  }}</td>                
+                <td>{{ entity.inventario | number_format(2,".",",") }}</td>
+                <td>{{ entity.stringColor }}</td>             
                 <td>{{ entity.createdAt | date('d-m-Y') }}</td>
                 <td>{{ entity.updatedAt | date('d-m-Y') }}</td>
             </tr>

@@ -77,9 +77,13 @@ class ModeloController extends Controller
     public function indexAction()
     {
         $categoria = $this->getCategoriaDefault();
+        
+        $modelos = $this->getDoctrine()->getRepository('ProductosBundle:Modelo')
+                        ->findByCategoria($categoria);
+        
         return array(
             'categoria' =>  $categoria,
-            'entities'  =>  $categoria->getModelos(),
+            'entities'  =>  $modelos,
         );
     }
     
@@ -131,7 +135,7 @@ class ModeloController extends Controller
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
-            'errores'     => RpsStms::getErrorMessages($form),
+            'errores'=> RpsStms::getErrorMessages($form),
         );
     }
 
@@ -164,7 +168,8 @@ class ModeloController extends Controller
     public function newAction()
     {
         $entity = new Modelo();
-        $entity->setCategoria($this->getCategoriaDefault());
+        //$entity->setCategoria($this->getCategoriaDefault());
+        $entity->addCategoria($this->getCategoriaDefault());
         $form   = $this->createCreateForm($entity);
 
         return array(
