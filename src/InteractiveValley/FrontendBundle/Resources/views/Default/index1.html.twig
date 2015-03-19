@@ -1,0 +1,28 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('css/bootstrap-slider.css')}}">
+    <link rel="stylesheet" href="{{asset('css/jquery.bxslider.css')}}">
+{% endblock %}
+
+{% block contenido %}
+                    
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script type="text/javascript">
+    $(function(){
+        window.api = {
+                url: 'http://localhost:8040/app_dev.php',
+                status: 'inicio',
+                modelo: {
+                    id: 0
+                },
+            };
+    });
+</script>
+<script data-main="/js/app_productos" src="{{asset('js/libs/require/require.js')}}"></script>
+     
+{% endblock %}

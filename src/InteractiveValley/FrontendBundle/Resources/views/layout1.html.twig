@@ -1,0 +1,285 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Countdown{% endblock %}
+
+{% set urlAbsolutaFoto = 'http://'
+                             ~ app.request.server.get('SERVER_NAME')
+                             ~ asset('images/logo.png') %}
+{% block stylesheets %}
+    {% block redes_sociales %}
+        <meta property="og:url" content="{{url('homepage')}}" />
+        <meta property="og:title" content="Countdown" />
+        <meta property="og:image" content="{{urlAbsolutaFoto}}" />
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="countdown.com" />
+        <!--meta property="fb:admins" content="USER_ID1,USER_ID2"/-->
+
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@Countdown">
+        <meta name="twitter:title" content="Countdown">
+        <meta name="twitter:description" content="Countdown, ventas de articulos promocionales">
+        <meta name="twitter:creator" content="@richpolis">
+        <meta name="twitter:image:src" content="{{urlAbsolutaFoto}}">
+        <meta name="twitter:domain" content="{{url('homepage')}}">
+        <meta name="twitter:app:name:iphone" content="">
+        <meta name="twitter:app:name:ipad" content="">
+        <meta name="twitter:app:name:googleplay" content="">
+        <meta name="twitter:app:url:iphone" content="">
+        <meta name="twitter:app:url:ipad" content="">
+        <meta name="twitter:app:url:googleplay" content="">
+        <meta name="twitter:app:id:iphone" content="">
+        <meta name="twitter:app:id:ipad" content="">
+        <meta name="twitter:app:id:googleplay" content="">
+    {% endblock %}
+
+    <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}"/>
+    <link rel="stylesheet" href="{{asset('css/font-awesome.css')}}">
+    <link rel="stylesheet" href="{{asset('css/main.css')}}"/>
+    <style>
+        .loader {
+            display: none;
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url('/images/page-loader.gif') 50% 50% no-repeat transparent;
+        }
+
+    </style>
+    {% if app.environment == 'prod' %}
+        <script>
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                        m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-55928211-1', 'auto');
+            ga('send', 'pageview');
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div id="app" class="container container-project">
+        <header class="row">
+            <div class="col-md-7 col-sm-12 col-xs-12">
+                <a href="{{path('homepage')}}">
+                    <figure id="logoPrincipal">
+                        <img src="{{asset('images/logov2.png')}}" class="img-responsive" alt="Countdown"/>
+                    </figure>
+                </a>
+            </div>
+            <div class="col-md-5 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row buscador-envio">
+                            <div class="col-md-2">
+                                <img src="{{asset('images/letra_i.jpg')}}" alt="información"/>
+                            </div>
+                            <div class="col-md-10">
+                                <form class="form-inline">
+                                    <div class="form-group row">
+                                        <label for="pedido" class="col-md-5" style="font-size: .8em; line-height: 3em">Ingrese su pedido:</label>
+                                        <div class="input-group" class="col-md-7">
+                                            <input type="text" class="form-control" placeholder="" name="pedido">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>    
+                                </form>    
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row buscador-usuario">
+                            <div class="col-md-4 link-cuenta">
+                                <a class="link-cuenta-usuario" href="{{path('registro')}}">Crear cuenta</a>
+                                <a class="link-cuenta-usuario" href="{{path('login')}}">Login</a>
+                            </div>
+                            <div class="col-md-8">
+                                <form class="form-inline">
+                                    <div class="form-group row">
+                                        <div class="input-group col-md-12">
+                                            <input type="text" class="form-control" placeholder="Search" name="buscar">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>    
+        </header>
+        <!-- Static navbar -->
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!--a id="nameProject" href="#" class="navbar-brand">Countdown</a-->
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#">Inicio</a></li>
+                        <!--li><a href="#recomendaciones">Recomendaciones</a></li-->
+                        <li>
+                            <a href="#categorias" id="showCategorias">
+                            <!--span id="showCategorias"-->    
+                                Categorias
+                                <span class="cerrar-categorias">
+                                    <i class='fa fa-list'></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#mostrar/carrito" id="showCarrito">Carrito</a>
+                            <!--span id="showCarrito">Carrito</span-->
+                        </li>
+                        <li id="carrito-1">
+                            <img src="/images/carrito.png" alt="" height="50">
+                        </li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div><!--/.container-fluid -->
+        </nav>
+        {% set route = app.request.get('_route') %}
+        {% render(controller('FrontendBundle:Default:categorias',{'route':route})) %}
+
+    <div id="division-principal" class="flotar" style="width: 100%;">
+        {% block contenido %}{% endblock %}
+    </div>
+    <div id="carrito" class="flotar">
+        <!-- template backbone -->
+    </div>
+    <div class="clearfix"></div>
+    <footer class="row">
+        <div class="col-md-4 links-footer">
+            <a href="{{path('registro')}}" class="link-footer link-footer-first">Crear Cuenta</a>
+            <a href="{{path('login')}}" class="link-footer">Login</a>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4 links-footer text-right">
+            <a href="#politicia-de-privacidad" class="link-footer link-footer-first">Politica de privacidad</a>
+            <a href="#contacto" class="link-footer" data-toggle="modal" data-target="#contactoModal">Contacto</a>
+        </div>
+    </footer>
+    <span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span>
+    <div class="loader"></div>
+</div> <!-- fin de app -->
+        
+<div class="modal fade" id="contactoModal" tabindex="-1" role="dialog" aria-labelledby="contactoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="contactoLabel">Contacto</h4>
+      </div>
+      <div class="modal-body">
+        {{render(controller('FrontendBundle:Api:contacto'))}}
+      </div>
+      <div class="modal-footer">
+        <img class="ajax-loader pull-left" src="/images/bx_loader.gif" alt="Enviando ..." style="display: none;">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="button" id="enviarContacto" class="btn btn-primary">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="mensajeModal" tabindex="-1" role="dialog" aria-labelledby="mensajeLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h1 class="color-rosa text-center">Bienvenidos</h1>  
+        <h2 class="color-rosa text-center">Precios excepcionales en productos hasta agotar existencia</h2>
+        <h2 class="color-rosa text-center">¿Como funciona?</h2>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <button type="button" id="botonCerrarBienvenida" class="btn btn-lg btn-primary" style="background: #DF2E72; color: white;">Entrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modalProducto" style="z-index: 2000;" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true"></div>        
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <script src="{{asset('js/bootstrap.js')}}"></script>
+    <script src="{{asset('js/bootstrap-slider.js')}}"></script> 
+    <script src="{{asset('js/jquery.bxslider.min.js')}}"></script> 
+    <script>
+            $(document).ready(function () {
+                $("#mensajeModal").modal('show');
+                
+                $("#botonCerrarBienvenida").on("click",function(){
+                   $("#mensajeModal").modal('hide'); 
+                });
+                
+                $("#enviarContacto").on("click",function(){
+                    var form = $("#formContacto");
+                    $(".ajax-loader").fadeIn("fast");
+                    $.ajax({
+                        url: form.attr("action"),
+                        type: 'POST',
+                        dataType: 'json',
+                        data: form.serialize(),
+                        success: function(data){
+                            if(data.status == "send"){
+                                $("#contactoModal .modal-body").html(data.form);
+                                setTimeout(function(){
+                                    $("#contactoModal").modal("hide");
+                                },2000);
+                            }else{
+                                $("#contactoModal .modal-body").html(data.form);
+                            }
+                            $(".ajax-loader").fadeOut("fast");
+                            setTimeout(function(){
+                                 $(".alert").remove();
+                            },2000);
+                        },
+                        error: function(data){
+                            alert("error");
+                            console.log(data);
+                            $(".ajax-loader").fadeOut("fast");
+                        }
+                    })
+                });
+            });
+    </script>
+{% endblock %}

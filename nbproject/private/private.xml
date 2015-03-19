@@ -5,8 +5,11 @@
         <group>
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/VentasBundle/Controller/DireccionController.php</file>
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/VentasBundle/Resources/views/Direccion/show.html.twig</file>
-            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/VentasBundle/Resources/views/Direccion/index.html.twig</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/FrontendBundle/Resources/views/layout1.html.twig</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/FrontendBundle/Resources/views/layout.html.twig</file>
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/BackendBundle/Resources/views/Usuario/index.html.twig</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/FrontendBundle/Resources/views/Default/index1.html.twig</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/FrontendBundle/Resources/views/Default/index.html.twig</file>
             <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/VentasBundle/Form/DireccionType.php</file>
         </group>
     </open-files>
