@@ -79,8 +79,7 @@ class UsuarioController extends BaseController
     {
         $form = $this->createForm(new UsuarioType(), $entity, array(
             'action' => $this->generateUrl('usuarios_create'),
-            'method' => 'POST',
-            'em'=>$this->getDoctrine()->getManager(),
+            'method' => 'POST'
         ));
 
         //$form->add('submit', 'submit', array('label' => 'Create'));
@@ -98,7 +97,6 @@ class UsuarioController extends BaseController
     public function newAction()
     {
         $entity = new Usuario();
-        $entity->setEdificio($this->getEdificioActual());
         $entity->setGrupo(Usuario::GRUPO_USUARIOS);
         $form   = $this->createCreateForm($entity);
 
@@ -173,8 +171,7 @@ class UsuarioController extends BaseController
     {
         $form = $this->createForm(new UsuarioType(), $entity, array(
             'action' => $this->generateUrl('usuarios_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-            'em'=>$this->getDoctrine()->getManager()
+            'method' => 'PUT'
         ));
 
         //$form->add('submit', 'submit', array('label' => 'Update'));

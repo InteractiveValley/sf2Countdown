@@ -11,8 +11,8 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript">
+{{ parent() }}
+<script type="text/javascript">
     $(function(){
         window.api = {
                 url: 'http://localhost:8040/app_dev.php',
@@ -22,7 +22,7 @@
                 },
             };
     });
-    </script>
-    <script data-main="/js/app_productos" src="{{asset('js/libs/require/require.js')}}"></script>
+</script>
+<script data-main="/js/app_productos" src="{{asset('js/libs/require/require.js')}}"></script>
      
 {% endblock %}

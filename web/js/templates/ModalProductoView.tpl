@@ -20,14 +20,14 @@
                                <%= producto.precio_with_format %> MXN
                             </div>
                             <span class="modal-producto-inventario">
-                                Countdown:  <%= producto.existencia %>
+                                Countdown:  <%= producto.inventario %>
                             </span>
                             <form class="form-inline modal-producto-cantidad">
                                 <div class="form-group">
                                     <label for="cantidad">Cantidad: </label>
-                                    <input type="text" class="form-control" id="cantidad" placeholder="" style="width:100px;">
-                                    <button class="btn btn-default"><i class="fa fa-plus-square"></i></button>
-                                    <button class="btn btn-default"><i class="fa fa-minus-square"></i></button>
+                                    <input type="text" class="form-control" value="<%= producto.cantidad %>" id="cantidad" placeholder="" style="width:100px;">
+                                    <button class="btn btn-default botonIncrementar"><i class="fa fa-plus-square"></i></button>
+                                    <button class="btn btn-default botonDecrementar"><i class="fa fa-minus-square"></i></button>
                                 </div>
                             </form>
                             <button class="modal-producto-agrergar-carrito" data-id="<%= producto.id %>">agregar a carrito</button>

@@ -35,10 +35,10 @@ class DireccionType extends AbstractType
             ->add('colonia','text',array('attr'=>array('class'=>'form-control')))
             ->add('estado','text',array('attr'=>array('class'=>'form-control')))
             ->add('contacto','text',array('attr'=>array('class'=>'form-control')))
-            ->add('paqueteria','hidden')
+            ->add('paqueteria','text',array('attr'=>array('class'=>'form-control')))
             ->add('usuario','entity',array(
-                'class'=> 'ProductosBundle:Categoria',
-                'label'=>'Categoria',
+                'class'=> 'BackendBundle:Usuario',
+                'label'=>'Usuario',
                 'required'=>true,
                 'property'=>'nombre',
                 'query_builder' => function(EntityRepository $er) {
@@ -47,8 +47,8 @@ class DireccionType extends AbstractType
                 },
                 'attr'=>array(
                     'class'=>'form-control placeholder',
-                    'placeholder'=>'Categoria',
-                    'data-bind'=>'value: categoria',
+                    'placeholder'=>'Usuario',
+                    'data-bind'=>'value: usuario',
                     )
                 ))
         ;

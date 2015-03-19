@@ -2,6 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/VentasBundle/Controller/DireccionController.php</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/VentasBundle/Resources/views/Direccion/show.html.twig</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/VentasBundle/Resources/views/Direccion/index.html.twig</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/BackendBundle/Resources/views/Usuario/index.html.twig</file>
+            <file>file:/Users/richpolis/Proyectos/php/sf2/sf2CountDown/src/InteractiveValley/VentasBundle/Form/DireccionType.php</file>
+        </group>
     </open-files>
 </project-private>

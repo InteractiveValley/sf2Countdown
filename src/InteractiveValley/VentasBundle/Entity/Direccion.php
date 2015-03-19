@@ -60,21 +60,21 @@ class Direccion
     /**
      * @var integer
      *
-     * @ORM\Column(name="municipio", type="integer")
+     * @ORM\Column(name="municipio", type="string", length=255)
      */
     private $municipio;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="colonia", type="integer")
+     * @ORM\Column(name="colonia", type="string", length=255)
      */
     private $colonia;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="estado", type="integer")
+     * @ORM\Column(name="estado", type="string", length=255)
      */
     private $estado;
 

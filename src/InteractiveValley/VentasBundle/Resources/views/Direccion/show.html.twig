@@ -25,7 +25,7 @@
                 <span class="divider">/</span>
                 <a href="{{path('direcciones')}}" class="bread-current">Direcciones</a>
                 <span class="divider">/</span>
-                <a href="{{path('direcciones_show',{'id': entity.id})}}" class="bread-current">{{entity.nombre}}</a>
+                <a href="{{path('direcciones_show',{'id': entity.id})}}" class="bread-current">{{entity.stringTipoDireccion}}</a>
                 {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{path('direcciones_new')}}" class="btn btn-info pull-right" style="color: white; margin-left: 5px;">Crear direccion</a>
                 {% endif %}
@@ -62,12 +62,44 @@
                                                     <td>{{ entity.usuario.nombre }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th>tipoDireccion</th>
-                                                    <td>{{ entity.tipoDireccion }}</td>
+                                                    <th>Tipo</th>
+                                                    <td>{{ entity.stringTipoDireccion }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Calle</th>
                                                     <td>{{ entity.calle }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Num. Externo</th>
+                                                    <td>{{ entity.numExterior }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Num. Interno</th>
+                                                    <td>{{ entity.numInterior }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Cp</th>
+                                                    <td>{{ entity.cp }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Colonia</th>
+                                                    <td>{{ entity.colonia }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Mun/Del</th>
+                                                    <td>{{ entity.municipio }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Estado</th>
+                                                    <td>{{ entity.estado }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Contacto</th>
+                                                    <td>{{ entity.contacto }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Paqueteria</th>
+                                                    <td>{{ entity.paqueteria }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

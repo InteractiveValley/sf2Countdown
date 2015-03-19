@@ -19,6 +19,52 @@ use InteractiveValley\BackendBundle\Utils\Richsys as RpsStms;
  */
 class DireccionController extends Controller
 {
+    
+    private $usuarios = null;
+    
+    protected function getFilters() {
+        return $this->get('session')->get('filters', array());
+    }
+    protected function setFilters($filtros) {
+        $this->get('session')->set('filters', $filtros);
+    }
+    protected function getUsuarioDefault() {
+        $filters = $this->getFilters();
+        $cat = null;
+        if (isset($filters['usuarios'])) {
+            $usuarios = $this->getUsuariosDirecciones();
+            foreach ($usuarios as $usuario) {
+                if ($usuario->getId() == $filters['usuarios']) {
+                    $cat = $usuario;
+                    break;
+                }
+            }
+        } else {
+            $usuarios = $this->getUsuariosDirecciones();
+            $this->setFilters(array('usuarios' => $usuarios[0]->getId()));
+            $cat = $usuarios[0];
+        }
+        return $cat;
+    }
+    protected function getUsuariosDirecciones() {
+        $em = $this->getDoctrine()->getManager();
+        if ($this->usuarios == null) {
+            $this->usuarios = $em->getRepository('BackendBundle:Usuario')
+                    ->findAll();
+        }
+        return $this->usuarios;
+    }
+    protected function getUsuarioActual($usuarioId) {
+        $usuarios = $this->getUsuariosDirecciones();
+        $usuarioActual = null;
+        foreach ($usuarios as $usuario) {
+            if ($usuario->getId() == $usuarioId) {
+                $usuarioActual = $usuario;
+                break;
+            }
+        }
+        return $usuarioActual;
+    }
 
     /**
      * Lists all Direccion entities.
@@ -29,14 +75,40 @@ class DireccionController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('VentasBundle:Direccion')->findAll();
-
+        $usuario = $this->getUsuarioDefault();
+        
+        /*$direcciones = $this->getDoctrine()->getRepository('VentasBundle:Direccion')
+                        ->findByUsuario($usuario);*/
+        
         return array(
-            'entities' => $entities,
+            'usuario' =>  $usuario,
+            'entities'  =>  $usuario->getDirecciones(),
         );
     }
+    
+    /**
+     * Lista todas las direcciones de un usuario.
+     *
+     * @Route("/usuario/{id}", name="direcciones_usuario")
+     * @Method("GET")
+     * @Template("VentasBundle:Direccion:index.html.twig")
+     */
+    public function usuarioAction($id) {
+        $em = $this->getDoctrine()->getManager();
+        $usuario = $em->getRepository('BackendBundle:Usuario')
+                		->find($id);
+        if (!$usuario) {
+            throw $this->createNotFoundException('Unable to find Usuario entity.');
+        }
+        $filters = $this->getFilters();
+        $filters['usuarios'] = $usuario->getId();
+        $this->setFilters($filters);
+        return array(
+            'usuario' =>  $usuario,
+            'entities'  =>  $usuario->getDirecciones(),
+        );
+    }
+    
     /**
      * Creates a new Direccion entity.
      *
@@ -94,6 +166,7 @@ class DireccionController extends Controller
     public function newAction()
     {
         $entity = new Direccion();
+        $entity->setUsuario($this->getUsuarioDefault());
         $form   = $this->createCreateForm($entity);
 
         return array(

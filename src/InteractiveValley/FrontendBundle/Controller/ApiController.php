@@ -32,16 +32,6 @@ class ApiController extends BaseController {
         return $this->claveApartado;
     }
     
-    /*
-    protected function getFilters() {
-        return $this->get('session')->get('filters', array());
-    }
-    
-    protected function setFilters($filtros) {
-        $this->get('session')->set('filters', $filtros);
-    }
-    */
-    
     /**
      * @Route("/api/categorias", name="api_get_categorias")
      * @Method({"GET"})

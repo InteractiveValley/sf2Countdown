@@ -47,7 +47,7 @@
                                     <tr>
                                         <th>Id</th>
                                         <th>Usuario</th>
-                                        <th>tipoDireccion</th>
+                                        <th>Tipo</th>
                                         <th>Calle</th>
                                         <th>Actions</th>
                                     </tr>
@@ -57,7 +57,7 @@
                                         <tr>
                                             <td><a href="{{ path('direcciones_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                                             <td>{{ entity.usuario.nombre }}</td>
-                                            <td>{{ entity.tipoDireccion }}</td>
+                                            <td>{{ entity.stringTipoDireccion }}</td>
                                             <td>{{ entity.calle }}</td>
                                             <td>
                                                 <button onclick="javascript:editarRegistro('{{ path('direcciones_edit', { 'id': entity.id }) }}')" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> </button>
