@@ -77,6 +77,7 @@ class VentaController extends Controller
         $form = $this->createForm(new VentaType(), $entity, array(
             'action' => $this->generateUrl('ventas_create'),
             'method' => 'POST',
+            'em' => $this->getDoctrine()->getManager(),
         ));
 
         //$form->add('submit', 'submit', array('label' => 'Create'));
@@ -168,6 +169,7 @@ class VentaController extends Controller
         $form = $this->createForm(new VentaType(), $entity, array(
             'action' => $this->generateUrl('ventas_update', array('id' => $entity->getId())),
             'method' => 'PUT',
+            'em' => $this->getDoctrine()->getManager(),
         ));
 
         //$form->add('submit', 'submit', array('label' => 'Update'));

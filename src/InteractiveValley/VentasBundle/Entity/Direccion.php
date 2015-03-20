@@ -137,6 +137,18 @@ class Direccion
         return array(self::TIPO_DIRECCION_ENVIO);
     }
     
+    public function __toString() {
+        return $this->getDireccionCompleta();
+    }
+    
+    public function getDireccionCompleta(){
+        return sprintf("%s %s %s %s",
+                $this->getCalle(),
+                $this->getNumExterior(), 
+                $this->getNumInterior(), 
+                $this->getColonia());
+    }
+    
     /*
      * Timestable
      */

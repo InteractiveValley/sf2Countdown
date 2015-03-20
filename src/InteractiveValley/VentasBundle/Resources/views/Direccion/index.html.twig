@@ -24,6 +24,8 @@
                 <a href="{{path('homepage')}}"><i class="fa fa-home"></i>Dashboard</a> 
                   <span class="divider">/</span>  
                   <a href="{{path('direcciones')}}" class="bread-current">Direcciones</a>
+                  <span class="divider">/</span>  
+                  <a href="{{path('usuarios_show',{'id': usuario.id } )}}" class="bread-current">{{usuario.nombre}}</a>
                   <a href="{{path('direcciones_new')}}" class="btn btn-info pull-right" style="color: white; margin-left: 5px;">Crear direccion</a>
                   <a href="{{path('direcciones_exportar')}}" class="btn btn-info pull-right" style="color: white; margin-left: 5px;">Exportar</a>
             </div>

@@ -14,6 +14,7 @@ define([
                 console.log('inicializando itemproductoview');
                 this.is_active = true;
                 this.model.on('change:visible', this.visible,this);
+                this.model.on('destroy',this.destroy_view, this);
                 this.model.on('change', this.render, this);
                 if(this.model.get('isPromocional')){
                     this.$el.addClass('imagen_grande');
@@ -72,10 +73,8 @@ define([
                 }
                 return this;
             },
-            visible: function(e){
-              e.preventDefault();
-              e.stopPropagation();
-              if(this.model.get('visible')){
+            visible: function(){
+              if(!this.model.get('visible')){
                   var self = this;
                   setTimeout(function(){
                       $(self.el).fadeOut('fast');

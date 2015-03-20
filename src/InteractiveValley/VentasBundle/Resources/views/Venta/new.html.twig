@@ -15,7 +15,6 @@
 {% block mainbar %}
     <!-- Main bar -->
     <div class="mainbar">
-
         <!-- Page heading -->
         <div class="page-head">
             <h2 class="pull-left">Ventas</h2>
@@ -97,6 +96,34 @@
 
             $("#botonGuardar").on("click", function () {
                 $(".contenido-formulario form").submit();
+            });
+            
+            $("#interactivevalley_ventasbundle_venta_usuario").on("change",function(){
+                var usuario, html, url, usuario = $(this).val();
+                if(usuario > 0){
+                    $("#interactivevalley_ventasbundle_venta_envio").val(0).attr('disabled','true');
+                    url = '{{path('usuarios_direcciones_envios')}}';
+                    //url.replace('0',usuario);
+                    $.ajax({
+                       url: url,
+                       type: 'GET',
+                       data: { 'usuario': usuario },
+                       dataType: 'json',
+                       success: function(data){
+                            debugger;
+                            alert(data);
+                            html =  '<option value="0">Seleccione la direccion de envio</option>';
+                            for (key in data) {
+                                direccion = data[key];
+                                html += '<option value="'+ direccion.id +'">'+direccion.direccion+'</option>';
+                            }
+                            $("#interactivevalley_ventasbundle_venta_envio").html(html).removeAttr('disabled');
+                       },
+
+                    });
+                }else{
+                   $("#interactivevalley_ventasbundle_venta_envio").val(0).attr('disabled','true');
+                }
             });
 
         {% if errores | length > 0 %}

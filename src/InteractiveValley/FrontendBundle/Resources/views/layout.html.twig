@@ -68,104 +68,31 @@
 {% endblock %}
 
 {% block body %}
-    <div id="app" class="container container-project">
+    <div id="app" class="container container-project" style="position:relative;">
         <header class="row">
-            <div class="col-md-7 col-sm-12 col-xs-12">
+            <div class="col-md12" style="position:relative;">
                 <a href="{{path('homepage')}}">
                     <figure id="logoPrincipal">
                         <img src="{{asset('images/logov2.png')}}" class="img-responsive" alt="Countdown"/>
                     </figure>
                 </a>
+                <div class="contenedor-usuario">
+                    <span class="contenido-usuario-crear-cuenta">Crear cuenta</span>
+                    <span class="contenido-usuario-login">Login</span>
+                    <span class="contenido-usuario-tracking">tracking</span>
+                </div>
             </div>
-            <div class="col-md-5 col-sm-12 col-xs-12">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row buscador-envio">
-                            <div class="col-md-2">
-                                <img src="{{asset('images/letra_i.jpg')}}" alt="información"/>
-                            </div>
-                            <div class="col-md-10">
-                                <form class="form-inline">
-                                    <div class="form-group row">
-                                        <label for="pedido" class="col-md-5" style="font-size: .8em; line-height: 3em">Ingrese su pedido:</label>
-                                        <div class="input-group" class="col-md-7">
-                                            <input type="text" class="form-control" placeholder="" name="pedido">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>    
-                                </form>    
-                            </div>
-                        </div>    
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row buscador-usuario">
-                            <div class="col-md-4 link-cuenta">
-                                <a class="link-cuenta-usuario" href="{{path('registro')}}">Crear cuenta</a>
-                                <a class="link-cuenta-usuario" href="{{path('login')}}">Login</a>
-                            </div>
-                            <div class="col-md-8">
-                                <form class="form-inline">
-                                    <div class="form-group row">
-                                        <div class="input-group col-md-12">
-                                            <input type="text" class="form-control" placeholder="Search" name="buscar">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>    
-                    </div>
+            <nav class="navbar-countdown">
+                <div class="categorias">
+                    {% set route = app.request.get('_route') %}
+                    {% render(controller('FrontendBundle:Default:categorias',{'route':route})) %}
                 </div>
-            </div>    
-        </header>
-        <!-- Static navbar -->
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <!--a id="nameProject" href="#" class="navbar-brand">Countdown</a-->
+                <div class="filtro-colores">
+                    
                 </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#">Inicio</a></li>
-                        <!--li><a href="#recomendaciones">Recomendaciones</a></li-->
-                        <li>
-                            <a href="#categorias" id="showCategorias">
-                            <!--span id="showCategorias"-->    
-                                Categorias
-                                <span class="cerrar-categorias">
-                                    <i class='fa fa-list'></i>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#mostrar/carrito" id="showCarrito">Carrito</a>
-                            <!--span id="showCarrito">Carrito</span-->
-                        </li>
-                        <li id="carrito-1">
-                            <img src="/images/carrito.png" alt="" height="50">
-                        </li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div><!--/.container-fluid -->
-        </nav>
-        {% set route = app.request.get('_route') %}
-        {% render(controller('FrontendBundle:Default:categorias',{'route':route})) %}
+            </nav>
+        </header>                    
+        
 
     <div id="division-principal" class="flotar" style="width: 100%;">
         {% block contenido %}{% endblock %}

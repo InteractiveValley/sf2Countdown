@@ -104,9 +104,13 @@ class ModeloController extends Controller
         $filters = $this->getFilters();
         $filters['categorias'] = $categoria->getId();
         $this->setFilters($filters);
+        
+        $modelos = $em->getRepository('ProductosBundle:Modelo')
+                      ->findByCategoria($categoria);
+        
         return array(
             'categoria' =>  $categoria,
-            'entities'  =>  $categoria->getModelos(),
+            'entities'  =>  $modelos,
         );
     }
     

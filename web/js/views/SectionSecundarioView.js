@@ -2,13 +2,15 @@ define([
     'jquery',
     'underscore',
     'Backbone',
+    'models/FiltroPrecioModel',
+    'collections/ColoresCollection',
     'views/ItemProductoView',
     'text!templates/SectionSecundarioView.tpl',
     'bootstrap',
     'bootstrap-slider',
     'jquery.masonry.min'
 ],
-        function ($, _, Backbone, ItemProductoView, SectionSecundarioViewTemplate) {
+        function ($, _, Backbone, FiltroPrecioModel, ColoresCollection, ItemProductoView, SectionSecundarioViewTemplate) {
             var SectionSecundarioView = Backbone.View.extend({
                 tagName: 'section',
                 template: _.template(SectionSecundarioViewTemplate),
@@ -16,8 +18,12 @@ define([
                     console.log('inicializando sectionsecundarioview');
                     this.id = 'secundario';
                     this.status = '';
+                    this.filtroPrecio = new FiltroPrecioModel();
+                    this.colores = new ColoresCollection();
+                    this.colores.fetch();
                     this.collection.on('add', this.addOne, this);
                     this.collection.on('reset', this.render, this);
+                    this.filtroPrecio.on('change',this.filtrar, this);
                 },
                 events: {
                     
@@ -43,9 +49,9 @@ define([
                     this.$el.find('.productos').append(itemProductoView.el);
                 },
                 limpiarProductos: function(){
-                    _.each(app.views.productos, function(itemProductoVista){
-                        itemProductoVista.destroy_view();
-                    });
+                    for(var i = app.collections.productos.length -1; i>=0;i--){
+                        app.collections.productos.models[i].destroy();
+                    }
                 },
                 sliderPrecio: function(){
                     var self = this;
@@ -54,9 +60,15 @@ define([
                     this.$el.find("#valor-precio").text( formatNumber.new(2000,"$"));
                     this.$el.find("#sliderPrecio").on('slide', function (ev) {
                         self.$el.find("#valor-precio").text( formatNumber.new(ev.value,"$"));
+                        self.filtroPrecio.set({'value': ev.value});
                     }).on("slideStop", function (ev) {
 
                     });
+                },
+                filtrar: function(){
+                    
+                    this.collection.filtrarPorPrecio(this.filtroPrecio.get('value'));
+                    
                 },
                 masonry: function(){
                     this.$el.find('.productos').masonry({

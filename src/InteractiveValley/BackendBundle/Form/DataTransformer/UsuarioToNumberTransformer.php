@@ -5,7 +5,6 @@ namespace InteractiveValley\BackendBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Doctrine\Common\Persistence\ObjectManager;
-use InteractiveValley\BackendBundle\Entity\Usuario;
 
 class UsuarioToNumberTransformer implements DataTransformerInterface
 {

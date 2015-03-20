@@ -3,12 +3,15 @@
 namespace InteractiveValley\BackendBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use InteractiveValley\BackendBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use InteractiveValley\BackendBundle\Entity\Usuario;
 use InteractiveValley\BackendBundle\Form\UsuarioType;
+
+use InteractiveValley\VentasBundle\Entity\Direccion;
 
 use InteractiveValley\BackendBundle\Utils\Richsys as RpsStms;
 
@@ -285,5 +288,36 @@ class UsuarioController extends BaseController
         return $response;
     }
     
+    /**
+     * Apì de usuario para devolver las direcciones de envios
+     *
+     * @Route("/direcciones/envios", name="usuarios_direcciones_envios")
+     * @Method("GET")
+     * @Template()
+     */
+    public function direccionesEnviosAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $id = $request->query->get('usuario',0);
+        
+        $entity = $em->getRepository('BackendBundle:Usuario')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Usuario entity.');
+        }
+
+        $direcciones = $entity->getDirecciones();
+        $arreglo = array();
+        foreach($direcciones as $direccion){
+            if($direccion->getTipoDireccion()==Direccion::TIPO_DIRECCION_ENVIO){
+                $arreglo[]=array(
+                    'id'=>$direccion->getId(),
+                    'direccion'=>$direccion->getDireccionCompleta(),
+                );
+            }
+        }
+        return new JsonResponse($arreglo);
+    }
     
 }

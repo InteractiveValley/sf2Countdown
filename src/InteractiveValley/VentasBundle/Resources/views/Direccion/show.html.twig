@@ -24,8 +24,12 @@
                 <a href="{{path('homepage')}}"><i class="fa fa-home"></i>Dashboard</a> 
                 <span class="divider">/</span>
                 <a href="{{path('direcciones')}}" class="bread-current">Direcciones</a>
+                <span class="divider">/</span>  
+                <a href="{{path('usuarios_show',{'id': entity.usuario.id } )}}" class="bread-current">{{entity.usuario.nombre}}</a>
                 <span class="divider">/</span>
                 <a href="{{path('direcciones_show',{'id': entity.id})}}" class="bread-current">{{entity.stringTipoDireccion}}</a>
+                
+                
                 {% if is_granted('ROLE_ADMIN') %}
                     <a href="{{path('direcciones_new')}}" class="btn btn-info pull-right" style="color: white; margin-left: 5px;">Crear direccion</a>
                 {% endif %}

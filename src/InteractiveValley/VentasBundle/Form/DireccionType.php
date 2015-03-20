@@ -16,9 +16,10 @@ class DireccionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        
         $builder
             ->add('tipoDireccion','choice',array(
-                'label'=>'Tipo de aviso',
+                'label'=>'Tipo de direccion',
                 'empty_value'=>false,
                 'choices'=>  Direccion::getArrayTipoDireccion(),
                 'preferred_choices'=>  Direccion::getPreferedTipoDireccion(),
