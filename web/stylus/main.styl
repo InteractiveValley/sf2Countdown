@@ -20,6 +20,7 @@ color_gris_oscuro = #C3C3C3
 color_naranja_claro = #EB9A53
 color_naranja_oscuro = #E68229
 color_rosa = #DF2E72
+color_gris_oscuro_new = #C9C9C9
 
 /* colores filtro */
 
@@ -70,6 +71,8 @@ article.filtro-categorias
 			color filtro_color_fiusa
 		&.color-gris
 			color filtro_color_gris
+		&.color-blanco
+			color #FFFFFF
 		&.inactive
 			opacity 0.5
 	& .filtro-ordenar
@@ -232,9 +235,9 @@ article.producto-detalle
 body
 	font-size 16px
 	& > .container > header
-		background-color color_gris_claro
+		background-color color_gris_oscuro_new
 		width 100%
-		margin 0 auto
+		margin 0 auto 20px
 	& > .container > footer
 		width 100%
 		margin 0 auto
@@ -254,9 +257,6 @@ button[type="submit"]
 	border-radius .5em
 	padding .5em
 
-nav 
-	background-color color_gris_oscuro
-
 footer
 	height 2.1em
 	border-top 1px solid color_gris_oscuro
@@ -270,29 +270,7 @@ footer
 figure
 	margin 0	
 
-ul.list-categorias
-	padding 0
-	& li.item-categoria
-		box-sizing border-box
-		display inline-block
-		height 2em
-		line-height 2em
-		margin .3em .5em
-		min-width 6.25em
-		text-align center
-		vertical-align top
-		& a
-			background-color transparent
-			border-radius .5em
-			color black
-			display block
-			padding 0px .5em
-			transition background-color .3s ease-out
-			&:hover
-			&.active
-				background-color color_rosa
-				text-decoration none
-				color white
+
 
 ul.list-carrito
 	padding 0
@@ -377,6 +355,24 @@ section.productos
 		background url('/images/bx_loader.gif') center center no-repeat
 
 
+nav.navbar.navbar-default
+	border-top 5px solid color_rosa
+	margin 0
+	& .item-navbar
+		display inline-block
+		vertical-align top
+		overflow hidden
+		height 50px 
+		width 100px
+		line-height 50px
+		& span.item-navbar-trigger
+		& div.contenedor-filtro-navbar
+			display inline-block
+			vertical-align top
+			& a
+				color color_rosa
+				text-decoration none
+
 .buscador-envio
 	background-color color_rosa
 	height 2.68em
@@ -398,7 +394,23 @@ section.productos
 			background-color color_rosa
 			color white
 			border 1px solid white
-	
+
+
+.contenedor-usuario
+	position absolute
+	top 0px
+	right 0px
+	height 50px	
+	z-index 1000
+	& span a
+		text-transform uppercase
+		padding 2px 5px
+		font-size .9em
+		color white
+	& .contenido-usuario-crear-cuenta
+		border-right 2px solid color_rosa
+	& .contenido-usuario-tracking
+		background-color color_rosa
 
 .categorias 
 	width 100%
@@ -418,6 +430,12 @@ section.productos
 		& li
 			color color_rosa
 			font-size 14px
+
+.link-categoria
+	font-size .9em
+	color_rosa
+	text-transform capitalize
+	padding 2px
 
 .link-cuenta
 	padding .3em
