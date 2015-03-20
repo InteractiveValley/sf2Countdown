@@ -33,6 +33,7 @@
     {% endblock %}
 
     <link rel="stylesheet" href="{{asset('css/bootstrap.css')}}"/>
+    <link rel="stylesheet" href="{{asset('css/bootstrap-slider.css')}}"/>
     <link rel="stylesheet" href="{{asset('css/font-awesome.css')}}">
     <link rel="stylesheet" href="{{asset('css/main.css')}}"/>
     <style>
@@ -77,19 +78,76 @@
                     </figure>
                 </a>
                 <div class="contenedor-usuario">
-                    <span class="contenido-usuario-crear-cuenta">Crear cuenta</span>
-                    <span class="contenido-usuario-login">Login</span>
-                    <span class="contenido-usuario-tracking">tracking</span>
+                    <span class="contenido-usuario-crear-cuenta">
+                        <a href="#registro">Crear cuenta</a>
+                    </span>
+                    <span class="contenido-usuario-login">
+                        <a href="#login">Login</a>
+                    </span>
+                    &nbsp;
+                    <span class="contenido-usuario-tracking">
+                        <a href="#tracking">tracking</a>
+                    </span>
                 </div>
             </div>
-            <nav class="navbar-countdown">
-                <div class="categorias">
-                    {% set route = app.request.get('_route') %}
-                    {% render(controller('FrontendBundle:Default:categorias',{'route':route})) %}
-                </div>
-                <div class="filtro-colores">
-                    
-                </div>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <!--a id="nameProject" href="#" class="navbar-brand">Countdown</a-->
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="item-navbar item-navbar-categorias">
+                                <span class="item-navbar-trigger" id="showCategorias">  
+                                    Categorias
+                                </span>
+                                <div class="contenedor-filtro-navbar contenedor-categorias">
+                                    {% render(controller('FrontendBundle:Default:categorias')) %}
+                                </div>
+                            </li>
+                            <li class="item-navbar item-navbar-colores">
+                                <span class="item-navbar-trigger" id="showColores">  
+                                    Colores
+                                </span>
+                                <div class="contenedor-filtro-navbar contenedor-colores">
+                                    {% render(controller('FrontendBundle:Default:colores')) %}
+                                </div>
+                            </li>
+                            <li class="item-navbar item-navbar-precio">
+                                <span class="item-navbar-trigger" id="showFiltroPrecio">  
+                                    Precio
+                                </span>
+                                <div class="contenedor-filtro-navbar contenedor-precio">
+                                    <div class="filtro-precio">
+                                        <div class="row filtro">                          
+                                            <div class="col-md-8">
+                                                <input id="sliderPrecio" type="slider" class="span2" value="" data-slider-min="50" data-slider-max="2000" data-slider-step="50" data-slider-value="2000" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="hide">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span id="valor-precio"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="#mostrar/carrito" id="showCarrito">Carrito</a>
+                                <!--span id="showCarrito">Carrito</span-->
+                            </li>
+                            <li id="carrito-1">
+                                <img src="/images/carrito.png" alt="" height="50">
+                            </li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!--/.container-fluid -->
             </nav>
         </header>                    
         
@@ -172,11 +230,13 @@
     <script src="{{asset('js/jquery.bxslider.min.js')}}"></script> 
     <script>
             $(document).ready(function () {
-                $("#mensajeModal").modal('show');
+                //$("#mensajeModal").modal('show');
                 
                 $("#botonCerrarBienvenida").on("click",function(){
                    $("#mensajeModal").modal('hide'); 
                 });
+                
+                $(".slider.slider-horizontal").css({'width': '100%'});
                 
                 $("#enviarContacto").on("click",function(){
                     var form = $("#formContacto");
