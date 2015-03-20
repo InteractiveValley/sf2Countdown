@@ -6,7 +6,7 @@ define([
             var ProductoModel = Backbone.Model.extend({
                 urlRoot: app.root + "/productos",
                 defaults: {
-                    'nombre': '',
+                    nombre: '',
                     cantidad: 1,
                     importe: 0,
                     importe_with_format: '',

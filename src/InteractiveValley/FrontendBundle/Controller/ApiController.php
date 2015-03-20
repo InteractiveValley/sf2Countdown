@@ -32,15 +32,25 @@ class ApiController extends BaseController {
         return $this->claveApartado;
     }
     
-    /*
-    protected function getFilters() {
-        return $this->get('session')->get('filters', array());
+    /**
+     * @Route("/api/colores", name="api_get_colores")
+     * @Method({"GET"})
+     */
+    public function getColoresAction(Request $request) {
+        $colores = array(
+            array('color'=>'#9F0700','nombre'=>'color-carmesi'),
+            array('color'=>'#FA9000','nombre'=>'color-amarillo'),
+            array('color'=>'#7F5400','nombre'=>'color-cafe'),
+            array('color'=>'#1DA5FF','nombre'=>'color-azul'),
+            array('color'=>'#084664','nombre'=>'color-azul-marino'),
+            array('color'=>'#3CAE55','nombre'=>'color-verde'),
+            array('color'=>'#F500FC','nombre'=>'color-fiusa'),
+            array('color'=>'#A0A0A0','nombre'=>'color-gris'),
+            array('color'=>'#FFFFFF','nombre'=>'color-blanco'),
+        );
+        return new JsonResponse($colores);
     }
     
-    protected function setFilters($filtros) {
-        $this->get('session')->set('filters', $filtros);
-    }
-    */
     
     /**
      * @Route("/api/categorias", name="api_get_categorias")

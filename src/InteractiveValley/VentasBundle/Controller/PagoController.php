@@ -77,6 +77,7 @@ class PagoController extends Controller
         $form = $this->createForm(new PagoType(), $entity, array(
             'action' => $this->generateUrl('pagos_create'),
             'method' => 'POST',
+            'em'=> $this->getDoctrine()->getManager(),
         ));
 
         //$form->add('submit', 'submit', array('label' => 'Create'));
@@ -168,6 +169,7 @@ class PagoController extends Controller
         $form = $this->createForm(new PagoType(), $entity, array(
             'action' => $this->generateUrl('pagos_update', array('id' => $entity->getId())),
             'method' => 'PUT',
+            'em'     => $this->getDoctrine()->getManager(),
         ));
 
         //$form->add('submit', 'submit', array('label' => 'Update'));

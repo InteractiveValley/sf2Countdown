@@ -25,7 +25,9 @@
                 <a href="{{path('homepage')}}"><i class="fa fa-home"></i>Dashboard</a> 
                 <span class="divider">/</span>
                 <a href="{{path('direcciones')}}" class="bread-current">Direcciones</a>
-                <span class="divider">/</span> 
+                <span class="divider">/</span>  
+                <a href="{{path('usuarios_show',{'id': entity.usuario.id } )}}" class="bread-current">{{entity.usuario.nombre}}</a>
+                <span class="divider">/</span>
                 <a href="{{path('direcciones_new')}}" class="bread-current">Nuevo direccion</a>
             </div>
             <div class="clearfix"></div>

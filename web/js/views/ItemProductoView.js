@@ -8,17 +8,25 @@ define([
     function ($, _, Backbone, ProductoModel  ,ItemProductoViewTemplate) {
         var ItemProductoView = Backbone.View.extend({
             tagName: 'article',
-            className: 'producto imagen_chica',
+            className: 'producto',
             template: _.template( ItemProductoViewTemplate ),
             initialize: function() {
                 console.log('inicializando itemproductoview');
                 this.is_active = true;
                 this.model.on('change:visible', this.visible,this);
+                this.model.on('destroy',this.destroy_view, this);
                 this.model.on('change', this.render, this);
+                if(this.model.get('isPromocional')){
+                    this.$el.addClass('imagen_grande');
+                }else{
+                    this.$el.addClass('imagen_chica');
+                }
             },
             events:{
                'click .agregar-carrito':    'agregarCarrito',
-               'click .ver-producto':       'verProducto'
+               'click .ver-producto':       'verProducto',
+               'click .botonIncrementar':   'incrementar',
+               'click .botonDecrementar':    'decrementar',
             },
             agregarCarrito: function(e){
                 e.preventDefault();
@@ -65,10 +73,8 @@ define([
                 }
                 return this;
             },
-            visible: function(e){
-              e.preventDefault();
-              e.stopPropagation();
-              if(this.model.get('visible')){
+            visible: function(){
+              if(!this.model.get('visible')){
                   var self = this;
                   setTimeout(function(){
                       $(self.el).fadeOut('fast');

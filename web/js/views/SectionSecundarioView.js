@@ -5,7 +5,6 @@ define([
     'views/ItemProductoView',
     'text!templates/SectionSecundarioView.tpl',
     'bootstrap',
-    'bootstrap-slider',
     'jquery.masonry.min'
 ],
         function ($, _, Backbone, ItemProductoView, SectionSecundarioViewTemplate) {
@@ -30,7 +29,6 @@ define([
                     this.$el.html(this.template());
                     this.status = 'render';
                     this.collection.forEach(this.addOne, this);
-                    this.sliderPrecio();
                     this.status = '';
                     return this;
                 },
@@ -43,20 +41,9 @@ define([
                     this.$el.find('.productos').append(itemProductoView.el);
                 },
                 limpiarProductos: function(){
-                    _.each(app.views.productos, function(itemProductoVista){
-                        itemProductoVista.destroy_view();
-                    });
-                },
-                sliderPrecio: function(){
-                    var self = this;
-                    this.$el.find("#sliderPrecio").slider({'tooltip': 'show'});
-                    this.$el.find(".slider-horizontal").css({'width': '100%'});
-                    this.$el.find("#valor-precio").text( formatNumber.new(2000,"$"));
-                    this.$el.find("#sliderPrecio").on('slide', function (ev) {
-                        self.$el.find("#valor-precio").text( formatNumber.new(ev.value,"$"));
-                    }).on("slideStop", function (ev) {
-
-                    });
+                    for(var i = app.collections.productos.length -1; i>=0;i--){
+                        app.collections.productos.models[i].destroy();
+                    }
                 },
                 masonry: function(){
                     this.$el.find('.productos').masonry({

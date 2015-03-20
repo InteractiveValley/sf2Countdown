@@ -1,37 +1,81 @@
 define([
     'jquery', 
     'underscore',
-    'Backbone'
+    'Backbone',
+    'models/FiltroPrecioModel',
+    'collections/ColoresCollection',
+    'bootstrap',
+    'bootstrap-slider'
 ],
-    function ($, _, Backbone) {
+    function ($, _, Backbone, FiltroPrecioModel, ColoresCollection) {
         var AppView = Backbone.View.extend({
             el: '#app',
             tagName: 'div',
             //template: _.template( PrincipalViewTemplate),
             initialize: function(){
                 console.log('inicializando appview');
+                this.filtroPrecio = new FiltroPrecioModel();
+                this.colores = new ColoresCollection();
+                this.colores.fetch();
+                this.filtroPrecio.on('change',this.filtrar, this);
+                
             },
             events:{
                'click .item-categoria': 'activarCategoria',
-               'click #showCategorias': 'showCategorias',
+               'mouseover .item-navbar-categorias': 'showCategorias',
+               'mouseleave  .item-navbar-categorias': 'hideCategorias',
+               'mouseover .item-navbar-colores': 'showColores',
+               'mouseleave  .item-navbar-colores': 'hideColores',
+               'mouseover .item-navbar-precio': 'showFiltroPrecio',
+               'mouseleave  .item-navbar-precio': 'hideFiltroPrecio',
+               
                'click #showCarrito': 'showCarrito'
             },
             activarCategoria: function(e){
-                $(".item-categoria a.link-categoria").removeClass('active');
+                $("a.link-categoria").removeClass('active');
                 $(e.currentTarget).find("a").addClass('active');
             },
             showCategorias: function(e){
                 e.preventDefault();
                 e.stopPropagation();
-                if ($('div.categorias').is(':hidden')) {
-                    $('div.categorias').slideDown('fast', function () {
-                        $(".cerrar-categorias").html("<i class='fa fa-chevron-down'></i>");
-                    });
-                } else {
-                    $('div.categorias').slideUp('fast', function () {
-                        $(".cerrar-categorias").html("<i class='fa fa-list'></i>");
-                    });
-                }
+                this.$el.find('.item-navbar-colores').fadeOut('fast');
+                this.$el.find('.item-navbar-precio').fadeOut('fast');
+                this.$el.find('.item-navbar-categorias').animate({'width': '600px'},'slow');
+            },
+            hideCategorias: function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                var self = this;
+                this.$el.find('.item-navbar-categorias').animate({'width': '100px'},'fast',function(){
+                    self.$el.find('.item-navbar-colores').fadeIn('fast');
+                    self.$el.find('.item-navbar-precio').fadeIn('fast');
+                });
+            },
+            showColores: function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                var self = this;
+                this.$el.find('.item-navbar-precio').fadeOut('fast',function(){
+                    self.$el.find('.item-navbar-colores').animate({'width': '600px'},'slow');
+                });
+            },
+            hideColores: function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                var self = this;
+                this.$el.find('.item-navbar-colores').animate({'width': '100px'},'fast',function(){
+                    self.$el.find('.item-navbar-precio').fadeIn('fast');
+                });
+            },
+            showFiltroPrecio: function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                this.$el.find('.item-navbar-precio').animate({'width': '600px'},'slow');
+            },
+            hideFiltroPrecio: function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                this.$el.find('.item-navbar-precio').animate({'width': '100px'},'fast');
             },
             showCarrito: function(e){
                 e.preventDefault();
@@ -56,7 +100,23 @@ define([
                 }
             },
             render:function () {
+                this.sliderPrecio();
                 return this;
+            },
+            sliderPrecio: function(){
+                    var self = this;
+                    this.$el.find("#sliderPrecio").slider({'tooltip': 'show'});
+                    this.$el.find(".slider-horizontal").css({'width': '100%'});
+                    this.$el.find("#valor-precio").text( formatNumber.new(2000,"$"));
+                    this.$el.find("#sliderPrecio").on('slide', function (ev) {
+                        self.$el.find("#valor-precio").text( formatNumber.new(ev.value,"$"));
+                        self.filtroPrecio.set({'value': ev.value});
+                    }).on("slideStop", function (ev) {
+
+                    });
+            },
+            filtrar: function(){
+                app.collections.productos.filtrarPorPrecio(this.filtroPrecio.get('value'));
             }
         });
         return AppView;

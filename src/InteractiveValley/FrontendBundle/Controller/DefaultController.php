@@ -53,6 +53,28 @@ class DefaultController extends BaseController {
 
         return array('productos' => $productos);
     }
+    
+    /**
+     * @Route("/colores", name="filtro_colores")
+     * @Template("FrontendBundle:Default:colores.html.twig")
+     * @Method({"GET"})
+     */
+    public function coloresAction(Request $request) {
+        $colores = array(
+            array('color'=>'#9F0700','nombre'=>'color-carmesi'),
+            array('color'=>'#FA9000','nombre'=>'color-amarillo'),
+            array('color'=>'#7F5400','nombre'=>'color-cafe'),
+            array('color'=>'#1DA5FF','nombre'=>'color-azul'),
+            array('color'=>'#084664','nombre'=>'color-azul-marino'),
+            array('color'=>'#3CAE55','nombre'=>'color-verde'),
+            array('color'=>'#F500FC','nombre'=>'color-fiusa'),
+            array('color'=>'#A0A0A0','nombre'=>'color-gris'),
+            array('color'=>'#FFFFFF','nombre'=>'color-blanco'),
+        );
+        return array(
+            'colores' => $colores,
+        );
+    }
 
     /**
      * @Route("/categorias", name="menu_categorias")
@@ -63,15 +85,8 @@ class DefaultController extends BaseController {
         $categorias = $this->getDoctrine()
                         ->getRepository('ProductosBundle:Categoria')
                         ->findBy(array(),array('position'=>'ASC'));
-        $route = $request->query->get('route', '');
-        if ($route == "categoria_productos") {
-            $isShow = true;
-        } else {
-            $isShow = false;
-        }
         return array(
-            'categorias' => $categorias,
-            'is_show' => $isShow,
+            'categorias' => $categorias
         );
     }
     
