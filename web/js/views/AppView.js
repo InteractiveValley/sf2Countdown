@@ -20,83 +20,81 @@ define([
                 this.filtroPrecio.on('change',this.filtrar, this);
             },
             events:{
-               'click       .item-categoria':           'activarCategoria',
+               'click       .link-categoria':           'activarCategoria',
                'mouseover   .item-navbar-categorias':   'showCategorias',
-               'mouseleave  .item-navbar-categorias':   'hideCategorias',
                'mouseover   .item-navbar-colores':      'showColores',
-               'mouseleave  .item-navbar-colores':      'hideColores',
                'mouseover   .item-navbar-precio':       'showFiltroPrecio',
-               'mouseleave  .item-navbar-precio':       'hideFiltroPrecio',
-               
-               'click #showCarrito': 'showCarrito'
+               'click       #showCarrito':              'showCarrito'
             },
             activarCategoria: function(e){
+                alert("activarCategoria");
+                e.preventDefault();
+                e.stopPropagation();
                 $("a.link-categoria").removeClass('active');
                 $(e.currentTarget).find("a").addClass('active');
             },
             showCategorias: function(e){
+                alert("showCategorias");
                 e.preventDefault();
                 e.stopPropagation();
-                var self = this;
-                this.$el.find('.item-navbar-colores').fadeOut('fast').animate({'width': '100px'},'fast');
-                this.$el.find('.item-navbar-precio').fadeOut('fast').animate({'width': '100px'},'fast',function(){
-                    self.$el.find('.item-navbar-categorias').animate({'width': '600px'},'slow');
-                });
-            },
-            hideCategorias: function(e){
-                e.preventDefault();
-                e.stopPropagation();
-                var self = this;
-                this.$el.find('.item-navbar-categorias').animate({'width': '100px'},'fast',function(){
-                    self.$el.find('.item-navbar-colores').fadeIn('fast');
-                    self.$el.find('.item-navbar-precio').fadeIn('fast');
-                });
+                if(this.arreglarMenu()){
+                    var self = this;
+                    if(this.$el.find('.item-navbar-categorias').css('width')=='100px'){
+                        this.$el.find('.item-navbar-colores').fadeOut('fast');
+                        this.$el.find('.item-navbar-precio').fadeOut('fast',function(){
+                            self.$el.find('.item-navbar-categorias').animate({'width': '600px'},'slow');
+                        });
+                    }else{
+                        this.mostrarMenu();
+                    }
+                }
             },
             showColores: function(e){
                 e.preventDefault();
                 e.stopPropagation();
-                var self = this;
-                this.$el.find('.item-navbar-precio').animate({'width': '100px'},'fast').fadeOut('fast',function(){
-                    self.$el.find('.item-navbar-colores').animate({'width': '600px'},'slow');
-                });
-            },
-            hideColores: function(e){
-                e.preventDefault();
-                e.stopPropagation();
-                var self = this;
-                this.$el.find('.item-navbar-colores').animate({'width': '100px'},'fast',function(){
-                    self.$el.find('.item-navbar-precio').fadeIn('fast');
-                });
+                if(this.arreglarMenu()){
+                    var self = this;
+                    if(this.$el.find('.item-navbar-colores').css('width')=='100px'){
+                        this.$el.find('.item-navbar-precio').fadeOut('fast',function(){
+                            self.$el.find('.item-navbar-colores').animate({'width': '600px'},'slow');
+                        });
+                    }else{
+                        this.mostrarMenu();
+                    }
+                }
             },
             showFiltroPrecio: function(e){
                 e.preventDefault();
                 e.stopPropagation();
-                this.$el.find('.item-navbar-precio').animate({'width': '600px'},'slow');
+                if(this.arreglarMenu()){
+                    var self = this;
+                    if(this.$el.find('.item-navbar-precio').css('width')=='100px'){
+                        this.$el.find('.item-navbar-precio').animate({'width': '600px'},'slow');
+                    }else{
+                        this.mostrarMenu();
+                    }
+                }
             },
-            hideFiltroPrecio: function(e){
-                e.preventDefault();
-                e.stopPropagation();
+            arreglarMenu: function(){
+                this.$el.find('.item-navbar-categorias').animate({'width': '100px'},'fast');
+                this.$el.find('.item-navbar-colores').animate({'width': '100px'},'fast');
                 this.$el.find('.item-navbar-precio').animate({'width': '100px'},'fast');
+                return true;
+            },
+            mostrarMenu: function(){
+                this.$el.find('.item-navbar-categorias').fadeIn('fast');
+                this.$el.find('.item-navbar-colores').fadeIn('fast');
+                this.$el.find('.item-navbar-precio').fadeIn('fast');
+                return true;
             },
             showCarrito: function(e){
                 e.preventDefault();
                 e.stopPropagation();
                 if ($('#carrito').is(':hidden')) {
-                    $(".filtro-ordenar-por-precio").hide();
-                    $("#valor-precio").animate({'fontSize':'12px'},'fast');
-                    $("#division-principal,section.productos").animate({'width': '-=266px'},'fast',function(){
-                        $("#division-principal,section.productos").resize();
-                        $("#carrito").animate({'width':'266px'},'fast').show('fast');
-                    });
+                    $("#carrito").fadeIn('fast');
                     app.showCarrito=true;
                 } else {
-                    $("#carrito").fadeOut('fast').animate({'width':'0px'},'fast',function(){
-                        $("#division-principal,section.productos").animate({'width': '100%'},'fast',function(){
-                            $("#division-principal,section.productos").resize();
-                            $("#valor-precio").animate({'fontSize':'16px'},'fast');
-                            $(".filtro-ordenar-por-precio").show();
-                        });
-                    });
+                    $("#carrito").fadeOut('fast');
                     app.showCarrito=false;
                 }
             },

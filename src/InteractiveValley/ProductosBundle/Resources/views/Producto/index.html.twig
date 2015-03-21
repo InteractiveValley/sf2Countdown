@@ -85,7 +85,13 @@
                                     {% endif %}
                                 </td>
                                 <td>{{ entity.inventario | number_format(2,".",",") }}</td>
-                                <td>{{ entity.stringColor }}</td>
+                                <td>
+                                    {% if entity.color != null %}
+                                    <span style="margin: 0 0 15px;overflow: hidden;padding: 5px 10px; background: #{{entity.color.color}}"></span> &nbsp; {{ entity.color.nombre }}
+                                    {% else %}
+                                     Sin color
+                                    {% endif %}
+                                </td>
                                 <td>
                                     <button onclick="javascript:editarRegistro('{{ path('productos_edit', { 'id': entity.id }) }}')" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> </button>
                                     <button onclick="javascript:editarRegistro('{{ path('productos_show', { 'id': entity.id }) }}','#registro-{{entity.id}}')" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i> </button>

@@ -138,11 +138,14 @@
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li>
+                            <li id="contenedor-carrito">
                                 <a href="#mostrar/carrito" id="showCarrito">Carrito</a>
                                 <!--span id="showCarrito">Carrito</span-->
+                                <div id="carrito">
+                                    <!-- template backbone -->
+                                </div>
                             </li>
-                            <li id="carrito-1">
+                            <li>
                                 <img src="/images/carrito.png" alt="" height="50">
                             </li>
                         </ul>
@@ -154,9 +157,6 @@
 
     <div id="division-principal" class="flotar" style="width: 100%;">
         {% block contenido %}{% endblock %}
-    </div>
-    <div id="carrito" class="flotar">
-        <!-- template backbone -->
     </div>
     <div class="clearfix"></div>
     <footer class="row">

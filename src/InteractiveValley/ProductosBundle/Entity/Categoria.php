@@ -106,6 +106,11 @@ class Categoria
     {
         return $this->id;
     }
+    
+    public function setSlugValue()
+    {
+        $this->setSlug(RpsStms::slugify($this->nombre));
+    }
 
     /**
      * Set nombre
@@ -116,9 +121,6 @@ class Categoria
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-        
-        $this->setSlug(RpsStms::slugify($nombre));
-
         return $this;
     }
 

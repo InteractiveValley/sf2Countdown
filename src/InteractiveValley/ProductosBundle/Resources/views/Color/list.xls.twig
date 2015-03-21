@@ -1,0 +1,22 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Color</th>
+            <th>Nombre</th>
+            <th>Activo</th>
+            <th>Position</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>{{ entity.color }}</td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ ((entity.isActive == true)?'Si':'No') }}</td>
+                <td>{{ entity.position }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

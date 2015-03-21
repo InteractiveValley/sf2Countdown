@@ -106,6 +106,11 @@ class Categoria
     {
         return $this->id;
     }
+    
+    public function setSlugValue()
+    {
+        $this->setSlug(RpsStms::slugify($this->nombre));
+    }
 
     /**
      * Set nombre
@@ -116,9 +121,6 @@ class Categoria
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
-        
-        $this->setSlug(RpsStms::slugify($nombre));
-
         return $this;
     }
 
@@ -222,5 +224,38 @@ class Categoria
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Add modelos
+     *
+     * @param \InteractiveValley\ProductosBundle\Entity\Modelo $modelos
+     * @return Categoria
+     */
+    public function addModelo(\InteractiveValley\ProductosBundle\Entity\Modelo $modelos)
+    {
+        $this->modelos[] = $modelos;
+
+        return $this;
+    }
+
+    /**
+     * Remove modelos
+     *
+     * @param \InteractiveValley\ProductosBundle\Entity\Modelo $modelos
+     */
+    public function removeModelo(\InteractiveValley\ProductosBundle\Entity\Modelo $modelos)
+    {
+        $this->modelos->removeElement($modelos);
+    }
+
+    /**
+     * Get modelos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getModelos()
+    {
+        return $this->modelos;
     }
 }

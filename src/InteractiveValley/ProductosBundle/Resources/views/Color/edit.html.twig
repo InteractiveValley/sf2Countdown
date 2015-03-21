@@ -18,15 +18,15 @@
 
         <!-- Page heading -->
         <div class="page-head">
-            <h2 class="pull-left">Categorias</h2>
+            <h2 class="pull-left">Colores</h2>
             <div class="clearfix"></div>
             <!-- Breadcrumb -->
             <div class="bread-crumb">
                 <a href="{{path('homepage')}}"><i class="fa fa-home"></i>Dashboard</a> 
                 <span class="divider">/</span>
-                <a href="{{path('categorias')}}" class="bread-current">Categorias</a>
+                <a href="{{path('colores')}}" class="bread-current">Colores</a>
                 <span class="divider">/</span> 
-                <a href="{{path('categorias_edit',{'id':entity.id})}}" class="bread-current">Editar categoria</a>
+                <a href="{{path('colores_edit',{'id':entity.id})}}" class="bread-current">Editar color</a>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -40,7 +40,7 @@
                         <div class="widget">
 
                             <div class="widget-head">
-                                <div class="pull-left">Editar categoria "{{entity.nombre}}"</div>
+                                <div class="pull-left">Editar color "{{entity.nombre}}"</div>
                                 <div class="clearfix"></div>
                             </div>
 
@@ -53,7 +53,7 @@
                                 <button id="botonRegresar" class="btn btn-default">Regresar</button>
                                 <button id="botonGuardar" class="btn btn-primary">Guardar cambios</button>
                                 <div style="float: left; margin-right: 3px;">
-                                   <form id="formEliminar" action="{{ path('categorias_delete', { 'id': entity.id }) }}" method="post">
+                                   <form id="formEliminar" action="{{ path('colores_delete', { 'id': entity.id }) }}" method="post">
                                    {{ form_widget(delete_form) }}
                                    </form>
                                    <button class="btn btn-danger " onclick="eliminarRegistro();">Eliminar</button>
@@ -107,7 +107,7 @@
             $(".validate").validationEngine();
 
             $("#botonRegresar").on("click", function () {
-                location.href = "{{path('categorias')}}";
+                location.href = "{{path('colores')}}";
             });
 
             $("#botonGuardar").on("click", function () {

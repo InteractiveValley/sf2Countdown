@@ -1,7 +1,7 @@
 <!--div id="carrito" class="flotar"-->
-        <h6 class="titulo-logo-carrito">
+        <!--h6 class="titulo-logo-carrito">
             Carrito <span id="logo-carrito"><img src="/images/carrito.png" alt="" height="50"></span>
-        </h6>
+        </h6-->
         <div class="carrito">
             <span class="triangulo-carrito"></span>
             <h3 class="titulo-carrito">Mis productos</h3>

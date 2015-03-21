@@ -7,23 +7,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use InteractiveValley\ProductosBundle\Entity\Categoria;
-use InteractiveValley\ProductosBundle\Form\CategoriaType;
+use InteractiveValley\ProductosBundle\Entity\Color;
+use InteractiveValley\ProductosBundle\Form\ColorType;
 
 use InteractiveValley\BackendBundle\Utils\Richsys as RpsStms;
 
 /**
- * Categoria controller.
+ * Color controller.
  *
- * @Route("/backend/categorias")
+ * @Route("/backend/colores")
  */
-class CategoriaController extends Controller
+class ColorController extends Controller
 {
     
     /**
-     * Lists all Categoria entities.
+     * Lists all Color entities.
      *
-     * @Route("/", name="categorias")
+     * @Route("/", name="colores")
      * @Method("GET")
      * @Template()
      */
@@ -31,7 +31,7 @@ class CategoriaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('ProductosBundle:Categoria')->findBy(array(),array(
+        $entities = $em->getRepository('ProductosBundle:Color')->findBy(array(),array(
             'position'=>'ASC'
         ));
 
@@ -40,24 +40,23 @@ class CategoriaController extends Controller
         );
     }
     /**
-     * Creates a new Categoria entity.
+     * Creates a new Color entity.
      *
-     * @Route("/", name="categorias_create")
+     * @Route("/", name="colores_create")
      * @Method("POST")
-     * @Template("ProductosBundle:Categoria:new.html.twig")
+     * @Template("ProductosBundle:Color:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Categoria();
+        $entity = new Color();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity->setSlug(RpsStms::slugify($entity->getNombre()));
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('categorias_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('colores_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -68,16 +67,16 @@ class CategoriaController extends Controller
     }
 
     /**
-     * Creates a form to create a Categoria entity.
+     * Creates a form to create a Color entity.
      *
-     * @param Categoria $entity The entity
+     * @param Color $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Categoria $entity)
+    private function createCreateForm(Color $entity)
     {
-        $form = $this->createForm(new CategoriaType(), $entity, array(
-            'action' => $this->generateUrl('categorias_create'),
+        $form = $this->createForm(new ColorType(), $entity, array(
+            'action' => $this->generateUrl('colores_create'),
             'method' => 'POST',
         ));
 
@@ -87,16 +86,16 @@ class CategoriaController extends Controller
     }
 
     /**
-     * Displays a form to create a new Categoria entity.
+     * Displays a form to create a new Color entity.
      *
-     * @Route("/new", name="categorias_new")
+     * @Route("/new", name="colores_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Categoria();
-        $max = $this->getDoctrine()->getRepository('ProductosBundle:Categoria')
+        $entity = new Color();
+        $max = $this->getDoctrine()->getRepository('ProductosBundle:Color')
                     ->getMaxPosicion();
         if (!is_null($max)) {
             $entity->setPosition($max + 1);
@@ -113,9 +112,9 @@ class CategoriaController extends Controller
     }
 
     /**
-     * Finds and displays a Categoria entity.
+     * Finds and displays a Color entity.
      *
-     * @Route("/{id}", name="categorias_show")
+     * @Route("/{id}", name="colores_show")
      * @Method("GET")
      * @Template()
      */
@@ -123,10 +122,10 @@ class CategoriaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('ProductosBundle:Categoria')->find($id);
+        $entity = $em->getRepository('ProductosBundle:Color')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Categoria entity.');
+            throw $this->createNotFoundException('Unable to find Color entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -138,9 +137,9 @@ class CategoriaController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Categoria entity.
+     * Displays a form to edit an existing Color entity.
      *
-     * @Route("/{id}/edit", name="categorias_edit")
+     * @Route("/{id}/edit", name="colores_edit")
      * @Method("GET")
      * @Template()
      */
@@ -148,10 +147,10 @@ class CategoriaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('ProductosBundle:Categoria')->find($id);
+        $entity = $em->getRepository('ProductosBundle:Color')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Categoria entity.');
+            throw $this->createNotFoundException('Unable to find Color entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -166,16 +165,16 @@ class CategoriaController extends Controller
     }
 
     /**
-    * Creates a form to edit a Categoria entity.
+    * Creates a form to edit a Color entity.
     *
-    * @param Categoria $entity The entity
+    * @param Color $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Categoria $entity)
+    private function createEditForm(Color $entity)
     {
-        $form = $this->createForm(new CategoriaType(), $entity, array(
-            'action' => $this->generateUrl('categorias_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new ColorType(), $entity, array(
+            'action' => $this->generateUrl('colores_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -184,20 +183,20 @@ class CategoriaController extends Controller
         return $form;
     }
     /**
-     * Edits an existing Categoria entity.
+     * Edits an existing Color entity.
      *
-     * @Route("/{id}", name="categorias_update")
+     * @Route("/{id}", name="colores_update")
      * @Method("PUT")
-     * @Template("ProductosBundle:Categoria:edit.html.twig")
+     * @Template("ProductosBundle:Color:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('ProductosBundle:Categoria')->find($id);
+        $entity = $em->getRepository('ProductosBundle:Color')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Categoria entity.');
+            throw $this->createNotFoundException('Unable to find Color entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -205,10 +204,9 @@ class CategoriaController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $entity->setSlugValue();
             $em->flush();
 
-            return $this->redirect($this->generateUrl('categorias_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('colores_edit', array('id' => $id)));
         }
 
         return array(
@@ -219,9 +217,9 @@ class CategoriaController extends Controller
         );
     }
     /**
-     * Deletes a Categoria entity.
+     * Deletes a Color entity.
      *
-     * @Route("/{id}", name="categorias_delete")
+     * @Route("/{id}", name="colores_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -231,21 +229,21 @@ class CategoriaController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('ProductosBundle:Categoria')->find($id);
+            $entity = $em->getRepository('ProductosBundle:Color')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Categoria entity.');
+                throw $this->createNotFoundException('Unable to find Color entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('categorias'));
+        return $this->redirect($this->generateUrl('colores'));
     }
 
     /**
-     * Creates a form to delete a Categoria entity by id.
+     * Creates a form to delete a Color entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -254,7 +252,7 @@ class CategoriaController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('categorias_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('colores_delete', array('id' => $id)))
             ->setMethod('DELETE')
             //->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
@@ -262,27 +260,27 @@ class CategoriaController extends Controller
     }
     
     /**
-     * Exportar los categorias.
+     * Exportar los colores.
      *
-     * @Route("/exportar", name="categorias_exportar")
+     * @Route("/exportar", name="colores_exportar")
      */
     public function exportarAction(Request $request)
     {
-        $categorias = $this->getDoctrine()->getRepository('ProductosBundle:Categoria')
+        $colores = $this->getDoctrine()->getRepository('ProductosBundle:Color')
                          ->findAll();
 
         $response = $this->render(
-                'ProductosBundle:Categoria:list.xls.twig', array('entities' => $categorias)
+                'ProductosBundle:Color:list.xls.twig', array('entities' => $colores)
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-        $response->headers->set('Content-Disposition', 'attachment; filename="export-categorias.xls"');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export-colores.xls"');
         return $response;
     }
     
     /**
-     * Ordenar las posiciones de las categorias de productos.
+     * Ordenar las posiciones de las colores de productos.
      *
-     * @Route("/ordenar/registros", name="categorias_ordenar")
+     * @Route("/ordenar/registros", name="colores_ordenar")
      * @Method("PATCH")
      */
     public function ordenarRegistrosAction(Request $request) {
@@ -291,7 +289,7 @@ class CategoriaController extends Controller
             $em = $this->getDoctrine()->getManager();
             $result['ok'] = true;
             foreach ($registro_order as $order => $id) {
-                $registro = $em->getRepository('ProductosBundle:Categoria')->find($id);
+                $registro = $em->getRepository('ProductosBundle:Color')->find($id);
                 if ($registro->getPosition() != ($order + 1)) {
                     try {
                         $registro->setPosition($order + 1);

@@ -16,6 +16,7 @@
     {% set route = app.request.get('_route') %}
 
     {% set categorias = "" %}
+    {% set colores = "" %}
     {% set modelos = "" %}
     {% set productos = "" %}
     {% set galerias = "" %}  
@@ -29,6 +30,8 @@
 
     {% if route == "categorias" %}
         {% set categorias = "class=open" %}
+    {% elseif route == "colores" %}
+        {% set colores = "class=open" %}
     {% elseif route == "modelos" %}
         {% set modelos = "class=open" %}
     {% elseif route == "productos" %}
@@ -115,6 +118,11 @@
                 <li>
                     <a {{categorias}}  href="{{path('categorias')}}">
                         <i class="fa fa-th-large"></i> <span>Categorias</span>
+                    </a>
+                </li>
+                <li>
+                    <a {{colores}}  href="{{path('colores')}}">
+                        <i class="fa fa-th-list"></i> <span>Colores</span>
                     </a>
                 </li>
                 <li>

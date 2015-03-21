@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use InteractiveValley\ProductosBundle\Entity\Producto;
 use InteractiveValley\ProductosBundle\Form\DataTransformer\ModeloToNumberTransformer;
+use Doctrine\ORM\EntityRepository;
 
 class ProductoType extends AbstractType
 {
@@ -21,15 +22,21 @@ class ProductoType extends AbstractType
         
         $builder
             ->add('inventario','text',array('attr'=>array('class'=>'form-control')))
-            ->add('color','choice',array(
+            ->add('color','entity',array(
+                'class'=> 'ProductosBundle:Color',
                 'label'=>'Color',
-                'empty_value'=>false,
-                'choices'=>Producto::getArrayColores(),
-                'preferred_choices'=>Producto::getPreferedColor(),
+                'required'=>true,
+                'property'=>'nombre',
+                'query_builder' => function(EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.nombre', 'ASC');
+                },
                 'attr'=>array(
-                    'class'=>'validate[required] form-control placeholder',
+                    'class'=>'form-control placeholder',
                     'placeholder'=>'Color',
-                )))
+                    'data-bind'=>'value: color',
+                    )
+                ))
             ->add('position','hidden')
             ->add($builder->create('modelo','hidden')->addModelTransformer($modeloTransformer))
         ;

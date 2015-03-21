@@ -34,9 +34,14 @@ class Producto
     private $modelo;
 	
     /**
-     * @var string
+     * @var InteractiveValley\ProductosBundle\Entity\Color
+     * @todo color del producto
      *
-     * @ORM\Column(name="color", type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="InteractiveValley\ProductosBundle\Entity\Color")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="color_id", referencedColumnName="id")
+     * })
+     * @ORM\OrderBy({"nombre" = "ASC"})
      */
     private $color;
 
@@ -78,39 +83,6 @@ class Producto
      */
     private $galerias;
     
-    const COLOR_ROJO_CARMESI    = '#9F0700';
-    const COLOR_AMARILLO        = '#FA9000';
-    const COLOR_CAFE            = '#7F5400';
-    const COLOR_AZUL            = '#1DA5FF';
-    const COLOR_AZUL_MARINO     = '#084664';
-    const COLOR_VERDE           = '#3CAE55';
-    const COLOR_FIUSA           = '#F500FC';
-    const COLOR_GRIS            = '#A0A0A0';
-    const COLOR_BLANCO          = '#FFFFFF';
-    
-    
-    static public $sColores=array(
-        self::COLOR_ROJO_CARMESI    => 'Rojo Carmesi',
-        self::COLOR_AMARILLO        => 'Amarillo',
-        self::COLOR_CAFE        => 'Cafe',
-        self::COLOR_AZUL        => 'Azul',
-        self::COLOR_AZUL_MARINO => 'Azul marino',
-        self::COLOR_VERDE       => 'Verde',
-        self::COLOR_FIUSA       => 'Fiusa',
-        self::COLOR_GRIS        => 'Gris',
-        self::COLOR_BLANCO      => 'Blanco'
-    );
-    static function getPreferedColor(){
-        return array(self::COLOR_BLANCO);
-    }
-
-    public function getStringColor(){
-        return self::$sColores[$this->getColor()];
-    }
-    static function getArrayColores(){
-        return self::$sColores;
-    }
-    
     function __toString() {
         return $this->nombre;
     }
@@ -149,6 +121,14 @@ class Producto
     {
         $this->galerias = new \Doctrine\Common\Collections\ArrayCollection();
     }
+    
+    public function getStringColor(){
+        if($this->color){
+            return $this->color->getNombre();
+        }else{
+            return "Sin color";
+        }
+    }
 
     /**
      * Get id
@@ -158,29 +138,6 @@ class Producto
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set color
-     *
-     * @param string $color
-     * @return Producto
-     */
-    public function setColor($color)
-    {
-        $this->color = $color;
-
-        return $this;
-    }
-
-    /**
-     * Get color
-     *
-     * @return string 
-     */
-    public function getColor()
-    {
-        return $this->color;
     }
 
     /**
@@ -296,6 +253,29 @@ class Producto
     public function getModelo()
     {
         return $this->modelo;
+    }
+
+    /**
+     * Set color
+     *
+     * @param \InteractiveValley\ProductosBundle\Entity\Color $color
+     * @return Producto
+     */
+    public function setColor(\InteractiveValley\ProductosBundle\Entity\Color $color = null)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return \InteractiveValley\ProductosBundle\Entity\Color 
+     */
+    public function getColor()
+    {
+        return $this->color;
     }
 
     /**
