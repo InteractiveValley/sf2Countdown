@@ -23,6 +23,7 @@ define([
             events:{
                'click       .link-categoria':           'activarCategoria',
                'mouseover   .item-navbar-categorias':   'showCategorias',
+               'mouseleave  .item-navbar-categorias':   'hideCategorias',
                'mouseover   .item-navbar-colores':      'showColores',
                'mouseover   .item-navbar-precio':       'showFiltroPrecio',
                'click       #showCarrito':              'showCarrito'
@@ -38,6 +39,7 @@ define([
                 alert("showCategorias");
                 e.preventDefault();
                 e.stopPropagation();
+                if(this.statusMenu=='categorias') return false;
                 if(this.arreglarMenu()){
                     var self = this;
                     if(this.$el.find('.item-navbar-categorias').css('width')=='100px'){
@@ -55,14 +57,17 @@ define([
             showColores: function(e){
                 e.preventDefault();
                 e.stopPropagation();
+                if(this.statusMenu=='colores') return false;
                 if(this.arreglarMenu()){
                     var self = this;
                     if(this.$el.find('.item-navbar-colores').css('width')=='100px'){
                         this.$el.find('.item-navbar-precio').fadeOut('fast',function(){
                             self.$el.find('.item-navbar-colores').animate({'width': '600px'},'slow');
+                            self.statusMenu = 'colores';
                         });
                     }else{
                         this.mostrarMenu();
+                        this.statusMenu = '';
                     }
                 }
             },

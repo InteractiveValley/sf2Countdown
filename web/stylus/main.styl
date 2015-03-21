@@ -361,16 +361,20 @@ nav.navbar.navbar-default
 	& .item-navbar
 		display inline-block
 		vertical-align top
-		overflow hidden
 		height 50px 
 		width 100px
 		line-height 50px
+		position relative
 		& span.item-navbar-trigger
-			cursor ponter
-		& span.item-navbar-trigger
+			cursor pointer
+			position absolute
+			display block
+			top 0px
+			left 0px
 		& div.contenedor-filtro-navbar
-			display inline-block
-			vertical-align top
+			position absolute 
+			top 0px
+			right -100%
 			& a
 				color color_rosa
 				text-decoration none

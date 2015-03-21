@@ -103,7 +103,19 @@
                                         <li>Activo?: {{ entity.isActive | isActive | raw }}</li>
                                     </ul>
                                 </td>
-                                <td>{{ entity.inventario | number_format(2,".",",") }}</td>
+                                <td>
+                                    <ul>
+                                        {% for producto in entity.productos %}
+                                            <li>
+                                                {% if producto.color != null %}
+                                                <span style="margin: 0 0 15px;overflow: hidden;padding: 5px 10px; background: #{{producto.color.color}}"></span> - {{ producto.inventario }}
+                                                {% else %}
+                                                 Sin color - {{ producto.inventario }}
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
                                 <td>$ {{ entity.precio | number_format(2,".",",") }}</td>
                                 <td>
                                     <button onclick="javascript:editarRegistro('{{ path('modelos_edit', { 'id': entity.id }) }}')" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> </button>
