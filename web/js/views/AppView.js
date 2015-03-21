@@ -18,16 +18,15 @@ define([
                 this.colores = new ColoresCollection();
                 this.colores.fetch();
                 this.filtroPrecio.on('change',this.filtrar, this);
-                
             },
             events:{
-               'click .item-categoria': 'activarCategoria',
-               'mouseover .item-navbar-categorias': 'showCategorias',
-               'mouseleave  .item-navbar-categorias': 'hideCategorias',
-               'mouseover .item-navbar-colores': 'showColores',
-               'mouseleave  .item-navbar-colores': 'hideColores',
-               'mouseover .item-navbar-precio': 'showFiltroPrecio',
-               'mouseleave  .item-navbar-precio': 'hideFiltroPrecio',
+               'click       .item-categoria':           'activarCategoria',
+               'mouseover   .item-navbar-categorias':   'showCategorias',
+               'mouseleave  .item-navbar-categorias':   'hideCategorias',
+               'mouseover   .item-navbar-colores':      'showColores',
+               'mouseleave  .item-navbar-colores':      'hideColores',
+               'mouseover   .item-navbar-precio':       'showFiltroPrecio',
+               'mouseleave  .item-navbar-precio':       'hideFiltroPrecio',
                
                'click #showCarrito': 'showCarrito'
             },
@@ -38,9 +37,11 @@ define([
             showCategorias: function(e){
                 e.preventDefault();
                 e.stopPropagation();
-                this.$el.find('.item-navbar-colores').fadeOut('fast');
-                this.$el.find('.item-navbar-precio').fadeOut('fast');
-                this.$el.find('.item-navbar-categorias').animate({'width': '600px'},'slow');
+                var self = this;
+                this.$el.find('.item-navbar-colores').fadeOut('fast').animate({'width': '100px'},'fast');
+                this.$el.find('.item-navbar-precio').fadeOut('fast').animate({'width': '100px'},'fast',function(){
+                    self.$el.find('.item-navbar-categorias').animate({'width': '600px'},'slow');
+                });
             },
             hideCategorias: function(e){
                 e.preventDefault();
@@ -55,7 +56,7 @@ define([
                 e.preventDefault();
                 e.stopPropagation();
                 var self = this;
-                this.$el.find('.item-navbar-precio').fadeOut('fast',function(){
+                this.$el.find('.item-navbar-precio').animate({'width': '100px'},'fast').fadeOut('fast',function(){
                     self.$el.find('.item-navbar-colores').animate({'width': '600px'},'slow');
                 });
             },

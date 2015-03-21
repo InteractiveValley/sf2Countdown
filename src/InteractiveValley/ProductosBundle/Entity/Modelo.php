@@ -40,7 +40,7 @@ class Modelo
     /**
      * @var string
      *
-     * @ORM\Column(name="marca", type="string", length=150)
+     * @ORM\Column(name="marca", type="string", length=150,nullable=true)
      */
     private $marca;
 

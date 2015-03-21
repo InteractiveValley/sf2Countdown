@@ -26,7 +26,6 @@ class ModeloType extends AbstractType
                    'data-theme' => 'advanced',
                     )
                 ))
-            ->add('marca','text',array('attr'=>array('class'=>'form-control')))
             ->add('modelo','text',array('attr'=>array('class'=>'form-control')))    
             ->add('inventario','hidden')
             ->add('precio',null,array('label'=>'Precio','attr'=>array('class'=>'form-control')))
