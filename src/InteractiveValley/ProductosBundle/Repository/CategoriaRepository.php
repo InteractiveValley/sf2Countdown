@@ -25,4 +25,19 @@ class CategoriaRepository extends EntityRepository
         return $max[0]['value'];
     }
     
+    public function queryFindByActive(){
+        $query= $this->getEntityManager()->createQueryBuilder();
+        $query->select('c')
+                ->from('InteractiveValley\ProductosBundle\Entity\Categoria', 'c')
+                ->where('c.isActive=:activo')
+                ->setParameter('activo', true)
+                ->orderBy('c.position', 'ASC');
+        return $query->getQuery();
+    }
+    
+    public function findByActive(){
+        $query= $this->queryFindByActive();
+        return $query->getResult();
+    }
+    
 }

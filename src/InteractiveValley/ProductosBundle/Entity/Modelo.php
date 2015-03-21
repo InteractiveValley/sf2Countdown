@@ -61,14 +61,14 @@ class Modelo
     /**
      * @var string
      *
-     * @ORM\Column(name="precio", type="decimal")
+     * @ORM\Column(name="precio", type="decimal", precision=8, scale=2)
      */
     private $precio;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="iva", type="decimal")
+     * @ORM\Column(name="iva", type="decimal", precision=8, scale=2)
      */
     private $iva;
 
@@ -131,7 +131,7 @@ class Modelo
     private $productos;
 
     const IVA_16            = '1.16';
-    const IVA_EXENTO        = '1.0';
+    const IVA_EXENTO        = '1';
     
     static public $sIva=array(
         self::IVA_EXENTO    => 'Exento',

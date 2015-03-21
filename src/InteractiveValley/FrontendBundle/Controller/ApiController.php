@@ -13,6 +13,7 @@ use InteractiveValley\FrontendBundle\Form\ContactoType;
 use InteractiveValley\ProductosBundle\Entity\Categoria;
 use InteractiveValley\ProductosBundle\Entity\Producto;
 use InteractiveValley\ProductosBundle\Entity\Apartado;
+use InteractiveValley\ProductosBundle\Entity\Color;
 
 class ApiController extends BaseController {
     
@@ -37,20 +38,28 @@ class ApiController extends BaseController {
      * @Method({"GET"})
      */
     public function getColoresAction(Request $request) {
-        $colores = array(
-            array('color'=>'#9F0700','nombre'=>'color-carmesi'),
-            array('color'=>'#FA9000','nombre'=>'color-amarillo'),
-            array('color'=>'#7F5400','nombre'=>'color-cafe'),
-            array('color'=>'#1DA5FF','nombre'=>'color-azul'),
-            array('color'=>'#084664','nombre'=>'color-azul-marino'),
-            array('color'=>'#3CAE55','nombre'=>'color-verde'),
-            array('color'=>'#F500FC','nombre'=>'color-fiusa'),
-            array('color'=>'#A0A0A0','nombre'=>'color-gris'),
-            array('color'=>'#FFFFFF','nombre'=>'color-blanco'),
-        );
-        return new JsonResponse($colores);
+        $colores = $this->getDoctrine()
+                        ->getRepository('ProductosBundle:Color')
+                        ->findByActive();
+
+        $arreglo = array();
+        foreach ($colores as $color) {
+            $arregloCol = $this->getArrayColor($color);
+            $arreglo[] = $arregloCol;
+        }
+        
+        return new JsonResponse($arreglo);
     }
     
+    private function getArrayColor(Color $color) {
+        $arreglo = array();
+        $arreglo['id'] = $color->getId();
+        $arreglo['nombre'] = $color->getNombre();
+        $arreglo['color'] = "#".$color->getColor();
+        $arreglo['position'] = $color->getPosition();
+        $arreglo['isActive'] = $color->getIsActive();
+        return $arreglo;
+    }
     
     /**
      * @Route("/api/categorias", name="api_get_categorias")
@@ -58,7 +67,8 @@ class ApiController extends BaseController {
      */
     public function getCategoriasAction(Request $request) {
         $categorias = $this->getDoctrine()
-                        ->getRepository('ProductosBundle:Categoria')->findAll();
+                        ->getRepository('ProductosBundle:Categoria')
+                        ->findByActive();
 
         $arreglo = array();
         foreach ($categorias as $categoria) {
@@ -96,9 +106,8 @@ class ApiController extends BaseController {
 			
             if ($idCategoria == "lo-nuevo") {
                 $modelos = $this->getDoctrine()
-                                ->getRepository('ProductosBundle:Modelo')->findBy(array(
-                                    'isNew' => true
-                                ));
+                                ->getRepository('ProductosBundle:Modelo')
+                                ->modelosLoNuevo();
             } else {
                 $categoria = $this->getDoctrine()
                                   ->getRepository('ProductosBundle:Categoria')
@@ -108,12 +117,13 @@ class ApiController extends BaseController {
                 }else{
                     $modelos = $this->getDoctrine()
                                   ->getRepository('ProductosBundle:Modelo')
-                                  ->findByCategoria($categoria);
+                                  ->modelosByCategoria($categoria);
                 }
             }
         } else {
             $modelos = $this->getDoctrine()
-                            ->getRepository('ProductosBundle:Modelo')->findAll();
+                            ->getRepository('ProductosBundle:Modelo')
+                            ->modelosByCategoria(null);
         }
         $aModelos = array();
         $imagine = $this->container->get('liip_imagine.cache.manager');
@@ -242,7 +252,7 @@ class ApiController extends BaseController {
         $arreglo = array();
         $arreglo['id']          = $producto->getId();
         $arreglo['inventario']  = $producto->getInventario();
-        $arreglo['color']       = $producto->getColor();
+        $arreglo['color']       = $this->getArrayColor($producto->getColor());
         $arreglo['string_color']= $producto->getStringColor();
         $filtro = "imagen_chica";
         $arreglo['imagen']      = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);

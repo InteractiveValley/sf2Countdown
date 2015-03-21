@@ -16,10 +16,25 @@ class ColorRepository extends EntityRepository
         $em=$this->getEntityManager();
         $query=$em->createQuery('
             SELECT MAX(c.position) as value 
-            FROM ProductosBundle:Categoria c 
+            FROM ProductosBundle:Color c 
             ORDER BY c.position ASC
         ');
         $max=$query->getResult();
         return $max[0]['value'];
+    }
+    
+    public function queryFindByActive(){
+        $query= $this->getEntityManager()->createQueryBuilder();
+        $query->select('c')
+                ->from('InteractiveValley\ProductosBundle\Entity\Color', 'c')
+                ->where('c.isActive=:activo')
+                ->setParameter('activo', true)
+                ->orderBy('c.position', 'ASC');
+        return $query->getQuery();
+    }
+    
+    public function findByActive(){
+        $query= $this->queryFindByActive();
+        return $query->getResult();
     }
 }

@@ -47,4 +47,52 @@ class ModeloRepository extends EntityRepository
         $query= $this->queryFindByCategoria($categoria);
         return $query->getResult();
     }
+    
+    public function queryModelosByCategoria($categoria){
+        $query= $this->getEntityManager()->createQueryBuilder();
+        if($categoria){
+            $query->select('m')
+                    ->from('InteractiveValley\ProductosBundle\Entity\Modelo', 'm')
+                    ->join('m.categorias', 'c')
+                    ->join('m.productos', 'p')
+                    ->join('p.galerias', 'g')
+                    ->join('p.color', 'l')
+                    ->where('c.slug=:slug')
+                    ->setParameter('slug', $categoria->getSlug())
+                    ->orderBy('c.position', 'ASC');
+        }else{
+            $query->select('m')
+                    ->from('InteractiveValley\ProductosBundle\Entity\Modelo', 'm')
+                    ->join('m.categorias', 'c')
+                    ->join('m.productos', 'p')
+                    ->join('p.galerias', 'g')
+                    ->join('p.color', 'l')
+                    ->orderBy('c.position', 'ASC');
+        }
+        return $query->getQuery();
+    }
+    
+    public function modelosByCategoria($categoria){
+        $query= $this->queryModelosByCategoria($categoria);
+        return $query->getResult();
+    }
+    
+    public function queryModelosLoNuevo(){
+        $query= $this->getEntityManager()->createQueryBuilder();
+        $query->select('m')
+                ->from('InteractiveValley\ProductosBundle\Entity\Modelo', 'm')
+                ->join('m.categorias', 'c')
+                ->join('m.productos', 'p')
+                ->join('p.galerias', 'g')
+                ->join('p.color', 'l')
+                ->where('m.isNew=:nuevo')
+                ->setParameter('nuevo', true)
+                ->orderBy('c.position', 'ASC');
+        return $query->getQuery();
+    }
+    
+    public function modelosLoNuevo(){
+        $query= $this->queryModelosLoNuevo();
+        return $query->getResult();
+    }
 }

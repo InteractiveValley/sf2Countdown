@@ -18,6 +18,7 @@ define([
                 this.colores = new ColoresCollection();
                 this.colores.fetch();
                 this.filtroPrecio.on('change',this.filtrar, this);
+                this.statusMenu = '';
             },
             events:{
                'click       .link-categoria':           'activarCategoria',
@@ -43,9 +44,11 @@ define([
                         this.$el.find('.item-navbar-colores').fadeOut('fast');
                         this.$el.find('.item-navbar-precio').fadeOut('fast',function(){
                             self.$el.find('.item-navbar-categorias').animate({'width': '600px'},'slow');
+                            self.statusMenu = 'categorias';
                         });
                     }else{
                         this.mostrarMenu();
+                        this.statusMenu = '';
                     }
                 }
             },
