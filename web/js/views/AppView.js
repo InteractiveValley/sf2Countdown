@@ -4,10 +4,11 @@ define([
     'Backbone',
     'models/FiltroPrecioModel',
     'collections/ColoresCollection',
+    'views/ColorView',
     'bootstrap',
     'bootstrap-slider'
 ],
-    function ($, _, Backbone, FiltroPrecioModel, ColoresCollection) {
+    function ($, _, Backbone, FiltroPrecioModel, ColoresCollection, ColorView) {
         var AppView = Backbone.View.extend({
             el: '#app',
             tagName: 'div',
@@ -16,83 +17,52 @@ define([
                 console.log('inicializando appview');
                 this.filtroPrecio = new FiltroPrecioModel();
                 this.colores = new ColoresCollection();
-                this.colores.fetch();
+                var xhr = this.colores.fetch();
+                var self = this;
+                xhr.done(function(){
+                    self.renderColores();
+                });
                 this.filtroPrecio.on('change',this.filtrar, this);
                 this.statusMenu = '';
+                this.sliderPrecio();
             },
             events:{
                'click       .link-categoria':           'activarCategoria',
-               'mouseover   .item-navbar-categorias':   'showCategorias',
-               'mouseleave  .item-navbar-categorias':   'hideCategorias',
-               'mouseover   .item-navbar-colores':      'showColores',
-               'mouseover   .item-navbar-precio':       'showFiltroPrecio',
-               'click       #showCarrito':              'showCarrito'
+               'click       #showCategorias':           'showCategorias',
+               'click       #showColores':              'showColores',
+               'click       #showFiltroPrecio':         'showFiltroPrecio',
+               'click       #showCarrito':              'showCarrito',
+               'mouseleave  nav':                       'hideOpcionesMenu'
             },
-            activarCategoria: function(e){
-                alert("activarCategoria");
-                e.preventDefault();
-                e.stopPropagation();
+            activarCategoria: function(){
                 $("a.link-categoria").removeClass('active');
                 $(e.currentTarget).find("a").addClass('active');
             },
             showCategorias: function(e){
-                alert("showCategorias");
                 e.preventDefault();
                 e.stopPropagation();
-                if(this.statusMenu=='categorias') return false;
-                if(this.arreglarMenu()){
-                    var self = this;
-                    if(this.$el.find('.item-navbar-categorias').css('width')=='100px'){
-                        this.$el.find('.item-navbar-colores').fadeOut('fast');
-                        this.$el.find('.item-navbar-precio').fadeOut('fast',function(){
-                            self.$el.find('.item-navbar-categorias').animate({'width': '600px'},'slow');
-                            self.statusMenu = 'categorias';
-                        });
-                    }else{
-                        this.mostrarMenu();
-                        this.statusMenu = '';
-                    }
+                if(this.hideOpcionesMenu()){
+                    this.$el.find('.contenedor-filtro-navbar.contenedor-categorias').fadeIn('fast');
                 }
             },
             showColores: function(e){
                 e.preventDefault();
                 e.stopPropagation();
-                if(this.statusMenu=='colores') return false;
-                if(this.arreglarMenu()){
-                    var self = this;
-                    if(this.$el.find('.item-navbar-colores').css('width')=='100px'){
-                        this.$el.find('.item-navbar-precio').fadeOut('fast',function(){
-                            self.$el.find('.item-navbar-colores').animate({'width': '600px'},'slow');
-                            self.statusMenu = 'colores';
-                        });
-                    }else{
-                        this.mostrarMenu();
-                        this.statusMenu = '';
-                    }
+                if(this.hideOpcionesMenu()){
+                    this.$el.find('.contenedor-filtro-navbar.contenedor-colores').fadeIn('fast');
                 }
             },
             showFiltroPrecio: function(e){
                 e.preventDefault();
                 e.stopPropagation();
-                if(this.arreglarMenu()){
-                    var self = this;
-                    if(this.$el.find('.item-navbar-precio').css('width')=='100px'){
-                        this.$el.find('.item-navbar-precio').animate({'width': '600px'},'slow');
-                    }else{
-                        this.mostrarMenu();
-                    }
+                if(this.hideOpcionesMenu()){
+                    this.$el.find('.contenedor-filtro-navbar.contenedor-precio').fadeIn('fast');
                 }
             },
-            arreglarMenu: function(){
-                this.$el.find('.item-navbar-categorias').animate({'width': '100px'},'fast');
-                this.$el.find('.item-navbar-colores').animate({'width': '100px'},'fast');
-                this.$el.find('.item-navbar-precio').animate({'width': '100px'},'fast');
-                return true;
-            },
-            mostrarMenu: function(){
-                this.$el.find('.item-navbar-categorias').fadeIn('fast');
-                this.$el.find('.item-navbar-colores').fadeIn('fast');
-                this.$el.find('.item-navbar-precio').fadeIn('fast');
+            hideOpcionesMenu: function(){
+                this.$el.find('.contenedor-filtro-navbar.contenedor-categorias').fadeOut('fast');
+                this.$el.find('.contenedor-filtro-navbar.contenedor-colores').fadeOut('fast');
+                this.$el.find('.contenedor-filtro-navbar.contenedor-precio').fadeOut('fast');
                 return true;
             },
             showCarrito: function(e){
@@ -110,17 +80,26 @@ define([
                 this.sliderPrecio();
                 return this;
             },
+            renderColores:function () {
+                var colorView;
+                var self = this;
+                this.colores.forEach(function(model){
+                    colorView = new ColorView({model: model});
+                    self.$el.find('.contenedor-filtro-navbar.contenedor-colores').append(colorView.render().$el.html());
+                });
+                return this;
+            },
             sliderPrecio: function(){
-                    var self = this;
-                    this.$el.find("#sliderPrecio").slider({'tooltip': 'show'});
-                    this.$el.find(".slider-horizontal").css({'width': '100%'});
-                    this.$el.find("#valor-precio").text( formatNumber.new(2000,"$"));
-                    this.$el.find("#sliderPrecio").on('slide', function (ev) {
-                        self.$el.find("#valor-precio").text( formatNumber.new(ev.value,"$"));
-                        self.filtroPrecio.set({'value': ev.value});
-                    }).on("slideStop", function (ev) {
+                var self = this;
+                this.$el.find("#sliderPrecio").slider({'tooltip': 'show'});
+                this.$el.find(".slider-horizontal").css({'width': '100%'});
+                this.$el.find("#valor-precio").text(formatNumber.new(2000, "$"));
+                this.$el.find("#sliderPrecio").on('slide', function (ev) {
+                    self.$el.find("#valor-precio").text(formatNumber.new(ev.value, "$"));
+                    self.filtroPrecio.set({'value': ev.value});
+                }).on("slideStop", function (ev) {
 
-                    });
+                });
             },
             filtrar: function(){
                 app.collections.productos.filtrarPorPrecio(this.filtroPrecio.get('value'));

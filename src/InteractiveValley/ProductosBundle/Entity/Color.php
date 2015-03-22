@@ -63,6 +63,13 @@ class Color
         return $this->getNombre();
     }
     
+    public function getColorTexto(){
+        if($this->getColor()=='FFFFFF'){
+            return "blak";
+        }else{
+            return "white";
+        }
+    }
     
 
     /**

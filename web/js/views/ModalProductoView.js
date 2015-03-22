@@ -12,9 +12,11 @@ define([
                 template: _.template(ModalProductoViewTemplate),
                 initialize: function () {
                     console.log('inicializando modalproductoview');
+                    this.productoSeleccionado = this.model.attributes.productos[0];
                 },
                 events: {
-                    'click .modal-producto-agrergar-carrito': 'agregarCarrito'
+                    'click .modal-producto-agrergar-carrito': 'agregarCarrito',
+                    'click .lista-colores-item': 'seleccionarColor'
                 },
                 agregarCarrito: function (e) {
                     e.preventDefault();
@@ -24,7 +26,7 @@ define([
                     $.ajax({
                         type: 'POST',
                         dataType: 'json',
-                        url: app.root + '/carrito/add/' + self.model.get('slug'),
+                        url: app.root + '/carrito/add/' + self.productoSeleccionado.id,
                         data: {'cantidad': cantidad},
                         success: function (data) {
                             if (data.status == 'no_existe') {
@@ -59,6 +61,22 @@ define([
                 },
                 cambiarModel: function(model){
                   this.model = model;
+                },
+                seleccionarColor: function(e){
+                    var idColor = $(e.target).data('id');
+                    for(var i=0; i<this.model.attributes.productos.length;i++){
+                        if(this.model.attributes.productos[i].color.id == idColor){
+                           this.productoSeleccionado = this.model.attributes.productos[i];
+                           this.mostrarProductoSeleccionado();
+                           break;
+                        }
+                    }
+                },
+                mostrarProductoSeleccionado: function(){
+                    var imagen = this.productoSeleccionado.imagen;
+                    this.$el.find('.producto-galeria-imagen').attr({
+                      'src': imagen 
+                    });
                 },
                 destroy_view: function () {
                     // COMPLETELY UNBIND THE VIEW 

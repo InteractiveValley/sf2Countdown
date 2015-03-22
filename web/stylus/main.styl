@@ -42,8 +42,6 @@ article.filtro-categorias
 	& .filtro
 		height 2.9em
 		line-height 2.9em
-		&:last-child
-			border-top 1px solid color_gris_oscuro
 	& .filtro-titulo
 		text-transform uppercase
 		font-size .8em
@@ -121,8 +119,6 @@ article.producto
 	&.imagen_chica
 		width 238px
 		height 238px
-	&.promocional
-		box-shadow 0 0 4px 1px #DF2E72
 	&.imagen_grande
 		width 484px
 		height 484px
@@ -374,10 +370,22 @@ nav.navbar.navbar-default
 		& div.contenedor-filtro-navbar
 			position absolute 
 			top 0px
-			right -100%
+			left 100px
+			display block
+			background-color #f8f8f8
+			z-index 1000
+			height 50px
+			display none
 			& a
 				color color_rosa
 				text-decoration none
+			&.contenedor-categorias
+				width 873px
+			&.contenedor-colores
+				width 773px
+			&.contenedor-precio
+				width 673px
+				 
 
 .buscador-envio
 	background-color color_rosa
@@ -418,9 +426,6 @@ nav.navbar.navbar-default
 	& .contenido-usuario-tracking
 		background-color color_rosa
 
-.categorias 
-	width 100%
-	padding 0px 1em 1em
 
 .color-rosa
 	color color_rosa	
@@ -442,6 +447,8 @@ nav.navbar.navbar-default
 	color_rosa
 	text-transform capitalize
 	padding 2px
+	display inline-block
+	vertical-align top 
 
 .link-cuenta
 	padding .3em
@@ -489,7 +496,14 @@ nav.navbar.navbar-default
 	position relative
 
 .modal-producto-contenido
-	text-align center
+	text-align left
+	& .modal-producto-galeria
+		& .producto-galeria-lista
+			margin 0 
+			padding 0
+			& .producto-galeria-item
+				display inline-block
+				vertical-align top
 	& .modal-producto-titulo
 		color color_rosa
 		font-size 1.2em
@@ -514,11 +528,27 @@ nav.navbar.navbar-default
 		color white
 		display block
 		font-size 1.2em
-		margin 0 auto .5em
 		padding 5px
 		width 300px
+		margin 0px 0px 1.2em
+	& .modal-producto-colores
+		& ul.lista-colores
+			margin 0 0 1.2em
+			padding 0
+			& li.item-color
+				display inline-block
+				vertical-align top 
+				& span
+					border-radius 50%
+					height 30px
+					width 30px
+					display inline-block
+					line-height 25px
+					text-align center
+					border 1px solid color_gris_claro
+					cursor pointer
 	& .modal-producto-cantidad 
-		margin-bottom .5em
+		margin-bottom 1.2em
 	& .modal-producto-agrergar-carrito
 		text-transform uppercase
 		padding .5em
@@ -527,7 +557,7 @@ nav.navbar.navbar-default
 		color color_rosa
 	& .modal-producto-cantidad button
 	& .modal-producto-agrergar-carrito
-		background-color color_rosa
+		background-color color_gris_oscuro_new
 		color white
 
 

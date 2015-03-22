@@ -51,11 +51,13 @@ class ApiController extends BaseController {
         return new JsonResponse($arreglo);
     }
     
-    private function getArrayColor(Color $color) {
+    private function getArrayColor(Color $color=null) {
         $arreglo = array();
+        if($color==null) return $arreglo;
         $arreglo['id'] = $color->getId();
         $arreglo['nombre'] = $color->getNombre();
         $arreglo['color'] = "#".$color->getColor();
+        $arreglo['texto'] = $color->getColorTexto();
         $arreglo['position'] = $color->getPosition();
         $arreglo['isActive'] = $color->getIsActive();
         return $arreglo;
@@ -128,7 +130,9 @@ class ApiController extends BaseController {
         $aModelos = array();
         $imagine = $this->container->get('liip_imagine.cache.manager');
         foreach ($modelos as $modelo) {
-            $aModelos[] = $this->getArrayModelo($modelo, $imagine);
+            if($modelo->getInventario()>0 && $modelo->getIsActive()){
+                $aModelos[] = $this->getArrayModelo($modelo, $imagine);
+            }
         }
 
         return new JsonResponse($aModelos);
@@ -156,7 +160,7 @@ class ApiController extends BaseController {
             $filtro = "imagen_chica";
         }
         foreach($modelo->getProductos() as $producto){
-            if(count($producto->getGalerias())>0){
+            if(count($producto->getGalerias())>0 && $producto->getInventario()>0){
                 $arreglo['imagen']      = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
                 $arreglo['thumbnail']   = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
                 break;
@@ -228,7 +232,26 @@ class ApiController extends BaseController {
             $imagine = $this->container->get('liip_imagine.cache.manager');
         }
         $arreglo = array();
-        $arreglo = $this->getArrayModelo($apartado->getProducto()->getModelo(), $imagine);
+        $modelo = $apartado->getProducto()->getModelo();
+        $arreglo['modeloId']          = $modelo->getId();
+        $arreglo['nombre']      = $modelo->getNombre();
+        $arreglo['descripcion'] = $modelo->getDescripcion();
+        $arreglo['modelo']      = $modelo->getModelo();
+        $arreglo['slug']        = $modelo->getSlug();
+        $arreglo['precio']      = $modelo->getPrecio();
+        $arreglo['iva']         = $modelo->getIva();
+        $arreglo['isPromocional'] = $modelo->getIsPromocional();
+        $arreglo['isNew']       = $modelo->getIsNew();
+        $arreglo['isActive']    = $modelo->getIsActive();
+        $producto = $apartado->getProducto();
+        $arreglo['productoId']  = $producto->getId();
+        $arreglo['inventario']  = $producto->getInventario();
+        $arreglo['color']       = $this->getArrayColor($producto->getColor());
+        $arreglo['string_color']= $producto->getStringColor();
+        $filtro = "imagen_carrusel";
+        $arreglo['imagen']      = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
+        $arreglo['thumbnail']   = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
+        $arreglo['galerias']    = $this->getArrayGalerias($producto->getGalerias(), $imagine);
         $arreglo['minutos'] = 25;
         $arreglo['cantidad'] = $apartado->getCantidad();
         return $arreglo;
@@ -254,7 +277,7 @@ class ApiController extends BaseController {
         $arreglo['inventario']  = $producto->getInventario();
         $arreglo['color']       = $this->getArrayColor($producto->getColor());
         $arreglo['string_color']= $producto->getStringColor();
-        $filtro = "imagen_chica";
+        $filtro = "imagen_carrusel";
         $arreglo['imagen']      = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
         $arreglo['thumbnail']   = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
         $arreglo['galerias']    = $this->getArrayGalerias($producto->getGalerias(), $imagine);
@@ -377,14 +400,14 @@ class ApiController extends BaseController {
     }
 
     /**
-     * @Route("/api/carrito/add/{slug}",name="carrito_add")
+     * @Route("/api/carrito/add/{id}",name="carrito_add")
      * @Method({"POST"})
      */
-    public function carritoAddAction(Request $request,$slug) {
+    public function carritoAddAction(Request $request,$id) {
         if ($request->isMethod('POST')) {
             $cantidad = $request->request->get('cantidad', 1);
             $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')
-                    ->findOneBy(array('slug' => $slug));
+                    ->find($id);
             if (!$producto) {
                 return new JsonResponse(array('status' => 'no_existe'));
             } else {
@@ -409,7 +432,8 @@ class ApiController extends BaseController {
     private function addProductoCarrito(Producto $producto, $cantidad){
         $clave = $this->getClaveApartado();
         $producto->setInventario($producto->getInventario()-$cantidad);
-        $producto->setReservado($producto->getReservado()+$cantidad);
+        $modelo = $producto->getModelo();
+        $modelo->setInventario($modelo->getInventario()-$cantidad);
         $apartado = new Apartado();
         $apartado->setClave($clave);
         $apartado->setCantidad($cantidad);
@@ -417,6 +441,7 @@ class ApiController extends BaseController {
         $em = $this->getDoctrine()->getManager();
         $em->persist($producto);
         $em->persist($apartado);
+        $em->persist($modelo);
         $em->flush();
     }
     

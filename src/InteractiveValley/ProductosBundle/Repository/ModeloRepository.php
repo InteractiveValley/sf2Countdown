@@ -56,7 +56,7 @@ class ModeloRepository extends EntityRepository
                     ->join('m.categorias', 'c')
                     ->join('m.productos', 'p')
                     ->join('p.galerias', 'g')
-                    ->join('p.color', 'l')
+                    //->join('p.color', 'l')
                     ->where('c.slug=:slug')
                     ->setParameter('slug', $categoria->getSlug())
                     ->orderBy('c.position', 'ASC');
@@ -66,7 +66,7 @@ class ModeloRepository extends EntityRepository
                     ->join('m.categorias', 'c')
                     ->join('m.productos', 'p')
                     ->join('p.galerias', 'g')
-                    ->join('p.color', 'l')
+                    //->join('p.color', 'l')
                     ->orderBy('c.position', 'ASC');
         }
         return $query->getQuery();
@@ -84,7 +84,7 @@ class ModeloRepository extends EntityRepository
                 ->join('m.categorias', 'c')
                 ->join('m.productos', 'p')
                 ->join('p.galerias', 'g')
-                ->join('p.color', 'l')
+                //->join('p.color', 'l')
                 ->where('m.isNew=:nuevo')
                 ->setParameter('nuevo', true)
                 ->orderBy('c.position', 'ASC');
