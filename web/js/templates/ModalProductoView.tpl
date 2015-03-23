@@ -5,12 +5,13 @@
                     <div class="row">
                         <div class="col-md-6 modal-producto-galeria">
                             <span style="display: none;" class="control-producto-galeria control-galeria-izquierdo"><</span>
-                                <div class="contendor-producto-galeria">
-                                    <ul class="producto-galeria-lista">
-                                        <li class="producto-galeria-item">
-                                            <img class="producto-galeria-imagen" src="<%= producto.imagen %>" /></li>
-                                    </ul>
-                                </div>
+                            <div class="contendor-producto-galeria">
+                                <ul class="producto-galeria-lista">
+                                    <li class="producto-galeria-item">
+                                        <img class="producto-galeria-imagen" src="<%= producto.productos[0].imagen %>" />
+                                    </li>
+                                </ul>
+                            </div>
                             <span style="display: none;" class="control-producto-galeria control-galeria-derecho">></span>
                         </div>
                         <div class="col-md-6 modal-producto-contenido">
@@ -38,14 +39,12 @@
                             <span class="modal-producto-inventario">
                                 Countdown:  <%= producto.inventario %>
                             </span>
-                            <form class="form-inline modal-producto-cantidad">
-                                <div class="form-group">
-                                    <label for="cantidad">Cantidad: </label>
-                                    <button class="btn btn-default botonIncrementar"><i class="fa fa-plus-square"></i></button>
-                                    <input type="text" class="form-control" value="<%= producto.cantidad %>" id="cantidad" placeholder="" style="width:100px;">
-                                    <button class="btn btn-default botonDecrementar"><i class="fa fa-minus-square"></i></button>
-                                </div>
-                            </form>
+                            <div class="modal-producto-cantidad">
+                                <label for="cantidad">Cantidad: </label>
+                                <button class="btn btn-default boton-incrementar"><i class="fa fa-plus-square"></i></button>
+                                <input type="text" class="form-control" value="<%= producto.cantidad %>" id="inputCantidad" placeholder="" style="width:50px;">
+                                <button class="btn btn-default boton-decrementar"><i class="fa fa-minus-square"></i></button>
+                            </div>
                             <button class="modal-producto-agrergar-carrito" data-id="<%= producto.id %>">agregar a carrito</button>
                         </div>
                     </div>

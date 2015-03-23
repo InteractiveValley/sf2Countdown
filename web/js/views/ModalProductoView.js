@@ -13,16 +13,19 @@ define([
                 initialize: function () {
                     console.log('inicializando modalproductoview');
                     this.productoSeleccionado = this.model.attributes.productos[0];
+                    this.model.on('change:cantidad',this.cambioCantidad, this);
                 },
                 events: {
                     'click .modal-producto-agrergar-carrito': 'agregarCarrito',
-                    'click .lista-colores-item': 'seleccionarColor'
+                    'click .lista-colores-item': 'seleccionarColor',
+                    'click .boton-incrementar': 'incrementar',
+                    'click .boton-decrementar': 'decrementar'
                 },
                 agregarCarrito: function (e) {
                     e.preventDefault();
                     e.stopPropagation();
                     var self = this;
-                    var cantidad = 1;
+                    var cantidad = this.model.get('cantidad');
                     $.ajax({
                         type: 'POST',
                         dataType: 'json',
@@ -77,6 +80,22 @@ define([
                     this.$el.find('.producto-galeria-imagen').attr({
                       'src': imagen 
                     });
+                    this.model.set({cantidad: 1});
+                },
+                incrementar: function(){
+                    var cantidad = this.model.get('cantidad')+1;
+                    if(this.productoSeleccionado.inventario >= cantidad){
+                        this.model.set({cantidad: cantidad});
+                    }
+                },
+                decrementar: function(){
+                    var cantidad = this.model.get('cantidad')-1;
+                    if(cantidad >= 1){
+                        this.model.set({cantidad: cantidad});
+                    }
+                },
+                cambioCantidad: function(){
+                    this.$el.find("#inputCantidad").val(this.model.get('cantidad'));
                 },
                 destroy_view: function () {
                     // COMPLETELY UNBIND THE VIEW 

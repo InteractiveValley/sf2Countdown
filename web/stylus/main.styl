@@ -136,15 +136,6 @@ article.producto
 			position absolute
 			transition all .3s ease-out
 			width 100%
-	& .imagen-producto-cantidad-carrito
-		position absolute 
-		right 0px
-		top 0px
-		display block 
-		height 20px
-		width 20px
-		color white 
-		background-color color_rosa
 	&:hover .imagen-producto figcaption
 		bottom 0px
 		opacity 1
@@ -303,6 +294,17 @@ ul.list-carrito
 					color white
 					&:hover
 						text-decoration none
+			& .imagen-producto-cantidad-carrito
+				position absolute 
+				right 0px
+				top 0px
+				height 20px
+				width 20px
+				color white 
+				background-color color_rosa
+				z-index 1000
+				text-align center
+				border-radius 50%
 			& .reloj-inactivo
 				position absolute
 				top 0px
@@ -504,6 +506,7 @@ nav.navbar.navbar-default
 			& .producto-galeria-item
 				display inline-block
 				vertical-align top
+				list-style none
 	& .modal-producto-titulo
 		color color_rosa
 		font-size 1.2em
@@ -549,14 +552,23 @@ nav.navbar.navbar-default
 					cursor pointer
 	& .modal-producto-cantidad 
 		margin-bottom 1.2em
+		& label 
+			color color_rosa
+		& button
+			background-color color_rosa
+			color white
+		& input 
+			width 50px
+			color color_rosa
+		& label
+		& button
+		& input
+			display inline-block
+			vertical-align top
 	& .modal-producto-agrergar-carrito
 		text-transform uppercase
 		padding .5em
 		border none
-	& .modal-producto-cantidad label
-		color color_rosa
-	& .modal-producto-cantidad button
-	& .modal-producto-agrergar-carrito
 		background-color color_gris_oscuro_new
 		color white
 
