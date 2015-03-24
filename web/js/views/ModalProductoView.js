@@ -56,6 +56,7 @@ define([
                                 app.collections.carrito.addApartado(data.apartado);
                                 //self.destroy_view();
                                 app.collections.productos.actualizar(self.model.get('slug'));
+                                self.hideModal();
                             }
                         },
                         error: function (data) {
@@ -72,6 +73,9 @@ define([
                 },
                 showModal: function(){
                   $(this.el).modal('show');  
+                },
+                hideModal: function(){
+                  $(this.el).modal('hide');  
                 },
                 seleccionarColor: function(e){
                     var idColor = $(e.target).data('id');

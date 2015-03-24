@@ -19,7 +19,7 @@ define([
                     var self = this;
                     this.each(function (producto) {
                         if(producto.get('in_carrito')){
-                            self.cuantos += producto.get('cantidad');
+                            self.cuantos += parseInt(producto.get('cantidad'));
                             self.total += (producto.get('precio')*producto.get('cantidad'));
                         }
                     });
@@ -38,15 +38,16 @@ define([
                     debugger;
                     var localizado = false;
                     for (var i = app.collections.carrito.length-1; i >= 0; i--) {
-                        if (apartado.id == app.collections.carrito.models[i].get('id')) {
+                        if (apartado.productoId == app.collections.carrito.models[i].get('productoId')) {
                             localizado = true;
                             app.collections.carrito.models[i].set({cantidad: apartado.cantidad});
+                            // actualizar el carrito
                             app.views.carrito.renderTotales();
                             break;
                         }
                     }
                     if (!localizado) {
-                        this.add(apartado);
+                        app.collections.carrito.add(apartado);
                     }
                     return true;
                 }

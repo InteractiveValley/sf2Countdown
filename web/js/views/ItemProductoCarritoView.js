@@ -48,7 +48,8 @@ define([
                                 self.destroy_view();
                             }
                             app.collections.productos.actualizar(self.model.get('slug'));
-                            app.views.carrito.renderTotales();
+                            var models = app.collections.carrito.where({'productoId':self.model.get('productoId')});
+                            app.collections.carrito.remove(models);
                         },
                         error: function (data) {
                             console.log(data);

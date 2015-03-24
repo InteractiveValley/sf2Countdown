@@ -19,6 +19,7 @@ define([
                 }
                 this.collection = app.collections.carrito;
                 this.collection.on('add', this.addOne, this);
+                this.collection.on('remove', this.renderTotales, this);
                 this.collection.on('reset', this.render, this);
                 app.collections.carrito.fetch();
             },
