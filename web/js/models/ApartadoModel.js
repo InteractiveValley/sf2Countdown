@@ -3,8 +3,8 @@ define([
     'Backbone'
 ],
         function (_, Backbone) {
-            var ProductoModel = Backbone.Model.extend({
-                urlRoot: app.root + "/modelos",
+            var ApartadoModel = Backbone.Model.extend({
+                urlRoot: app.root + "/carrito/productos",
                 defaults: {
                     nombre: '',
                     cantidad: 1,
@@ -14,6 +14,7 @@ define([
                     precio_with_format: '',
                     in_carrito: false,
                     visible: true,
+                    minutos: 25
                 },
                 initialize: function () {
                     this.on("change:cantidad", function (self) {
@@ -36,6 +37,6 @@ define([
                     return formatNumber.new(self.get('cantidad'),"");
                 }
             });
-            return ProductoModel;
+            return ApartadoModel;
         }
 );

@@ -20,7 +20,7 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
     routes: {
         "":                         "inicio",
         "categoria/:slug":          "categoria",
-		"producto/carrito/:slug":   "showProductoCarrito",
+	"producto/carrito/:slug":   "showProductoCarrito",
         "producto/:slug":           "showProducto"
     },
 
@@ -61,7 +61,7 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         
 	var xhr = app.collections.productos.fetch({data: {'categoria': slug}});
         xhr.done(function(data){
-			console.log(data);
+            console.log(data);
             app.views.secundario.$el.find('section.productos').removeClass('cargando');
         }).fail(function(data){
             console.log(data);
@@ -71,16 +71,16 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
 	
     },
     showProducto: function(slug){
-        debugger;
         var models = app.collections.productos.where({'slug': slug});
         if(!app.views.producto){
             app.views.producto = new ModalProductoView({model: models[0]});
             app.views.producto.render();
         }else{
-            app.views.producto.cambiarModel(models[0]);
+            app.views.producto.destroy_view();
+            app.views.producto = new ModalProductoView({model: models[0]});
             app.views.producto.render();
         }
-        //app.views.appView.$el.append(app.views.producto.$el.html());
+        app.views.appView.$el.append(app.views.producto.el);
         app.views.producto.showModal();
     },
     employeeDetails: function (id) {

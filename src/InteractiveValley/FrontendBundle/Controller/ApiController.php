@@ -208,9 +208,9 @@ class ApiController extends BaseController {
         return new JsonResponse($aProductos);
     }
 	
-	/**
+    /**
      * @todo id obligatorio
-     * @Route("/api/productos/carrito/{id}", name="api_get_producto_carrito")
+     * @Route("/api/carrito/productos/{id}", name="api_get_producto_carrito")
      * @Method({"GET"})
      */
     public function getProductoCarritoAction(Request $request,$id) {

@@ -1,12 +1,12 @@
 define([
     'underscore',
     'Backbone',
-    'models/ProductoModel'
+    'models/ApartadoModel'
 ],
-        function (_, Backbone, ProductoModel) {
+        function (_, Backbone, ApartadoModel) {
             var CarritoCollection = Backbone.Collection.extend({
                 url: app.root + "/carrito/productos",
-                model: ProductoModel,
+                model: ApartadoModel,
                 defaults: {
                     total: 0.0,
                     descuento: 0.0,
@@ -34,21 +34,22 @@ define([
                         cuantos: formatNumber.new(self.cuantos, "")
                     };
                 },
-				addApartado: function(apartado){
-					debugger;
-					var localizado = false;
-					for(var i = app.collections.carrito.length; i>=0;i--){
-						if(apartado.id == app.collections.carrito.models[i].get('id')){
-							localizado = true;
-							app.collections.carrito.models[i].set({cantidad: apartado.cantidad});
-							break;
-						}
-					}
-					if(!localizado){
-						this.add(apartado);
-					}
-					return true;
-				}
+                addApartado: function (apartado) {
+                    debugger;
+                    var localizado = false;
+                    for (var i = app.collections.carrito.length-1; i >= 0; i--) {
+                        if (apartado.id == app.collections.carrito.models[i].get('id')) {
+                            localizado = true;
+                            app.collections.carrito.models[i].set({cantidad: apartado.cantidad});
+                            app.views.carrito.renderTotales();
+                            break;
+                        }
+                    }
+                    if (!localizado) {
+                        this.add(apartado);
+                    }
+                    return true;
+                }
             });
             return CarritoCollection;
         });

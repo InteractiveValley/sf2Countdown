@@ -8,13 +8,22 @@ define([
 ],
         function ($, _, Backbone, ProductoModel, ModalProductoViewTemplate) {
             var ModalProductoView = Backbone.View.extend({
-                el: $("#modalProducto"),
+                id: 'modalProducto',
+                className: 'modal fade',
                 template: _.template(ModalProductoViewTemplate),
+                attributes: function(){
+                  return {
+                    'style'         :"z-index: 2000;",
+                    'tabindex'      :"-1",
+                    'role'          :"dialog",
+                    'aria-labelledby': "",
+                    'aria-hidden'   : "true"  
+                  };  
+                },
                 initialize: function () {
                     console.log('inicializando modalproductoview');
                     this.productoSeleccionado = this.model.attributes.productos[0];
-                    this.model.on('change:cantidad',this.cambioCantidad, this);
-					this.model.on('eliminarvista',this.destroy_view, this);
+                    this.model.on('eliminarvista',this.destroy_view, this);
                 },
                 events: {
                     'click .modal-producto-agrergar-carrito': 'agregarCarrito',
@@ -64,12 +73,9 @@ define([
                 showModal: function(){
                   $(this.el).modal('show');  
                 },
-                cambiarModel: function(model){
-                  this.model = model;
-                },
                 seleccionarColor: function(e){
                     var idColor = $(e.target).data('id');
-                    for(var i=0; i<this.model.attributes.productos.length;i++){
+                    for(var i=this.model.attributes.productos.length-1; i>=0;i--){
                         if(this.model.attributes.productos[i].color.id == idColor){
                            this.productoSeleccionado = this.model.attributes.productos[i];
                            this.mostrarProductoSeleccionado();
@@ -83,23 +89,26 @@ define([
                       'src': imagen 
                     });
                     this.model.set({cantidad: 1});
+                    this.cambioCantidad();
                 },
                 incrementar: function(){
                     var cantidad = this.model.get('cantidad')+1;
                     if(this.productoSeleccionado.inventario >= cantidad){
                         this.model.set({cantidad: cantidad});
                     }
+                    this.cambioCantidad();
                 },
                 decrementar: function(){
                     var cantidad = this.model.get('cantidad')-1;
                     if(cantidad >= 1){
                         this.model.set({cantidad: cantidad});
                     }
+                    this.cambioCantidad();
                 },
                 cambioCantidad: function(){
                     this.$el.find("#inputCantidad").val(this.model.get('cantidad'));
                 },
-                destroy_view: function () {
+                destroy_view: function(){
                     // COMPLETELY UNBIND THE VIEW 
                     this.undelegateEvents();
                     this.$el.removeData().unbind();
