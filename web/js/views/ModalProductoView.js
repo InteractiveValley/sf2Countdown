@@ -14,6 +14,7 @@ define([
                     console.log('inicializando modalproductoview');
                     this.productoSeleccionado = this.model.attributes.productos[0];
                     this.model.on('change:cantidad',this.cambioCantidad, this);
+					this.model.on('eliminarvista',this.destroy_view, this);
                 },
                 events: {
                     'click .modal-producto-agrergar-carrito': 'agregarCarrito',
@@ -42,9 +43,10 @@ define([
                             } else {
                                 alert('El producto fu agregado');
                                 console.log('producto ' + data.status);
-                                self.model.set({'cantidad': cantidad});
-                                app.collections.carrito.add(self.model.toJSON());
-                                self.destroy_view();
+                                //self.model.set({'cantidad': cantidad});
+                                app.collections.carrito.addApartado(data.apartado);
+                                //self.destroy_view();
+                                app.collections.productos.actualizar(self.model.get('slug'));
                             }
                         },
                         error: function (data) {

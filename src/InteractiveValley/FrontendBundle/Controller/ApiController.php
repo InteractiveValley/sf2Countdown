@@ -207,6 +207,21 @@ class ApiController extends BaseController {
 
         return new JsonResponse($aProductos);
     }
+	
+	/**
+     * @todo id obligatorio
+     * @Route("/api/productos/carrito/{id}", name="api_get_producto_carrito")
+     * @Method({"GET"})
+     */
+    public function getProductoCarritoAction(Request $request,$id) {
+        $em = $this->getDoctrine()->getManager();
+		$clave = $this->getClaveApartado();
+		$producto = $em->getRepository('ProductosBundle:Producto')->find($id);
+        $apartado = $em->getRepository('ProductosBundle:Apartado')->findOneBy(array(
+                              'clave'=> $clave,'id'=>$id,
+                          ));
+        return new JsonResponse($this->getArrayApartado($apartado));
+    }
     
     /**
      * @todo Obligatorio enviar un parametro de categorias 
@@ -301,13 +316,13 @@ class ApiController extends BaseController {
     }
     
     /**
-     * @Route("/api/modelos/{slug}", name="api_get_modelo")
+     * @Route("/api/modelos/{id}", name="api_get_modelo")
      * @Method({"GET"})
      */
-    public function getModeloAction(Request $request, $slug) {
+    public function getModeloAction(Request $request, $id) {
         $modelo = $this->getDoctrine()
                        ->getRepository('ProductosBundle:Modelo')
-                       ->findOneBy(array('slug' => $slug));
+                       ->find($id);
 
         return new JsonResponse($this->getArrayModelo($modelo));
     }
@@ -413,8 +428,11 @@ class ApiController extends BaseController {
             } else {
                 if ($producto->getInventario() > 0) {
                     if ($producto->getInventario() > $cantidad) {
-                        $this->addProductoCarrito($producto,$cantidad);
-                        return new JsonResponse(array('status' => 'apartado'));
+                        $apartado = $this->addProductoCarrito($producto,$cantidad);
+                        return new JsonResponse(array(
+							'status' => 'apartado',
+							'apartado' => $this->getArrayApartado($apartado),
+						));
                     } else {
                         return new JsonResponse(array(
                             'status' => 'no_existencia_solicitada',
@@ -430,19 +448,27 @@ class ApiController extends BaseController {
     }
     
     private function addProductoCarrito(Producto $producto, $cantidad){
-        $clave = $this->getClaveApartado();
-        $producto->setInventario($producto->getInventario()-$cantidad);
+        $em = $this->getDoctrine()->getManager();
+		$clave = $this->getClaveApartado();
+		$producto->setInventario($producto->getInventario()-$cantidad);
         $modelo = $producto->getModelo();
         $modelo->setInventario($modelo->getInventario()-$cantidad);
-        $apartado = new Apartado();
-        $apartado->setClave($clave);
+		$apartado = $em->getRepository('ProductosBundle:Apartado')->findOneBy(array(
+			'clave'=>$clave,'producto'=>$producto
+		));
+		if(!$apartado){
+        	$apartado = new Apartado();
+			$apartado->setClave($clave);
+			$apartado->setProducto($producto);
+		}else{
+			$cantidad += $apartado->getCantidad();
+		}
         $apartado->setCantidad($cantidad);
-        $apartado->setProducto($producto);
-        $em = $this->getDoctrine()->getManager();
         $em->persist($producto);
         $em->persist($apartado);
         $em->persist($modelo);
         $em->flush();
+		return $apartado;
     }
     
     /**
@@ -467,22 +493,24 @@ class ApiController extends BaseController {
     }
     
     /**
-     * @Route("/api/carrito/remove/{slug}",name="carrito_remove")
+     * @Route("/api/carrito/remove/{id}",name="carrito_remove")
      * @Method({"POST"})
      */
-    public function carritoRemoveAction(Request $request, $slug) {
+    public function carritoRemoveAction(Request $request, $id) {
+		$em = $this->getDoctrine()->getManager();
         if ($request->isMethod('POST')) {
-            $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')
-                             ->findOneBy(array('slug' => $slug));
+            $producto = $em->getRepository('ProductosBundle:Producto')->find($id);
             $clave = $this->getClaveApartado();
-            $apartado = $this->getDoctrine()->getRepository('ProductosBundle:Apartado')
+            $apartado = $em->getRepository('ProductosBundle:Apartado')
                              ->findOneBy(array('clave'=>$clave,'producto'=>$producto));
             if (!$apartado) {
                 return new JsonResponse(array('status' => 'no_existe_apartado'));
             } else {
-                $em = $this->getDoctrine()->getManager();
+                
                 $this->removeProductoCarrito($producto, $apartado, $em);
-                return new JsonResponse(array('status' => 'apartado_removido'));
+                return new JsonResponse(array(
+					'status' => 'apartado_removido'
+				));
             }
         }
         return new JsonResponse(array('status' => 'no_post'));
@@ -492,42 +520,52 @@ class ApiController extends BaseController {
         if(!$em){
             $em = $this->getDoctrine()->getManager();
         }
+		$modelo = $producto->getModelo();
+        $modelo->setInventario($modelo->getInventario()+$apartado->getCantidad());
         $producto->setInventario($producto->getInventario()+$apartado->getCantidad());
-        $producto->setReservado($producto->getReservado()-$apartado->getCantidad());
-        $em->persist($producto);
+		$em->persist($producto);
         $em->remove($apartado);
+		$em->persist($modelo);
         $em->flush();
+		return true;
     }
     
     /**
-     * @Route("/api/carrito/update/{slug}",name="carrito_update")
+     * @Route("/api/carrito/update/{id}",name="carrito_update")
      * @Method({"POST"})
      */
-    public function carritoUpdateAction(Request $request, $slug) {
+    public function carritoUpdateAction(Request $request, $id) {
+		$em = $this->getDoctrine()->getManager();
         if ($request->isMethod('POST')) {
             $cantidad = $request->request->get('cantidad');
-            $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')
-                             ->findOneBy(array('slug' => $slug));
+            $producto = $em->getRepository('ProductosBundle:Producto')
+                             ->find($id);
             $clave = $this->getClaveApartado();
-            $apartado = $this->getDoctrine()->getRepository('ProductosBundle:Apartado')
+            $apartado = $em->getRepository('ProductosBundle:Apartado')
                              ->findOneBy(array('clave'=>$clave,'producto'=>$producto));
             if (!$apartado) {
                 return new JsonResponse(array('status' => 'no_existe_apartado'));
             } else {
-                // revertimos el apartado
+                // revertimos el inventario del producto
                 $producto->setInventario($producto->getInventario()+$apartado->getCantidad());
-                $producto->setReservado($producto->getReservado()-$apartado->getCantidad());
+				// revertimos el inventario del modelo
+				$modelo = $producto->getModelo();
+				$modelo->setInventario($modelo->getInventario()+$apartado->getCantidad());
                 // realizamos la actualizacion
                 $producto->setInventario($producto->getInventario()-$cantidad);
-                $producto->setReservado($producto->getReservado()+$cantidad);
+				$modelo->setInventario($modelo->getInventario()-$cantidad);
                 //actualizamos el apartado
                 $apartado->setCantidad($cantidad);
                 //actualizamos los datos
-                $em = $this->getDoctrine()->getManager();
+
                 $em->persist($producto);
                 $em->persist($apartado);
+				$em->persist($modelo);
                 $em->flush();
-                return new JsonResponse(array('status' => 'apartado_actualizado'));
+                return new JsonResponse(array(
+					'status' => 'apartado_actualizado',
+					'apartado'=> $this->getArrayApartado($apartado),
+				));
             }
         }
         return new JsonResponse(array('status' => 'no_post'));

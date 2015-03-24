@@ -14,7 +14,22 @@ define([
                     visibleModel = (this.models[i].get('precio')<=valor)
                     this.models[i].set({'visible':visibleModel});
                 }
-            }
+            },
+			actualizar: function(slug){
+				var self = this;
+				for(var i = this.models.length; i>=0;i--){
+					if(this.models[i].get('slug') == slug){
+						var xhr = this.models[i].fetch();
+						xhr.done(function(data){
+							self.models[i].set(data);
+							if(self.models[i].get('inventario')==0){
+								self.models[i].trigger('eliminarvista',{eliminar:true});
+							}
+						});
+						break;
+					}
+				}
+			}
         });
         return ProductosCollection;
 });

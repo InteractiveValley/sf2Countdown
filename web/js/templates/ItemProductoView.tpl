@@ -7,7 +7,7 @@
                        <% print(producto.precio_with_format); %> MXN
                     </span>
                     <span class="inventario-producto">
-                        Countdown <% print(producto.existencia); %>
+                        Countdown <% print(producto.inventario); %>
                     </span>
                     <span class="agregar-carrito">
                         +<i class="fa fa-shopping-cart"></i>

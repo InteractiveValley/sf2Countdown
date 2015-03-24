@@ -36,7 +36,7 @@ define([
                 $.ajax({
                     type: 'POST',
                     dataType: 'json',
-                    url: app.root + '/carrito/add/' + self.model.get('slug'),
+                    url: app.root + '/carrito/add/' + self.model.attributes.productos[0].id,
                     data: {'cantidad': cantidad},
                     success: function(data){
                         if(data.status == 'no_existe'){
@@ -48,10 +48,18 @@ define([
                             alert(data.message);
                         }else{
                             alert('El producto fu agregado');
-                            console.log('producto '+ data.status);
-                            self.model.set({'cantidad': cantidad});
-                            app.collections.carrito.add(self.model.toJSON());
-                            self.model.set({'in_carrito':true});
+							debugger;
+                            console.log(data);
+                            self.model.set({'cantidad': 1});
+                            app.collections.carrito.addApartado(data.apartado);
+                            //self.destroy_view();
+                            var xhr = self.model.fetch();
+							xhr.done(function(data){
+								self.model.set(data);
+								if(self.model.get('inventario')==0){
+									self.destroy_view();
+								}
+							});
                         }
                     },
                     error: function(data){

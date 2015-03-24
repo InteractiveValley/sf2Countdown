@@ -12,7 +12,7 @@ define([
             tagName: 'li',
             className: 'item-carrito',
             initialize: function() {
-		console.log('inicializando itemproductocarritoview');
+				console.log('inicializando itemproductocarritoview');
                 this.reloj = new CronometroModel();
                 this.model.on('change', this.render, this);
                 this.reloj.on('change:contador',this.renderReloj,this);
@@ -27,12 +27,16 @@ define([
             quitarProductoCarrito: function(e){
                 e.preventDefault();
                 e.stopPropagation();
-                var self = this;
                 if (confirm('Desea quitar el producto de su carrito?')){
-                    $.ajax({
+                    this.quitarApartado();
+                }
+            },
+			quitarApartado: function(){
+				var self = this;
+					$.ajax({
                         type: 'POST',
                         dataType: 'json',
-                        url: app.root + '/carrito/remove/' + self.model.get('slug'),
+                        url: app.root + '/carrito/remove/' + self.model.get('productoId'),
                         data: {'cantidad': self.model.get('cantidad')},
                         success: function(data){
                             if(data.status == 'no_existe_apartado'){
@@ -50,8 +54,7 @@ define([
                             alert("Error al quitar producto del carrito");
                         }
                     });
-                }
-            },
+			},
             reactivarProductoCarrito: function(e){
                 e.preventDefault();
                 e.stopPropagation();
@@ -59,7 +62,7 @@ define([
                 $.ajax({
                     type: 'POST',
                     dataType: 'json',
-                    url: app.root + '/carrito/add/' + self.model.get('slug'),
+                    url: app.root + '/carrito/add/' + self.model.get('productoId'),
                     data: {'cantidad': self.model.get('cantidad')},
                     success: function(data){
                         if(data.status == 'no_existe'){
@@ -74,6 +77,7 @@ define([
                             console.log('producto '+ data.status);
                             self.reloj = new CronometroModel();
                             self.reloj.on('change:contador',self.renderReloj,self);
+							self.model.set({'in_carrito':true});
                         }
                     },
                     error: function(data){
@@ -93,6 +97,7 @@ define([
                         console.log("render inactive " + this.model.get('slug'));
                         this.$el.addClass('inactive');
                         this.$el.html(_.template(ItemProductoCarritoInactivoViewTemlate,{'producto':data}));
+						
                     }
                     return this;
                 }

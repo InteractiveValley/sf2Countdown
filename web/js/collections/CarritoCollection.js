@@ -33,7 +33,22 @@ define([
                         descuento: formatNumber.new(self.descuento, "$"),
                         cuantos: formatNumber.new(self.cuantos, "")
                     };
-                }
+                },
+				addApartado: function(apartado){
+					debugger;
+					var localizado = false;
+					for(var i = app.collections.carrito.length; i>=0;i--){
+						if(apartado.id == app.collections.carrito.models[i].get('id')){
+							localizado = true;
+							app.collections.carrito.models[i].set({cantidad: apartado.cantidad});
+							break;
+						}
+					}
+					if(!localizado){
+						this.add(apartado);
+					}
+					return true;
+				}
             });
             return CarritoCollection;
         });

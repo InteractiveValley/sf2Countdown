@@ -31,7 +31,7 @@ var app = {
     models: {},
     collections: {},
     routers: {},
-    root: 'http://localhost:8040/app_dev.php/api',
+    root: 'http://love-iris.codio.io:3000/app_dev.php/api',
     status: '',
     showCarrito: false,
     categoria: 'lo-nuevo',
@@ -44,7 +44,7 @@ var formatNumber = {
     sepDecimal: '.', // separador para los decimales
     formatear: function (num) {
         num += '';
-        var splitStr = num.split(',');
+        var splitStr = num.split('.');
         var splitLeft = splitStr[0];
         var splitRight = splitStr.length > 1 ? this.sepDecimal + splitStr[1] : '.00';
         var regx = /(\d+)(\d{3})/;

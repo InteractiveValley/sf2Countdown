@@ -4,7 +4,7 @@ define([
 ],
         function (_, Backbone) {
             var ProductoModel = Backbone.Model.extend({
-                urlRoot: app.root + "/productos",
+                urlRoot: app.root + "/modelos",
                 defaults: {
                     nombre: '',
                     cantidad: 1,

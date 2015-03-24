@@ -20,7 +20,7 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
     routes: {
         "":                         "inicio",
         "categoria/:slug":          "categoria",
-	"producto/carrito/:slug":   "showProductoCarrito",
+		"producto/carrito/:slug":   "showProductoCarrito",
         "producto/:slug":           "showProducto"
     },
 
@@ -61,6 +61,7 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         
 	var xhr = app.collections.productos.fetch({data: {'categoria': slug}});
         xhr.done(function(data){
+			console.log(data);
             app.views.secundario.$el.find('section.productos').removeClass('cargando');
         }).fail(function(data){
             console.log(data);
