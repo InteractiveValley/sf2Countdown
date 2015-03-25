@@ -50,6 +50,21 @@ define([
                         app.collections.carrito.add(apartado);
                     }
                     return true;
+                },
+                actualizar: function (productoId) {
+                    var self = this;
+                    for (var i = this.models.length-1; i >= 0; i--) {
+                        if (this.models[i].get('id') == productoId) {
+                            var xhr = this.models[i].fetch({data:{'productoId':productoId}});
+                            xhr.done(function (data) {
+                                self.models[i].set(data);
+                                if (self.models[i].get('inventario') == 0) {
+                                    self.models[i].trigger('eliminarvista', {eliminar: true});
+                                }
+                            });
+                            break;
+                        }
+                    }
                 }
             });
             return CarritoCollection;

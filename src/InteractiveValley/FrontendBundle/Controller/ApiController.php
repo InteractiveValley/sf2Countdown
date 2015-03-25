@@ -16,61 +16,62 @@ use InteractiveValley\ProductosBundle\Entity\Apartado;
 use InteractiveValley\ProductosBundle\Entity\Color;
 
 class ApiController extends BaseController {
-    
+
     private $claveApartado = null;
-    
-    protected function getClaveApartado(){
+
+    protected function getClaveApartado() {
         $this->claveApartado = $this->get('session')->get('claveApartado', null);
-        if($this->claveApartado == null){
+        if ($this->claveApartado == null) {
             //$this->claveApartado = $this->get('session')->get('claveApartado', null);
-            do{
+            do {
                 $this->claveApartado = sha1(rand(11111, 99999));
                 $resultado = $this->getDoctrine()->getRepository('ProductosBundle:Apartado')
-                                                 ->findOneBy(array('clave'=>$this->claveApartado));
-            }while($resultado!=null);
+                        ->findOneBy(array('clave' => $this->claveApartado));
+            } while ($resultado != null);
             $this->get('session')->set('claveApartado', $this->claveApartado);
         }
         return $this->claveApartado;
     }
-    
+
     /**
      * @Route("/api/colores", name="api_get_colores")
      * @Method({"GET"})
      */
     public function getColoresAction(Request $request) {
         $colores = $this->getDoctrine()
-                        ->getRepository('ProductosBundle:Color')
-                        ->findByActive();
+                ->getRepository('ProductosBundle:Color')
+                ->findByActive();
 
         $arreglo = array();
         foreach ($colores as $color) {
             $arregloCol = $this->getArrayColor($color);
             $arreglo[] = $arregloCol;
         }
-        
+
         return new JsonResponse($arreglo);
     }
-    
-    private function getArrayColor(Color $color=null) {
+
+    private function getArrayColor(Color $color = null) {
         $arreglo = array();
-        if($color==null) return $arreglo;
+        if ($color == null)
+            return $arreglo;
         $arreglo['id'] = $color->getId();
         $arreglo['nombre'] = $color->getNombre();
-        $arreglo['color'] = "#".$color->getColor();
+        $arreglo['color'] = "#" . $color->getColor();
         $arreglo['texto'] = $color->getColorTexto();
         $arreglo['position'] = $color->getPosition();
         $arreglo['isActive'] = $color->getIsActive();
         return $arreglo;
     }
-    
+
     /**
      * @Route("/api/categorias", name="api_get_categorias")
      * @Method({"GET"})
      */
     public function getCategoriasAction(Request $request) {
         $categorias = $this->getDoctrine()
-                        ->getRepository('ProductosBundle:Categoria')
-                        ->findByActive();
+                ->getRepository('ProductosBundle:Categoria')
+                ->findByActive();
 
         $arreglo = array();
         foreach ($categorias as $categoria) {
@@ -79,10 +80,10 @@ class ApiController extends BaseController {
         }
         return new JsonResponse($arreglo);
     }
-    
+
     private function getArrayCategorias($categorias) {
         $arreglo = array();
-        foreach($categorias as $categoria){
+        foreach ($categorias as $categoria) {
             $arreglo[] = $this->getArrayCategoria($categoria);
         }
         return $arreglo;
@@ -96,7 +97,7 @@ class ApiController extends BaseController {
         $arreglo['isActive'] = $categoria->getIsActive();
         return $arreglo;
     }
-    
+
     /**
      * @todo Obligatorio enviar un parametro de categorias 
      * @Route("/api/modelos", name="api_get_modelos")
@@ -105,69 +106,69 @@ class ApiController extends BaseController {
     public function getModelosAction(Request $request) {
         if ($request->query->has('categoria')) {
             $idCategoria = $request->query->get('categoria');
-			
+
             if ($idCategoria == "lo-nuevo") {
                 $modelos = $this->getDoctrine()
-                                ->getRepository('ProductosBundle:Modelo')
-                                ->modelosLoNuevo();
+                        ->getRepository('ProductosBundle:Modelo')
+                        ->modelosLoNuevo();
             } else {
                 $categoria = $this->getDoctrine()
-                                  ->getRepository('ProductosBundle:Categoria')
-                                  ->findOneBy(array('slug'=>$idCategoria));
-                if(!$categoria){
+                        ->getRepository('ProductosBundle:Categoria')
+                        ->findOneBy(array('slug' => $idCategoria));
+                if (!$categoria) {
                     $modelos = array();
-                }else{
+                } else {
                     $modelos = $this->getDoctrine()
-                                  ->getRepository('ProductosBundle:Modelo')
-                                  ->modelosByCategoria($categoria);
+                            ->getRepository('ProductosBundle:Modelo')
+                            ->modelosByCategoria($categoria);
                 }
             }
         } else {
             $modelos = $this->getDoctrine()
-                            ->getRepository('ProductosBundle:Modelo')
-                            ->modelosByCategoria(null);
+                    ->getRepository('ProductosBundle:Modelo')
+                    ->modelosByCategoria(null);
         }
         $aModelos = array();
         $imagine = $this->container->get('liip_imagine.cache.manager');
         foreach ($modelos as $modelo) {
-            if($modelo->getInventario()>0 && $modelo->getIsActive()){
+            if ($modelo->getInventario() > 0 && $modelo->getIsActive()) {
                 $aModelos[] = $this->getArrayModelo($modelo, $imagine);
             }
         }
 
         return new JsonResponse($aModelos);
     }
-    
+
     private function getArrayModelo($modelo, $imagine = null) {
         if (!$imagine) {
             $imagine = $this->container->get('liip_imagine.cache.manager');
         }
         $arreglo = array();
-        $arreglo['id']          = $modelo->getId();
-        $arreglo['nombre']      = $modelo->getNombre();
+        $arreglo['id'] = $modelo->getId();
+        $arreglo['nombre'] = $modelo->getNombre();
         $arreglo['descripcion'] = $modelo->getDescripcion();
-        $arreglo['modelo']      = $modelo->getModelo();
-        $arreglo['slug']        = $modelo->getSlug();
-        $arreglo['inventario']  = $modelo->getInventario();
-        $arreglo['precio']      = $modelo->getPrecio();
-        $arreglo['iva']         = $modelo->getIva();
+        $arreglo['modelo'] = $modelo->getModelo();
+        $arreglo['slug'] = $modelo->getSlug();
+        $arreglo['inventario'] = $modelo->getInventario();
+        $arreglo['precio'] = $modelo->getPrecio();
+        $arreglo['iva'] = $modelo->getIva();
         $arreglo['isPromocional'] = $modelo->getIsPromocional();
-        $arreglo['isNew']       = $modelo->getIsNew();
-        $arreglo['isActive']    = $modelo->getIsActive();
+        $arreglo['isNew'] = $modelo->getIsNew();
+        $arreglo['isActive'] = $modelo->getIsActive();
         if ($modelo->getIsPromocional()) {
             $filtro = "imagen_grande";
         } else {
             $filtro = "imagen_chica";
         }
-        foreach($modelo->getProductos() as $producto){
-            if(count($producto->getGalerias())>0 && $producto->getInventario()>0){
-                $arreglo['imagen']      = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
-                $arreglo['thumbnail']   = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
+        foreach ($modelo->getProductos() as $producto) {
+            if (count($producto->getGalerias()) > 0 && $producto->getInventario() > 0) {
+                $arreglo['imagen'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
+                $arreglo['thumbnail'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
                 break;
             }
         }
-        $arreglo['productos']    = $this->getArrayProductos($modelo->getProductos(), $imagine);
-        $arreglo['categorias']   = $this->getArrayCategorias($modelo->getCategorias());
+        $arreglo['productos'] = $this->getArrayProductos($modelo->getProductos(), $imagine);
+        $arreglo['categorias'] = $this->getArrayCategorias($modelo->getCategorias());
         return $arreglo;
     }
 
@@ -179,19 +180,19 @@ class ApiController extends BaseController {
     public function getProductosAction(Request $request) {
         if ($request->query->has('categoria')) {
             $idCategoria = $request->query->get('categoria');
-			
+
             if ($idCategoria == "lo-nuevo") {
                 $productos = $this->getDoctrine()
-                                  ->getRepository('ProductosBundle:Producto')->findBy(array(
-                                    'isNew' => true
-                                  ));
+                                ->getRepository('ProductosBundle:Producto')->findBy(array(
+                    'isNew' => true
+                ));
             } else {
                 $categoria = $this->getDoctrine()
-                                  ->getRepository('ProductosBundle:Categoria')
-                                  ->findOneBy(array('slug'=>$idCategoria));
-                if(!$categoria){
+                        ->getRepository('ProductosBundle:Categoria')
+                        ->findOneBy(array('slug' => $idCategoria));
+                if (!$categoria) {
                     $productos = array();
-                }else{
+                } else {
                     $productos = $categoria->getProductos();
                 }
             }
@@ -207,22 +208,22 @@ class ApiController extends BaseController {
 
         return new JsonResponse($aProductos);
     }
-	
+
     /**
      * @todo id obligatorio
      * @Route("/api/carrito/productos/{id}", name="api_get_producto_carrito")
      * @Method({"GET"})
      */
-    public function getProductoCarritoAction(Request $request,$id) {
+    public function getProductoCarritoAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
-		$clave = $this->getClaveApartado();
-		$producto = $em->getRepository('ProductosBundle:Producto')->find($id);
+        $clave = $this->getClaveApartado();
+        $producto = $em->getRepository('ProductosBundle:Producto')->find($id);
         $apartado = $em->getRepository('ProductosBundle:Apartado')->findOneBy(array(
-                              'clave'=> $clave,'id'=>$id,
-                          ));
+            'clave' => $clave, 'producto' => $producto,
+        ));
         return new JsonResponse($this->getArrayApartado($apartado));
     }
-    
+
     /**
      * @todo Obligatorio enviar un parametro de categorias 
      * @Route("/api/carrito/productos", name="api_get_productos_carrito")
@@ -231,9 +232,9 @@ class ApiController extends BaseController {
     public function getProductosCarritoAction(Request $request) {
         $clave = $this->getClaveApartado();
         $apartados = $this->getDoctrine()
-                          ->getRepository('ProductosBundle:Apartado')->findBy(array(
-                              'clave'=> $clave
-                          ));
+                        ->getRepository('ProductosBundle:Apartado')->findBy(array(
+            'clave' => $clave
+        ));
         $aProductos = array();
         $imagine = $this->container->get('liip_imagine.cache.manager');
         foreach ($apartados as $apartado) {
@@ -241,61 +242,61 @@ class ApiController extends BaseController {
         }
         return new JsonResponse($aProductos);
     }
-    
+
     private function getArrayApartado($apartado, $imagine = null) {
         if (!$imagine) {
             $imagine = $this->container->get('liip_imagine.cache.manager');
         }
         $arreglo = array();
         $modelo = $apartado->getProducto()->getModelo();
-        $arreglo['modeloId']          = $modelo->getId();
-        $arreglo['nombre']      = $modelo->getNombre();
+        $arreglo['modeloId'] = $modelo->getId();
+        $arreglo['nombre'] = $modelo->getNombre();
         $arreglo['descripcion'] = $modelo->getDescripcion();
-        $arreglo['modelo']      = $modelo->getModelo();
-        $arreglo['slug']        = $modelo->getSlug();
-        $arreglo['precio']      = $modelo->getPrecio();
-        $arreglo['iva']         = $modelo->getIva();
+        $arreglo['modelo'] = $modelo->getModelo();
+        $arreglo['slug'] = $modelo->getSlug();
+        $arreglo['precio'] = $modelo->getPrecio();
+        $arreglo['iva'] = $modelo->getIva();
         $arreglo['isPromocional'] = $modelo->getIsPromocional();
-        $arreglo['isNew']       = $modelo->getIsNew();
-        $arreglo['isActive']    = $modelo->getIsActive();
+        $arreglo['isNew'] = $modelo->getIsNew();
+        $arreglo['isActive'] = $modelo->getIsActive();
         $producto = $apartado->getProducto();
-        $arreglo['productoId']  = $producto->getId();
-        $arreglo['inventario']  = $producto->getInventario();
-        $arreglo['color']       = $this->getArrayColor($producto->getColor());
-        $arreglo['string_color']= $producto->getStringColor();
+        $arreglo['productoId'] = $producto->getId();
+        $arreglo['inventario'] = $producto->getInventario();
+        $arreglo['color'] = $this->getArrayColor($producto->getColor());
+        $arreglo['string_color'] = $producto->getStringColor();
         $filtro = "imagen_carrusel";
-        $arreglo['imagen']      = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
-        $arreglo['thumbnail']   = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
-        $arreglo['galerias']    = $this->getArrayGalerias($producto->getGalerias(), $imagine);
+        $arreglo['imagen'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
+        $arreglo['thumbnail'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
+        $arreglo['galerias'] = $this->getArrayGalerias($producto->getGalerias(), $imagine);
         $arreglo['minutos'] = 25;
         $arreglo['cantidad'] = $apartado->getCantidad();
         return $arreglo;
     }
-    
-    private function getArrayProductos($productos, $imagine = null, $conModelo = false){
+
+    private function getArrayProductos($productos, $imagine = null, $conModelo = false) {
         if (!$imagine) {
             $imagine = $this->container->get('liip_imagine.cache.manager');
         }
         $arreglo = array();
-        foreach($productos as $producto){
+        foreach ($productos as $producto) {
             $arreglo[] = $this->getArrayProducto($producto, $imagine);
         }
         return $arreglo;
     }
-    
-    private function getArrayProducto($producto,$imagine = null) {
+
+    private function getArrayProducto($producto, $imagine = null) {
         if (!$imagine) {
             $imagine = $this->container->get('liip_imagine.cache.manager');
         }
         $arreglo = array();
-        $arreglo['id']          = $producto->getId();
-        $arreglo['inventario']  = $producto->getInventario();
-        $arreglo['color']       = $this->getArrayColor($producto->getColor());
-        $arreglo['string_color']= $producto->getStringColor();
+        $arreglo['id'] = $producto->getId();
+        $arreglo['inventario'] = $producto->getInventario();
+        $arreglo['color'] = $this->getArrayColor($producto->getColor());
+        $arreglo['string_color'] = $producto->getStringColor();
         $filtro = "imagen_carrusel";
-        $arreglo['imagen']      = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
-        $arreglo['thumbnail']   = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
-        $arreglo['galerias']    = $this->getArrayGalerias($producto->getGalerias(), $imagine);
+        $arreglo['imagen'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
+        $arreglo['thumbnail'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
+        $arreglo['galerias'] = $this->getArrayGalerias($producto->getGalerias(), $imagine);
         return $arreglo;
     }
 
@@ -314,15 +315,15 @@ class ApiController extends BaseController {
         }
         return $arreglo;
     }
-    
+
     /**
      * @Route("/api/modelos/{id}", name="api_get_modelo")
      * @Method({"GET"})
      */
     public function getModeloAction(Request $request, $id) {
         $modelo = $this->getDoctrine()
-                       ->getRepository('ProductosBundle:Modelo')
-                       ->find($id);
+                ->getRepository('ProductosBundle:Modelo')
+                ->find($id);
 
         return new JsonResponse($this->getArrayModelo($modelo));
     }
@@ -333,8 +334,8 @@ class ApiController extends BaseController {
      */
     public function getProductoAction(Request $request, $id) {
         $producto = $this->getDoctrine()
-                         ->getRepository('ProductosBundle:Producto')
-                         ->find($id);
+                ->getRepository('ProductosBundle:Producto')
+                ->find($id);
 
         return new JsonResponse($this->getArrayProducto($producto));
     }
@@ -418,7 +419,7 @@ class ApiController extends BaseController {
      * @Route("/api/carrito/add/{id}",name="carrito_add")
      * @Method({"POST"})
      */
-    public function carritoAddAction(Request $request,$id) {
+    public function carritoAddAction(Request $request, $id) {
         if ($request->isMethod('POST')) {
             $cantidad = $request->request->get('cantidad', 1);
             $producto = $this->getDoctrine()->getRepository('ProductosBundle:Producto')
@@ -428,11 +429,11 @@ class ApiController extends BaseController {
             } else {
                 if ($producto->getInventario() > 0) {
                     if ($producto->getInventario() > $cantidad) {
-                        $apartado = $this->addProductoCarrito($producto,$cantidad);
+                        $apartado = $this->addProductoCarrito($producto, $cantidad);
                         return new JsonResponse(array(
-							'status' => 'apartado',
-							'apartado' => $this->getArrayApartado($apartado),
-						));
+                            'status' => 'apartado',
+                            'apartado' => $this->getArrayApartado($apartado),
+                        ));
                     } else {
                         return new JsonResponse(array(
                             'status' => 'no_existencia_solicitada',
@@ -446,31 +447,31 @@ class ApiController extends BaseController {
         }
         return new JsonResponse(array('status' => 'no_post'));
     }
-    
-    private function addProductoCarrito(Producto $producto, $cantidad){
+
+    private function addProductoCarrito(Producto $producto, $cantidad) {
         $em = $this->getDoctrine()->getManager();
-		$clave = $this->getClaveApartado();
-		$producto->setInventario($producto->getInventario()-$cantidad);
+        $clave = $this->getClaveApartado();
+        $producto->setInventario($producto->getInventario() - $cantidad);
         $modelo = $producto->getModelo();
-        $modelo->setInventario($modelo->getInventario()-$cantidad);
-		$apartado = $em->getRepository('ProductosBundle:Apartado')->findOneBy(array(
-			'clave'=>$clave,'producto'=>$producto
-		));
-		if(!$apartado){
-        	$apartado = new Apartado();
-			$apartado->setClave($clave);
-			$apartado->setProducto($producto);
-		}else{
-			$cantidad += $apartado->getCantidad();
-		}
+        $modelo->setInventario($modelo->getInventario() - $cantidad);
+        $apartado = $em->getRepository('ProductosBundle:Apartado')->findOneBy(array(
+            'clave' => $clave, 'producto' => $producto
+        ));
+        if (!$apartado) {
+            $apartado = new Apartado();
+            $apartado->setClave($clave);
+            $apartado->setProducto($producto);
+        } else {
+            $cantidad += $apartado->getCantidad();
+        }
         $apartado->setCantidad($cantidad);
         $em->persist($producto);
         $em->persist($apartado);
         $em->persist($modelo);
         $em->flush();
-		return $apartado;
+        return $apartado;
     }
-    
+
     /**
      * @Route("/api/revisar/apartados", name="api_get_revisar_apartados")
      * @Method({"GET"})
@@ -479,95 +480,100 @@ class ApiController extends BaseController {
         $em = $this->getDoctrine()->getManager();
         $apartados = $em->getRepository('ProductosBundle:Apartado')->findAll();
         $cont = 0;
-        foreach($apartados as $apartado){
+        foreach ($apartados as $apartado) {
             $fecha1 = $apartado->getCreatedAt();
             $fecha2 = new \DateTime();
             $intervalo = $fecha1->diff($fecha2);
             $minutos = $intervalo->format("%i"); //minutos de intervalo
-            if($minutos > $this->container->getParameter('richpolis.tiempo.permitido')){
+            if ($minutos > $this->container->getParameter('richpolis.tiempo.permitido')) {
                 $this->removeProductoCarrito($apartado->getProducto(), $apartado, $em);
                 $cont++;
             }
         }
-        return new JsonResponse(array('apartados_quitados'=>$cont));
+        return new JsonResponse(array('apartados_quitados' => $cont));
     }
-    
+
     /**
      * @Route("/api/carrito/remove/{id}",name="carrito_remove")
      * @Method({"POST"})
      */
     public function carritoRemoveAction(Request $request, $id) {
-		$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         if ($request->isMethod('POST')) {
             $producto = $em->getRepository('ProductosBundle:Producto')->find($id);
             $clave = $this->getClaveApartado();
             $apartado = $em->getRepository('ProductosBundle:Apartado')
-                             ->findOneBy(array('clave'=>$clave,'producto'=>$producto));
+                    ->findOneBy(array('clave' => $clave, 'producto' => $producto));
             if (!$apartado) {
                 return new JsonResponse(array('status' => 'no_existe_apartado'));
             } else {
-                
+
                 $this->removeProductoCarrito($producto, $apartado, $em);
                 return new JsonResponse(array(
-					'status' => 'apartado_removido'
-				));
+                    'status' => 'apartado_removido'
+                ));
             }
         }
         return new JsonResponse(array('status' => 'no_post'));
     }
-    
-    protected function removeProductoCarrito(Producto $producto, $apartado, &$em = null){
-        if(!$em){
+
+    protected function removeProductoCarrito(Producto $producto, $apartado, &$em = null) {
+        if (!$em) {
             $em = $this->getDoctrine()->getManager();
         }
-		$modelo = $producto->getModelo();
-        $modelo->setInventario($modelo->getInventario()+$apartado->getCantidad());
-        $producto->setInventario($producto->getInventario()+$apartado->getCantidad());
-		$em->persist($producto);
+        $modelo = $producto->getModelo();
+        $modelo->setInventario($modelo->getInventario() + $apartado->getCantidad());
+        $producto->setInventario($producto->getInventario() + $apartado->getCantidad());
+        $em->persist($producto);
         $em->remove($apartado);
-		$em->persist($modelo);
+        $em->persist($modelo);
         $em->flush();
-		return true;
+        return true;
     }
-    
+
     /**
      * @Route("/api/carrito/update/{id}",name="carrito_update")
      * @Method({"POST"})
      */
     public function carritoUpdateAction(Request $request, $id) {
-		$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         if ($request->isMethod('POST')) {
             $cantidad = $request->request->get('cantidad');
-            $producto = $em->getRepository('ProductosBundle:Producto')
-                             ->find($id);
+            $producto = $em->getRepository('ProductosBundle:Producto')->find($id);
             $clave = $this->getClaveApartado();
             $apartado = $em->getRepository('ProductosBundle:Apartado')
-                             ->findOneBy(array('clave'=>$clave,'producto'=>$producto));
+                           ->findOneBy(array('clave' => $clave, 'producto' => $producto));
+            $diferencia = $cantidad - $apartado->getCantidad();
             if (!$apartado) {
                 return new JsonResponse(array('status' => 'no_existe_apartado'));
             } else {
-                // revertimos el inventario del producto
-                $producto->setInventario($producto->getInventario()+$apartado->getCantidad());
-				// revertimos el inventario del modelo
-				$modelo = $producto->getModelo();
-				$modelo->setInventario($modelo->getInventario()+$apartado->getCantidad());
-                // realizamos la actualizacion
-                $producto->setInventario($producto->getInventario()-$cantidad);
-				$modelo->setInventario($modelo->getInventario()-$cantidad);
-                //actualizamos el apartado
-                $apartado->setCantidad($cantidad);
-                //actualizamos los datos
-
-                $em->persist($producto);
-                $em->persist($apartado);
-				$em->persist($modelo);
-                $em->flush();
-                return new JsonResponse(array(
-					'status' => 'apartado_actualizado',
-					'apartado'=> $this->getArrayApartado($apartado),
-				));
+                if($producto->getInventario()>=$diferencia){
+                    // quitamos inventario de producto
+                    $producto->setInventario($producto->getInventario() - $diferencia);
+                    // quitamos inventario del modelo
+                    $modelo = $producto->getModelo();
+                    $modelo->setInventario($modelo->getInventario() - $diferencia);
+                    //actualizamos el apartado
+                    $apartado->setCantidad($apartado->getCantidad()+$diferencia);
+                    //actualizamos los objetos
+                    $em->persist($producto);
+                    $em->persist($apartado);
+                    $em->persist($modelo);
+                    $em->flush();
+                    return new JsonResponse(array(
+                        'status' => 'apartado_actualizado',
+                        'apartado' => $this->getArrayApartado($apartado),
+                    ));
+                }else{
+                    return new JsonResponse(array(
+                        'status' => 'apartado_no_inventario',
+                        'apartado' => $this->getArrayApartado($apartado),
+                        'disponible'=>$producto->getInventario()
+                    ));
+                }
             }
         }
         return new JsonResponse(array('status' => 'no_post'));
     }
+
 }

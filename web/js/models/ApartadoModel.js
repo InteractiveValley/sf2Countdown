@@ -4,6 +4,7 @@ define([
 ],
         function (_, Backbone) {
             var ApartadoModel = Backbone.Model.extend({
+                idAttribute: "productoId",
                 urlRoot: app.root + "/carrito/productos",
                 defaults: {
                     nombre: '',
