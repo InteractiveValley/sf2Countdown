@@ -57,6 +57,34 @@ define([
                         }
                     });
                 },
+				actualizarApartado: function (cant) {
+                    var self = this;
+					var cantidad = cant || 1
+					this.model.set({cantidad: cantidad});
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: app.root + '/carrito/update/' + self.model.get('productoId'),
+                        data: {'cantidad': self.model.get('cantidad')},
+                        success: function (data) {
+                            if (data.status == 'no_existe_apartado') {
+                                alert("Apartado no existe");
+                                self.reloj.limpiarIntervalo();
+                                self.destroy_view();
+                            } else {
+                                self.reloj.limpiarIntervalo();
+                                self.destroy_view();
+                            }
+                            app.collections.productos.actualizar(self.model.get('slug'));
+                            var models = app.collections.carrito.where({'productoId':self.model.get('productoId')});
+                            app.collections.carrito.remove(models);
+                        },
+                        error: function (data) {
+                            console.log(data);
+                            alert("Error al quitar producto del carrito");
+                        }
+                    });
+                },
                 reactivarProductoCarrito: function (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -113,6 +141,7 @@ define([
                         this.model.set({'in_carrito': false});
                         this.reloj.limpiarIntervalo();
                         app.views.carrito.renderTotales();
+						this.actualizarApartado(0);
                     } else {
                         var text = this.reloj.getTimeFormat();
                         this.$el.find('.tiempo-producto-carrito').text(text);

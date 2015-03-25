@@ -12,7 +12,7 @@ define([
                     importe_with_format: '',
                     cantidad_with_format: '',
                     precio_with_format: '',
-                    in_carrito: false,
+                    in_carrito: true,
                     visible: true,
                     minutos: 25
                 },
