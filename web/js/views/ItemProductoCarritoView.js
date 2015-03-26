@@ -13,13 +13,15 @@ define([
                 className: 'item-carrito',
                 initialize: function () {
                     console.log('inicializando itemproductocarritoview');
-                    this.reloj = new CronometroModel();
                     this.model.on('change', this.render, this);
                     this.reloj.on('change:contador', this.renderReloj, this);
                     this.status = 'inicializacion';
                     this.model.set({'in_carrito': true});
                     this.status = '';
-                },
+                    this.reloj = new CronometroModel();
+                    
+                    
+                    },
                 events: {
                     'click .close-producto-carrito': 'quitarProductoCarrito',
                     'click .tiempo-producto-reactivar': 'reactivarProductoCarrito'
@@ -41,15 +43,12 @@ define([
                         success: function (data) {
                             if (data.status == 'no_existe_apartado') {
                                 alert("Apartado no existe");
-                                self.reloj.limpiarIntervalo();
-                                self.destroy_view();
-                            } else {
-                                self.reloj.limpiarIntervalo();
-                                self.destroy_view();
                             }
+                            self.reloj.limpiarIntervalo();
                             app.collections.productos.actualizar(self.model.get('slug'));
                             var models = app.collections.carrito.where({'productoId':self.model.get('productoId')});
                             app.collections.carrito.remove(models);
+                            self.destroy_view();
                         },
                         error: function (data) {
                             console.log(data);
@@ -59,7 +58,7 @@ define([
                 },
                 actualizarApartado: function (cant) {
                     var self = this;
-                    var cantidad = cant || 1;
+                    var cantidad = cant;
                     this.model.set({cantidad: cantidad});
                     $.ajax({
                         type: 'POST',
@@ -67,6 +66,7 @@ define([
                         url: app.root + '/carrito/update/' + self.model.get('productoId'),
                         data: {'cantidad': self.model.get('cantidad')},
                         success: function (data) {
+                            debugger;
                             if (data.status == 'apartado_actualizado') {
                                 self.model.set(data.apartado);
                                 app.collections.productos.actualizar(self.model.get('slug'));
@@ -86,12 +86,16 @@ define([
                     e.preventDefault();
                     e.stopPropagation();
                     var self = this;
+                    if(this.model.get('cantidad')==0){
+                        this.model.set({'cantidad': 1});
+                    }
                     $.ajax({
                         type: 'POST',
                         dataType: 'json',
                         url: app.root + '/carrito/add/' + self.model.get('productoId'),
                         data: {'cantidad': self.model.get('cantidad')},
                         success: function (data) {
+                            debugger;
                             if (data.status == 'no_existe') {
                                 alert("El producto no existe");
                                 self.destroy_view();
@@ -126,7 +130,6 @@ define([
                             console.log("render inactive " + this.model.get('slug'));
                             this.$el.addClass('inactive');
                             this.$el.html(_.template(ItemProductoCarritoInactivoViewTemlate, {'producto': data}));
-
                         }
                         return this;
                     }
@@ -144,8 +147,6 @@ define([
                     }
                 },
                 destroy_view: function () {
-                    // eliminar el modelo de la coleccion de carrito. 
-                    app.collections.carrito.remove(this.model);
                     // COMPLETELY UNBIND THE VIEW 
                     this.undelegateEvents();
                     this.$el.removeData().unbind();

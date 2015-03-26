@@ -7,9 +7,11 @@
                             <span style="display: none;" class="control-producto-galeria control-galeria-izquierdo"><</span>
                             <div class="contendor-producto-galeria">
                                 <ul class="producto-galeria-lista">
+                                    <% _.each( producto.galerias, function( galeria ){ %>
                                     <li class="producto-galeria-item">
-                                        <img class="producto-galeria-imagen" src="<%= producto.productos[0].imagen %>" />
+                                        <img class="producto-galeria-imagen" src="<%= galeria.imagen %>" />
                                     </li>
+                                    <% }); %>
                                 </ul>
                             </div>
                             <span style="display: none;" class="control-producto-galeria control-galeria-derecho">></span>
@@ -27,13 +29,11 @@
                                 <h3 class="modal-producto-titulo">Color</h3>
                                 <br/>
                                 <ul class="lista-colores">
-                                    <% _.each( producto.productos, function( item ){ %>
                                     <li class="item-color">
-                                        <span style="background-color: <%= item.color.color %>;color: <%= item.color.texto %>;" class="lista-colores-item" data-id="<%= item.color.id %>">
-                                            <%= item.inventario %>
+                                        <span style="background-color: <%= producto.color.color %>;color: <%= producto.color.texto %>;" class="lista-colores-item" data-id="<%= producto.color.id %>">
+                                            <%= producto.inventario %>
                                         </span>
                                     </li>
-                                    <% }); %>
                                 </ul>
                             </div>
                             <span class="modal-producto-inventario">
@@ -45,7 +45,7 @@
                                 <input type="text" class="form-control" value="<%= producto.cantidad %>" id="inputCantidad" placeholder="" style="width:50px;">
                                 <button class="btn btn-default boton-decrementar"><i class="fa fa-minus-square"></i></button>
                             </div>
-                            <button class="modal-producto-agrergar-carrito" data-id="<%= producto.id %>">agregar a carrito</button>
+                            <button class="modal-producto-agrergar-carrito" data-id="<%= producto.id %>">actualizar</button>
                         </div>
                     </div>
                 </div>

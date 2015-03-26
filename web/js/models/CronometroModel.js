@@ -6,7 +6,7 @@ define([
         var CronometroModel = Backbone.Model.extend({
             defaults: {
                 contador: 0,
-                semilla: 5
+                semilla: 25
             },
             initialize: function () {
                 var self = this;

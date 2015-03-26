@@ -268,8 +268,18 @@ class ApiController extends BaseController {
         $arreglo['imagen'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
         $arreglo['thumbnail'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
         $arreglo['galerias'] = $this->getArrayGalerias($producto->getGalerias(), $imagine);
-        $arreglo['minutos'] = 25;
         $arreglo['cantidad'] = $apartado->getCantidad();
+        
+        $fecha1 = $apartado->getCreatedAt();
+        $fecha2 = new \DateTime();
+        $intervalo = $fecha1->diff($fecha2);
+        $minutos = $intervalo->format("%i"); //minutos de intervalo
+        if ($minutos > $this->container->getParameter('richpolis.tiempo.permitido')) {
+            $arreglo['minutos']=0;
+        }else{
+            $arreglo['minutos'] = 25;
+            $arreglo['minutos']-=$minutos;
+        }
         return $arreglo;
     }
 

@@ -5,7 +5,7 @@
                                     <img src="<%= producto.thumbnail %>" alt="<%= producto.nombre %>"/>
                                     <span class="imagen-producto-cantidad-carrito"><%= producto.cantidad %></span>
                                     <figcaption>
-                                        <a href="#producto/carrito/<%= producto.slug %>">Ver detalles</a>
+                                        <a href="#producto/carrito/<%= producto.productoId %>">Ver detalles</a>
                                     </figcaption>
                                 </figure>
                             </div>

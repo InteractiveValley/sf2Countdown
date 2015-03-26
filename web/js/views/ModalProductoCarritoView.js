@@ -3,7 +3,7 @@ define([
     'underscore',
     'Backbone',
     'models/ApartadoModel',
-    'text!templates/ModalProductoCarritoView',
+    'text!templates/ModalProductoCarritoView.tpl',
     'bootstrap'
 ],
         function ($, _, Backbone, ApartadoModel, ModalProductoCarritoViewTemplate) {
@@ -22,8 +22,6 @@ define([
                 },
                 initialize: function () {
                     console.log('inicializando modalproductocarritoview');
-                    this.productoSeleccionado = this.model.attributes.productos[0];
-                    this.model.on('eliminarvista',this.destroy_view, this);
                 },
                 events: {
                     'click .modal-producto-agrergar-carrito': 'actualizarCarrito',

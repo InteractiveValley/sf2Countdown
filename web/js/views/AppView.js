@@ -34,7 +34,7 @@ define([
                'click       #showCarrito':              'showCarrito',
                'mouseleave  nav':                       'hideOpcionesMenu'
             },
-            activarCategoria: function(){
+            activarCategoria: function(e){
                 $("a.link-categoria").removeClass('active');
                 $(e.currentTarget).find("a").addClass('active');
             },

@@ -9,18 +9,19 @@ define([
     // vistas
     'views/CarritoView',
     'views/ModalProductoView',
+    'views/ModalProductoCarritoView',
     'views/SectionPrincipalView',
     'views/SectionSecundarioView'
 ],
 
-function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoView, SectionPrincipalView, SectionSecundarioView) {
+function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoView, ModalProductoCarritoView, SectionPrincipalView, SectionSecundarioView) {
 
   var AppRouter = Backbone.Router.extend({
 
     routes: {
         "":                         "inicio",
         "categoria/:slug":          "categoria",
-	"producto/carrito/:slug":   "showProductoCarrito",
+	"producto/carrito/:id":     "showProductoCarrito",
         "producto/:slug":           "showProducto"
     },
 
@@ -82,6 +83,20 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         }
         app.views.appView.$el.append(app.views.producto.el);
         app.views.producto.showModal();
+    },
+    showProductoCarrito: function(id){
+        debugger;
+        var models = app.collections.carrito.where({'productoId': id});
+        if(!app.views.productoCarrito){
+            app.views.productoCarrito = new ModalProductoCarritoView({model: models[0]});
+            app.views.productoCarrito.render();
+        }else{
+            app.views.productoCarrito.destroy_view();
+            app.views.productoCarrito = new ModalProductoCarritoView({model: models[0]});
+            app.views.productoCarrito.render();
+        }
+        app.views.appView.$el.append(app.views.productoCarrito.el);
+        app.views.productoCarrito.showModal();
     },
     employeeDetails: function (id) {
         var employee = new Employee({id: id});
