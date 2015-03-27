@@ -236,6 +236,17 @@ class CategoriaController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Categoria entity.');
             }
+            
+            foreach($entity->getModelos() as $modelo){
+                foreach($modelo->getProductos() as $producto){
+                    $modelo->removeProducto($producto);
+                    $em->remove($producto);
+                }
+                foreach($modelo->getCategorias() as $categoria){
+                    $modelo->removeCategoria($categoria);
+                    $em->remove($categoria);
+                }
+            }
 
             $em->remove($entity);
             $em->flush();
