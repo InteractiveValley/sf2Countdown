@@ -307,6 +307,16 @@ class ModeloController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Modelo entity.');
             }
+            
+            foreach($entity->getProductos() as $producto){
+                $entity->removeProducto($producto);
+                $em->remove($producto);
+            }
+
+            foreach($entity->getCategorias() as $categoria){
+                $entity->removeCategoria($categoria);
+                $em->remove($categoria);
+            }
 
             $em->remove($entity);
             $em->flush();
@@ -343,7 +353,7 @@ class ModeloController extends Controller
                          ->findAll();
 
         $response = $this->render(
-                'ProductosBundle:Modelo:list.xls.twig', array('entities' => $modelos)
+            'ProductosBundle:Modelo:list.xls.twig', array('entities' => $modelos)
         );
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment; filename="export-modelos.xls"');

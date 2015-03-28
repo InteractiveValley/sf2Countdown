@@ -18,10 +18,9 @@ define([
                     this.status = 'inicializacion';
                     this.model.set({'in_carrito': true});
                     this.status = '';
-                    this.reloj = new CronometroModel();
+                    this.reloj = new CronometroModel({semilla: this.model.get('minutos')});
                     
-                    
-                    },
+                },
                 events: {
                     'click .close-producto-carrito': 'quitarProductoCarrito',
                     'click .tiempo-producto-reactivar': 'reactivarProductoCarrito'
@@ -106,7 +105,7 @@ define([
                             } else {
                                 alert('El producto fu reactivado');
                                 console.log('producto ' + data.status);
-                                self.reloj = new CronometroModel();
+                                self.reloj = new CronometroModel({semilla: 25});
                                 self.reloj.on('change:contador', self.renderReloj, self);
                                 self.model.set({'in_carrito': true});
                                 app.collections.productos.actualizar(self.model.get('slug'));
