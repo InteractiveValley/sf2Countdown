@@ -79,10 +79,10 @@
                 </a>
                 <div class="contenedor-usuario">
                     <span class="contenido-usuario-crear-cuenta">
-                        <a href="#registro">Crear cuenta</a>
+                        <a href="{{path('registro')}}">Crear cuenta</a>
                     </span>
                     <span class="contenido-usuario-login">
-                        <a href="#login">Login</a>
+                        <a href="{{path('login')}}">Login</a>
                     </span>
                     &nbsp;
                     <span class="contenido-usuario-tracking">
@@ -135,6 +135,11 @@
                                         </div>
                                     </div>
                                 </div>
+                            </li>
+                            <li class="item-navbar item-navbar-promos">
+                                <span class="item-navbar-trigger" id="showPromos">  
+                                    Promos
+                                </span>
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">

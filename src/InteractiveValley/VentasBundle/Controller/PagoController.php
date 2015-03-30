@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use InteractiveValley\VentasBundle\Entity\Pago;
 use InteractiveValley\VentasBundle\Form\PagoType;
 
+
 use InteractiveValley\BackendBundle\Utils\Richsys as RpsStms;
 
 /**
@@ -19,6 +20,19 @@ use InteractiveValley\BackendBundle\Utils\Richsys as RpsStms;
  */
 class PagoController extends Controller
 {
+    
+    /** @DI\Inject */
+    private $request;
+
+    /** @DI\Inject */
+    private $router;
+
+    /** @DI\Inject("doctrine.orm.entity_manager") */
+    private $em;
+
+    /** @DI\Inject("payment.plugin_controller") */
+    private $ppc;
+
 
     /**
      * Lists all Pago entities.

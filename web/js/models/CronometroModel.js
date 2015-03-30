@@ -10,13 +10,15 @@ define([
             },
             initialize: function () {
                 var self = this;
-                 this.set('contador', this.get('semilla')*60);
-                 this.timerID = setInterval(function(){
+                if(this.get('contador')==0){
+                    this.set('contador', this.get('semilla')*60);
+                }
+                this.timerID = setInterval(function(){
                      self.tick();
-                 }, 1000); 
+                }, 1000); 
             },
             tick: function(){
-                console.log('contador +' + this.get('contador') );
+                //console.log('contador +' + this.get('contador') );
                 this.set('contador',this.get('contador') - 1);
                 if(this.get('contador') == 0){
                     this.limpiarIntervalo();

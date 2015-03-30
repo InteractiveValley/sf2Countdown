@@ -12,14 +12,16 @@ define([
                 tagName: 'li',
                 className: 'item-carrito',
                 initialize: function () {
+                    debugger;
+                    //this.model = config.model;
                     console.log('inicializando itemproductocarritoview');
                     this.model.on('change', this.render, this);
+                    this.model.on('destroy', this.destroy_view, this);
+                    this.reloj = new CronometroModel({contador: this.model.get('segundos')});
                     this.reloj.on('change:contador', this.renderReloj, this);
                     this.status = 'inicializacion';
                     this.model.set({'in_carrito': true});
                     this.status = '';
-                    this.reloj = new CronometroModel({semilla: this.model.get('minutos')});
-                    
                 },
                 events: {
                     'click .close-producto-carrito': 'quitarProductoCarrito',
@@ -43,11 +45,13 @@ define([
                             if (data.status == 'no_existe_apartado') {
                                 alert("Apartado no existe");
                             }
+                            debugger;
                             self.reloj.limpiarIntervalo();
-                            app.collections.productos.actualizar(self.model.get('slug'));
+                            if(app.collections.productos){
+                                app.collections.productos.actualizar(self.model.get('slug'));
+                            }
                             var models = app.collections.carrito.where({'productoId':self.model.get('productoId')});
                             app.collections.carrito.remove(models);
-                            self.destroy_view();
                         },
                         error: function (data) {
                             console.log(data);
@@ -68,7 +72,9 @@ define([
                             debugger;
                             if (data.status == 'apartado_actualizado') {
                                 self.model.set(data.apartado);
-                                app.collections.productos.actualizar(self.model.get('slug'));
+                                if(app.collections.productos){
+                                    app.collections.productos.actualizar(self.model.get('slug'));
+                                }
                                 app.views.carrito.renderTotales();
                             } else if (data.status == 'apartado_no_inventario')  {
                                 self.model.set(data.apartado);
@@ -105,10 +111,12 @@ define([
                             } else {
                                 alert('El producto fu reactivado');
                                 console.log('producto ' + data.status);
-                                self.reloj = new CronometroModel({semilla: 25});
+                                self.reloj = new CronometroModel({contador:0, semilla: 25});
                                 self.reloj.on('change:contador', self.renderReloj, self);
                                 self.model.set({'in_carrito': true});
-                                app.collections.productos.actualizar(self.model.get('slug'));
+                                if(app.collections.productos){
+                                    app.collections.productos.actualizar(self.model.get('slug'));
+                                }
                                 app.views.carrito.renderTotales();
                             }
                         },

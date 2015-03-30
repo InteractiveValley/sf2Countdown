@@ -120,7 +120,7 @@ liip_imagine:
                 thumbnail: { size: [98, 80], mode: outbound }
         imagen_carrusel_thumbnail:
             filters:
-                thumbnail: { size: [70, 70], mode: outbound }        
+                thumbnail: { size: [70, 70], mode: outbound }
 
 
 hwi_oauth:
@@ -160,4 +160,4 @@ parameters:
     # dirección de correo electrónico
     richpolis.emails.to_email: richpolis@gmail.com
     richpolis.uploads: %kernel.root_dir%/../web/uploads
-    richpolis.tiempo.permitido: 25
+    richpolis.tiempo.permitido: 1500 # 25min * 60seg 

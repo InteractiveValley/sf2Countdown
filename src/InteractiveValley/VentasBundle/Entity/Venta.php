@@ -82,8 +82,7 @@ class Venta
      * })
      */
     private $usuario;
-
-    
+   
     /**
      * Constructor
      */

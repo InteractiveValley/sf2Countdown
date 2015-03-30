@@ -238,12 +238,18 @@ class ApiController extends BaseController {
         $aProductos = array();
         $imagine = $this->container->get('liip_imagine.cache.manager');
         foreach ($apartados as $apartado) {
-            $aProductos[] = $this->getArrayApartado($apartado, $imagine);
+            $segundos = $this->getSegundosForApartado($apartado);
+            
+            if ($segundos > $this->container->getParameter('richpolis.tiempo.permitido')) {
+                $this->removeProductoCarrito($apartado->getProducto(), $apartado, $em);
+            }else{
+                $aProductos[] = $this->getArrayApartado($apartado, $imagine, $segundos);
+            }
         }
         return new JsonResponse($aProductos);
     }
 
-    private function getArrayApartado($apartado, $imagine = null) {
+    private function getArrayApartado($apartado, $imagine = null, $segundos = null) {
         if (!$imagine) {
             $imagine = $this->container->get('liip_imagine.cache.manager');
         }
@@ -269,16 +275,15 @@ class ApiController extends BaseController {
         $arreglo['thumbnail'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), 'imagen_carrito');
         $arreglo['galerias'] = $this->getArrayGalerias($producto->getGalerias(), $imagine);
         $arreglo['cantidad'] = $apartado->getCantidad();
-        
-        $fecha1 = $apartado->getCreatedAt();
-        $fecha2 = new \DateTime();
-        $intervalo = $fecha1->diff($fecha2);
-        $minutos = $intervalo->format("%i"); //minutos de intervalo
-        if ($minutos > $this->container->getParameter('richpolis.tiempo.permitido')) {
-            $arreglo['minutos']=0;
+        if($segundos == null){
+            $segundos = $this->getSegundosForApartado($apartado);
+            if ($segundos > $this->container->getParameter('richpolis.tiempo.permitido')) {
+                $arreglo['segundos']=0;
+            }else{
+                $arreglo['segundos']=$this->container->getParameter('richpolis.tiempo.permitido') - $segundos;
+            }
         }else{
-            $arreglo['minutos'] = 25;
-            $arreglo['minutos']-=$minutos;
+            $arreglo['segundos']=$this->container->getParameter('richpolis.tiempo.permitido') - $segundos;
         }
         return $arreglo;
     }
@@ -292,6 +297,17 @@ class ApiController extends BaseController {
             $arreglo[] = $this->getArrayProducto($producto, $imagine);
         }
         return $arreglo;
+    }
+    
+    private function getSegundosForApartado(&$apartado){
+        $fecha1 = $apartado->getCreatedAt();
+        $fecha2 = new \DateTime();
+        $intervalo = $fecha1->diff($fecha2);
+        $dias =     $intervalo->format("%d"); //dias de intervalo
+        $horas =    $intervalo->format("%H") + ($dias * 24); //horas de intervalo
+        $minutos =  $intervalo->format("%i") + ($horas * 60); //minutos de intervalo
+        $segundos = $intervalo->format("%s") + ($minutos * 60);; //segundos de intervalo
+        return $segundos;
     }
 
     private function getArrayProducto($producto, $imagine = null) {
@@ -475,6 +491,7 @@ class ApiController extends BaseController {
             $cantidad += $apartado->getCantidad();
         }
         $apartado->setCantidad($cantidad);
+        $apartado->setCreatedAt(new \DateTime());
         $em->persist($producto);
         $em->persist($apartado);
         $em->persist($modelo);
@@ -491,11 +508,8 @@ class ApiController extends BaseController {
         $apartados = $em->getRepository('ProductosBundle:Apartado')->findAll();
         $cont = 0;
         foreach ($apartados as $apartado) {
-            $fecha1 = $apartado->getCreatedAt();
-            $fecha2 = new \DateTime();
-            $intervalo = $fecha1->diff($fecha2);
-            $minutos = $intervalo->format("%i"); //minutos de intervalo
-            if ($minutos > $this->container->getParameter('richpolis.tiempo.permitido')) {
+            $segundos = $this->getSegundosForApartado($apartado);
+            if ($segundos > $this->container->getParameter('richpolis.tiempo.permitido')) {
                 $this->removeProductoCarrito($apartado->getProducto(), $apartado, $em);
                 $cont++;
             }
@@ -566,6 +580,7 @@ class ApiController extends BaseController {
                     //actualizamos el apartado
                     $apartado->setCantidad($apartado->getCantidad()+$diferencia);
                     //actualizamos los objetos
+                    $apartado->setCreatedAt(new \DateTime());
                     $em->persist($producto);
                     $em->persist($apartado);
                     $em->persist($modelo);

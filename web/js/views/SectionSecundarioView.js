@@ -36,7 +36,6 @@ define([
                     console.log(model);
                     console.log('render itemproductoview');
                     var itemProductoView = new ItemProductoView({model: model});
-                    app.views.productos.push(itemProductoView);
                     itemProductoView.render();
                     this.$el.find('.productos').append(itemProductoView.el);
                 },

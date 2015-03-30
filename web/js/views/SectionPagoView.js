@@ -3,36 +3,35 @@ define([
     'underscore',
     'Backbone',
     'collections/CarritoCollection',
-    'views/ItemProductoCarritoView',
-    'text!templates/CarritoView.tpl'
+    'views/ItemProductoPagoView',
+    'text!templates/SectionPagoView.tpl'
 ],
-    function ($, _, Backbone, CarritoCollection, ItemProductoCarritoView, CarritoViewTemplate) {
-        var CarritoView = Backbone.View.extend({
-            el: $('#carrito'),
-            template: _.template( CarritoViewTemplate ),
-            //template: swig.compile( CarritoViewTemplate ),
+    function ($, _, Backbone, CarritoCollection, ItemProductoPagoView, SectionPagoViewTemplate) {
+        var PagoView = Backbone.View.extend({
+            tagName: 'section',
+            template: _.template( SectionPagoViewTemplate ),
             initialize: function() {
-		console.log('inicializando carritoview');
+		console.log('inicializando sectionpagoview');
                 this.status = '';
                 if(!app.collections.carrito){
                     app.collections.carrito = new CarritoCollection();
+                    this.collection = app.collections.carrito;
+                    app.collections.carrito.fetch();
                 }
-                this.collection = app.collections.carrito;
                 this.collection.on('add', this.addOne, this);
                 this.collection.on('remove', this.renderTotales, this);
                 this.collection.on('reset', this.render, this);
-                app.collections.carrito.fetch();
             },
             events:{
-               'click #hacerPedido': 'hacerPedido'
+               'click #hacerPago': 'hacerPago'
             },
-            hacerPedido: function(e){
+            hacerPago: function(e){
                 e.preventDefault();
                 e.stopPropagation();
                 app.routers.router.navigate('pago',{trigger: true});
             },
             render:function () {
-                console.log("render carritoview");
+                console.log("render sectionpagoview");
                 this.status = 'render';
                 this.renderCarrito();
                 this.collection.forEach(this.addOne,this);
@@ -42,10 +41,10 @@ define([
             },
             addOne: function(model){
               debugger;
-              var itemProductoCarritoView = new ItemProductoCarritoView({model: model});
-              itemProductoCarritoView.render();
-              this.$el.find('ul.list-carrito').append(itemProductoCarritoView.el);
-              console.log("render itemproductocarrito "+ model.get('slug'));
+              var itemProductoPagoView = new ItemProductoPagoView({model: model});
+              itemProductoPagoView.render();
+              this.$el.find('table.productos-pago').append(itemProductoPagoView.el);
+              console.log("render itemproductopago "+ model.get('slug'));
               if(this.status == ''){
                   this.renderTotales();
               }
@@ -53,8 +52,8 @@ define([
             renderTotales: function(){
                 console.log("render totalescarrito");
                 var carrito = this.collection.getTotalesCarrito();
-                this.$el.find(".total").text(carrito.total + " MXN");
-                this.$el.find(".descuento-carrito").text(carrito.descuento + " MXN");
+                this.$el.find(".total-importe").text(carrito.total + " MXN");
+                this.$el.find(".total-descuento").text(carrito.descuento + " MXN");
             },
             renderCarrito: function(){
                 console.log("render carrito");
@@ -63,5 +62,5 @@ define([
                 this.$el.html(html);
             }
         });
-        return CarritoView;
+        return PagoView;
 });

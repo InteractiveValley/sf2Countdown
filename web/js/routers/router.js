@@ -11,10 +11,11 @@ define([
     'views/ModalProductoView',
     'views/ModalProductoCarritoView',
     'views/SectionPrincipalView',
-    'views/SectionSecundarioView'
+    'views/SectionSecundarioView',
+    'views/SectionPagoView'
 ],
 
-function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoView, ModalProductoCarritoView, SectionPrincipalView, SectionSecundarioView) {
+function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoView, ModalProductoCarritoView, SectionPrincipalView, SectionSecundarioView, SectionPagoView) {
 
   var AppRouter = Backbone.Router.extend({
 
@@ -22,7 +23,8 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         "":                         "inicio",
         "categoria/:slug":          "categoria",
 	"producto/carrito/:id":     "showProductoCarrito",
-        "producto/:slug":           "showProducto"
+        "producto/:slug":           "showProducto",
+        "pago":                     "pago"
     },
 
     initialize: function () {
@@ -39,8 +41,10 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
             app.views.principal = new SectionPrincipalView();
             app.views.principal.render();
         }
-        app.views.appView.$el.find('#division-principal').html(app.views.principal.el);
-        //this.pageslider.slidePage(app.views.principal.el);
+        app.views.appView.$el.find('#division-principal').html(app.views.principal.el).fadeIn('fast');
+        $(".item-navbar-colores").fadeOut("fast");
+        $(".item-navbar-precio").fadeOut("fast");
+        
     },
     categoria: function(slug){
         //renderiza una sola vez
@@ -53,10 +57,11 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
             app.views.secundario.render();
         }
         if(app.status != 'secundario'){
-            app.status = 'secundario';
-            app.views.appView.$el.find('#division-principal').html(app.views.secundario.el);
+            $(".item-navbar-colores").fadeIn("fast");
+            $(".item-navbar-precio").fadeIn("fast");
+            app.views.appView.$el.find('#division-principal').html(app.views.secundario.el).fadeIn('fast');
         }
-        
+        app.status = 'secundario';
         app.views.secundario.limpiarProductos();
         app.views.secundario.$el.find('section.productos').addClass('cargando');
         
@@ -97,6 +102,23 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         }
         app.views.appView.$el.append(app.views.productoCarrito.el);
         app.views.productoCarrito.showModal();
+    },
+    pago: function(){
+        debugger;
+        if(app.status != 'pago'){
+            app.status = 'pago';
+            $(".item-navbar-colores").fadeOut("fast");
+            $(".item-navbar-precio").fadeOut("fast");
+        }
+        app.status = 'pago';
+        //renderiza una sola vez
+        if(!app.views.pago){
+            app.views.pago = new SectionPagoView({collection: app.collections.carrito});
+            app.views.pago.render();
+        }
+        
+        app.views.appView.$el.find('#division-principal').html(app.views.pago.el).fadeIn('fast');
+        //this.pageslider.slidePage(app.views.principal.el);
     },
     employeeDetails: function (id) {
         var employee = new Employee({id: id});

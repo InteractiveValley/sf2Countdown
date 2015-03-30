@@ -15,7 +15,7 @@ define([
                     precio_with_format: '',
                     in_carrito: true,
                     visible: true,
-                    minutos: 25
+                    segundos: 1500
                 },
                 initialize: function () {
                     this.on("change:cantidad", function (self) {
@@ -23,6 +23,8 @@ define([
                         self.set({cantidad_with_format: self.getCantidadFormat()});
                      });
                     this.set({precio_with_format: this.getPrecioFormat()});
+                    this.set({importe_with_format: this.getImporteFormat()});
+                    this.set({cantidad_with_format: this.getCantidadFormat()});
                 },
                 getImporteFormat: function(){
                     var self = this;

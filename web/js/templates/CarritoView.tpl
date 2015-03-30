@@ -1,4 +1,4 @@
-<!--div id="carrito" class="flotar"-->
+    <!--div id="carrito" class="flotar"-->
         <!--h6 class="titulo-logo-carrito">
             Carrito <span id="logo-carrito"><img src="/images/carrito.png" alt="" height="50"></span>
         </h6-->
