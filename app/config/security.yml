@@ -20,10 +20,9 @@ security:
             pattern:  ^/
             provider: usuarios
             form_login:
-                login_path: login
                 check_path: login_check
-                remember_me: true
-                use_referer: false
+                success_handler: richpolis.security.authentication_handler
+                failure_handler: richpolis.security.authentication_handler
             oauth:
                 resource_owners:
                     facebook:    "/login/check-facebook"
@@ -46,8 +45,6 @@ security:
         - { path: ^/backend/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/backend, roles: [ROLE_ADMIN] }
         - { path: ^/inicio, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/lo/mas/nuevo, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/recomendaciones, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/recuperar, roles: IS_AUTHENTICATED_ANONYMOUSLY }

@@ -6,7 +6,9 @@ define([
             var UsuarioModel = Backbone.Model.extend({
                 urlRoot: app.root + "/usuario",
                 defaults: {
-                    'nombre': ''
+                    'nombre': '',
+                    'usuario': '',
+                    'password': ''
                 }
             });
             return UsuarioModel;

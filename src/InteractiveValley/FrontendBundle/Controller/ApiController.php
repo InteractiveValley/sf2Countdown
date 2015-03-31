@@ -14,6 +14,7 @@ use InteractiveValley\ProductosBundle\Entity\Categoria;
 use InteractiveValley\ProductosBundle\Entity\Producto;
 use InteractiveValley\ProductosBundle\Entity\Apartado;
 use InteractiveValley\ProductosBundle\Entity\Color;
+use InteractiveValley\VentasBundle\Entity\Direccion;
 
 class ApiController extends BaseController {
 
@@ -50,7 +51,7 @@ class ApiController extends BaseController {
 
         return new JsonResponse($arreglo);
     }
-
+    
     private function getArrayColor(Color $color = null) {
         $arreglo = array();
         if ($color == null)
@@ -61,6 +62,41 @@ class ApiController extends BaseController {
         $arreglo['texto'] = $color->getColorTexto();
         $arreglo['position'] = $color->getPosition();
         $arreglo['isActive'] = $color->getIsActive();
+        return $arreglo;
+    }
+    
+    /**
+     * @Route("/api/direcciones", name="api_get_direcciones")
+     * @Method({"GET"})
+     */
+    public function getDireccionesAction(Request $request) {
+        $direcciones = $this->getDoctrine()
+                ->getRepository('VentasBundle:Direccion')
+                ->findBy(array('usuario'=>$this->getUser()));
+
+        $arreglo = array();
+        foreach ($direcciones as $direccion) {
+            $arregloCol = $this->getArrayDireccion($direccion);
+            $arreglo[] = $arregloCol;
+        }
+
+        return new JsonResponse($arreglo);
+    }
+
+    private function getArrayDireccion(Direccion $direccion = null) {
+        $arreglo = array();
+        if ($direccion == null)
+            return $arreglo;
+        $arreglo['id']              =   $direccion->getId();
+        $arreglo['tipoDireccion']   =   $direccion->getTipoDireccion();
+        $arreglo['calle']           =   $direccion->getCalle();
+        $arreglo['numExterior']     =   $direccion->getNumExterior();
+        $arreglo['numInterior']     =   $direccion->getNumInterior();
+        $arreglo['municipio']       =   $direccion->getMunicipio();
+        $arreglo['colonia']         =   $direccion->getColonia();
+        $arreglo['estado']          =   $direccion->getEstado();
+        $arreglo['contacto']        =   $direccion->getContacto();
+        $arreglo['paqueteria']      =   $direccion->getPaqueteria();
         return $arreglo;
     }
 

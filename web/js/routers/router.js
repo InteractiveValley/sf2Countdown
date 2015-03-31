@@ -12,10 +12,11 @@ define([
     'views/ModalProductoCarritoView',
     'views/SectionPrincipalView',
     'views/SectionSecundarioView',
-    'views/SectionPagoView'
+    'views/SectionPagoView',
+    'views/SectionLoginView'
 ],
 
-function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoView, ModalProductoCarritoView, SectionPrincipalView, SectionSecundarioView, SectionPagoView) {
+function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoView, ModalProductoCarritoView, SectionPrincipalView, SectionSecundarioView, SectionPagoView, SectionLoginView) {
 
   var AppRouter = Backbone.Router.extend({
 
@@ -24,7 +25,8 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         "categoria/:slug":          "categoria",
 	"producto/carrito/:id":     "showProductoCarrito",
         "producto/:slug":           "showProducto",
-        "pago":                     "pago"
+        "pago":                     "pago",
+        "login":                    "login"
     },
 
     initialize: function () {
@@ -118,6 +120,23 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         }
         
         app.views.appView.$el.find('#division-principal').html(app.views.pago.el).fadeIn('fast');
+        //this.pageslider.slidePage(app.views.principal.el);
+    },
+    login: function(){
+        debugger;
+        if(app.status != 'login'){
+            app.status = 'login';
+            $(".item-navbar-colores").fadeOut("fast");
+            $(".item-navbar-precio").fadeOut("fast");
+        }
+        app.status = 'login';
+        //renderiza una sola vez
+        if(!app.views.login){
+            app.views.login = new SectionLoginView();
+            app.views.login.render();
+        }
+        
+        app.views.appView.$el.find('#division-principal').html(app.views.login.el).fadeIn('fast');
         //this.pageslider.slidePage(app.views.principal.el);
     },
     employeeDetails: function (id) {
