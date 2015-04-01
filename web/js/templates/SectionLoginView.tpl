@@ -1,5 +1,16 @@
     <!--section id="login"-->
         <article id="loginView" class="loginView">
+			<header>
+				<h2 class="login-seleccionar-opcion">Seleccione una opcion</h2>
+			</header>
+			<div class="contenido row">
+                <div class="col-md-6">
+					<h3 class="login-titulo">ingresar con cuenta y hacer pedido</h3>
+                </div>
+                <div class="col-md-6 text-center">
+					<h3 class="login-titulo">registrar mis datos y hacer pedido</h3>
+                </div>
+            </div>
             <div class="contenido row">
                 <div class="col-md-6">
                     <!-- Login form -->
@@ -19,7 +30,7 @@
                             </div>
                         </div>
                         <div class="col-lg-9 col-lg-offset-3">
-                            <button type="submit" class="btn btn-danger">Entrar</button>
+                            <button type="submit" class="btn btn-danger" style="background: #DF2E72;">Entrar</button>
                             <div style="margin-top: 30px; margin-bottom: 30px">
                                 <a href="#recuperar" class="btn btn-success">Olvido su contraseña?</a>
                             </div>    
@@ -27,11 +38,9 @@
                         <br />
                     </form>
                 </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-4 text-center" style="margin-top: 100px;">
-                    <a href="#registro" class="btn btn-success btn-block">Registrarse</a>
+                <div class="col-md-6 text-center" style="margin-top: 100px;">
+                    <a href="#registro" class="btn btn-success btn-lg" style="background: #DF2E72;">Registrarse</a>
                 </div>
-                <div class="col-md-1"></div>
             </div>     
         </article>   
     <!--/section-->

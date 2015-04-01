@@ -31,7 +31,7 @@ var app = {
     models: {},
     collections: {},
     routers: {},
-    root: 'http://localhost:8040/app_dev.php/api',
+    root: 'http://love-iris.codio.io:3000/app_dev.php/api',
     status: '',
     showCarrito: false,
     categoria: 'lo-nuevo',

@@ -10,7 +10,7 @@ parameters:
     
 services:
     richpolis.security.authentication_handler:
-        class: InteractiveValley\VentasBundle\Handler\AuthenticationHandler
+        class: InteractiveValley\FrontendBundle\Handler\AuthenticationHandler
         public: false
         arguments:
             - @router
