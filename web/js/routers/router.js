@@ -13,7 +13,8 @@ define([
     'views/SectionPrincipalView',
     'views/SectionSecundarioView',
     'views/SectionPagoView',
-    'views/SectionLoginView'
+    'views/SectionLoginView',
+    'views/'
 ],
 
 function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoView, ModalProductoCarritoView, SectionPrincipalView, SectionSecundarioView, SectionPagoView, SectionLoginView) {
@@ -134,6 +135,23 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         if(!app.views.login){
             app.views.login = new SectionLoginView();
             app.views.login.render();
+        }
+        
+        app.views.appView.$el.find('#division-principal').html(app.views.login.el).fadeIn('fast');
+        //this.pageslider.slidePage(app.views.principal.el);
+    },
+    registro: function(){
+        debugger;
+        if(app.status != 'registro'){
+            app.status = 'registro';
+            $(".item-navbar-colores").fadeOut("fast");
+            $(".item-navbar-precio").fadeOut("fast");
+        }
+        app.status = 'registro';
+        //renderiza una sola vez
+        if(!app.views.registro){
+            app.views.registro = new SectionLoginView();
+            app.views.registro.render();
         }
         
         app.views.appView.$el.find('#division-principal').html(app.views.login.el).fadeIn('fast');
