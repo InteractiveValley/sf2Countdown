@@ -95,4 +95,23 @@ class ModeloRepository extends EntityRepository
         $query= $this->queryModelosLoNuevo();
         return $query->getResult();
     }
+    
+    public function queryModelosPromos(){
+        $query= $this->getEntityManager()->createQueryBuilder();
+        $query->select('m')
+                ->from('InteractiveValley\ProductosBundle\Entity\Modelo', 'm')
+                ->join('m.categorias', 'c')
+                ->join('m.productos', 'p')
+                ->join('p.galerias', 'g')
+                //->join('p.color', 'l')
+                ->where('m.isPromocional=:promo')
+                ->setParameter('promo', true)
+                ->orderBy('c.position', 'ASC');
+        return $query->getQuery();
+    }
+    
+    public function modelosPromos(){
+        $query= $this->queryModelosPromos();
+        return $query->getResult();
+    }
 }

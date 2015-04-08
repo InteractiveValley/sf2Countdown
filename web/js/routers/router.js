@@ -12,22 +12,25 @@ define([
     'views/ModalProductoCarritoView',
     'views/SectionPrincipalView',
     'views/SectionSecundarioView',
+    'views/SectionPromoView',
     'views/SectionPagoView',
     'views/SectionLoginView',
-    'views/'
+    'views/SectionRegistroView'
 ],
 
-function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoView, ModalProductoCarritoView, SectionPrincipalView, SectionSecundarioView, SectionPagoView, SectionLoginView) {
+function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoView, ModalProductoCarritoView, SectionPrincipalView, SectionSecundarioView, SectionPromoView, SectionPagoView, SectionLoginView, SectionRegistroView) {
 
   var AppRouter = Backbone.Router.extend({
 
     routes: {
         "":                         "inicio",
+        "categoria/promos":         "promos",
         "categoria/:slug":          "categoria",
 	"producto/carrito/:id":     "showProductoCarrito",
         "producto/:slug":           "showProducto",
         "pago":                     "pago",
-        "login":                    "login"
+        "login":                    "login",
+        "registro":                 "registro"
     },
 
     initialize: function () {
@@ -77,6 +80,36 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
             console.log("Se no se obtuvieron datos");
         });
         //app.collections.productos.fetch();
+	
+    },
+    promos: function(){
+        //renderiza una sola vez
+	if (!app.collections.productos) {
+            app.collections.productos = new ProductosCollection();
+        }
+        //renderiza una sola vez
+        if(!app.views.promos){
+            app.views.promos = new SectionPromoView({collection: app.collections.productos});
+            app.views.promos.render();
+        }
+        if(app.status != 'promos'){
+            $(".item-navbar-colores").fadeOut("fast");
+            $(".item-navbar-precio").fadeOut("fast");
+            app.views.appView.$el.find('#division-principal').html(app.views.promos.el).fadeIn('fast');
+        }
+        app.status = 'promos';
+        app.views.promos.limpiarProductos();
+        app.views.promos.$el.find('section.productos').addClass('cargando');
+        
+	var xhr = app.collections.productos.fetch({data: {'categoria': 'promos'}});
+        xhr.done(function(data){
+            console.log(data);
+            app.views.promos.$el.find('section.productos').removeClass('cargando');
+            app.views.promos.bxSlider();
+        }).fail(function(data){
+            console.log(data);
+            console.log("Se no se obtuvieron datos");
+        });
 	
     },
     showProducto: function(slug){
@@ -150,11 +183,11 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         app.status = 'registro';
         //renderiza una sola vez
         if(!app.views.registro){
-            app.views.registro = new SectionLoginView();
+            app.views.registro = new SectionRegistroView();
             app.views.registro.render();
         }
         
-        app.views.appView.$el.find('#division-principal').html(app.views.login.el).fadeIn('fast');
+        app.views.appView.$el.find('#division-principal').html(app.views.registro.el).fadeIn('fast');
         //this.pageslider.slidePage(app.views.principal.el);
     },
     employeeDetails: function (id) {

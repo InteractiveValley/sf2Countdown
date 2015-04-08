@@ -3,12 +3,14 @@ define([
     'underscore',
     'Backbone',
     'models/FiltroPrecioModel',
+    'models/UsuarioModel',
     'collections/ColoresCollection',
     'views/ColorView',
+    'text!templates/ContenedorUsuarioView.tpl',
     'bootstrap',
     'bootstrap-slider'
 ],
-    function ($, _, Backbone, FiltroPrecioModel, ColoresCollection, ColorView) {
+    function ($, _, Backbone, FiltroPrecioModel, UsuarioModel, ColoresCollection, ColorView, ContenedorUsuarioViewTemplate) {
         var AppView = Backbone.View.extend({
             el: '#app',
             tagName: 'div',
@@ -17,12 +19,18 @@ define([
                 console.log('inicializando appview');
                 this.filtroPrecio = new FiltroPrecioModel();
                 this.colores = new ColoresCollection();
+                this.usuario = new UsuarioModel();
                 var xhr = this.colores.fetch();
                 var self = this;
                 xhr.done(function(){
                     self.renderColores();
                 });
+                var xhru = this.usuario.fetch();
+                xhru.done(function(){
+                    self.renderUsuario();
+                });
                 this.filtroPrecio.on('change',this.filtrar, this);
+                this.usuario.on('change',this.renderUsuario, this);
                 this.statusMenu = '';
                 this.sliderPrecio();
             },
@@ -32,6 +40,7 @@ define([
                'click       #showColores':              'showColores',
                'click       #showFiltroPrecio':         'showFiltroPrecio',
                'click       #showCarrito':              'showCarrito',
+               'click       #showPromos':               'showPromos',
                'mouseleave  nav':                       'hideOpcionesMenu'
             },
             activarCategoria: function(e){
@@ -58,6 +67,12 @@ define([
                 if(this.hideOpcionesMenu()){
                     this.$el.find('.contenedor-filtro-navbar.contenedor-precio').fadeIn('fast');
                 }
+            },
+            showPromos: function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                this.hideOpcionesMenu();
+                app.routers.router.navigate('categoria/promos',{trigger: true});
             },
             hideOpcionesMenu: function(){
                 this.$el.find('.contenedor-filtro-navbar.contenedor-categorias').fadeOut('fast');
@@ -88,6 +103,11 @@ define([
                     self.$el.find('.contenedor-filtro-navbar.contenedor-colores').append(colorView.render().$el.html());
                 });
                 return this;
+            },
+            renderUsuario:function () {
+                var data = this.usuario.toJSON();
+                var html = _.template(ContenedorUsuarioViewTemplate, {'usuario': data});
+                return this.$el.find('.contenedor-usuario').html(html);
             },
             sliderPrecio: function(){
                 var self = this;

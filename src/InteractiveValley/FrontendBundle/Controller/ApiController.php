@@ -52,6 +52,29 @@ class ApiController extends BaseController {
         return new JsonResponse($arreglo);
     }
     
+    /**
+     * @Route("/api/usuario", name="api_get_usuario")
+     * @Method({"GET"})
+     */
+    public function getUsuarioAction(Request $request) {
+        $user = $this->getUser();
+        if($user){
+            $arreglo = array(
+                'id' => $user->getId(),
+                'nombre' => $user->getNombre(),
+                'password' => $user->getPassword(),
+                'email' => $user->getEmail(),
+                'telefono' => $user->getTelefono(),
+                'rfc' => $user->getRfc(),
+                'grupo' => $user->getGrupo(),
+                'isActive' => $user->getIsActive()
+            );
+        }else{
+            $arreglo = array();
+        }
+        return new JsonResponse($arreglo);
+    }
+    
     private function getArrayColor(Color $color = null) {
         $arreglo = array();
         if ($color == null)
@@ -147,6 +170,10 @@ class ApiController extends BaseController {
                 $modelos = $this->getDoctrine()
                         ->getRepository('ProductosBundle:Modelo')
                         ->modelosLoNuevo();
+            } else if ($idCategoria == "promos") {
+                $modelos = $this->getDoctrine()
+                        ->getRepository('ProductosBundle:Modelo')
+                        ->modelosPromos();
             } else {
                 $categoria = $this->getDoctrine()
                         ->getRepository('ProductosBundle:Categoria')
