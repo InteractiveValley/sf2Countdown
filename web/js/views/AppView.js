@@ -19,18 +19,18 @@ define([
                 console.log('inicializando appview');
                 this.filtroPrecio = new FiltroPrecioModel();
                 this.colores = new ColoresCollection();
-                this.usuario = new UsuarioModel();
+                app.user = new UsuarioModel();
                 var xhr = this.colores.fetch();
                 var self = this;
                 xhr.done(function(){
                     self.renderColores();
                 });
-                var xhru = this.usuario.fetch();
+                var xhru = app.user.fetch();
                 xhru.done(function(){
                     self.renderUsuario();
                 });
                 this.filtroPrecio.on('change',this.filtrar, this);
-                this.usuario.on('change',this.renderUsuario, this);
+                app.user.on('change',this.renderUsuario, this);
                 this.statusMenu = '';
                 this.sliderPrecio();
             },
@@ -105,7 +105,7 @@ define([
                 return this;
             },
             renderUsuario:function () {
-                var data = this.usuario.toJSON();
+                var data = app.user.toJSON();
                 var html = _.template(ContenedorUsuarioViewTemplate, {'usuario': data});
                 return this.$el.find('.contenedor-usuario').html(html);
             },

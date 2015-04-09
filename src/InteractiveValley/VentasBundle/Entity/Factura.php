@@ -5,13 +5,13 @@ namespace InteractiveValley\VentasBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Direccion
+ * Factura
  *
- * @ORM\Table(name="direcciones")
- * @ORM\Entity(repositoryClass="InteractiveValley\VentasBundle\Repository\DireccionRepository")
+ * @ORM\Table(name="facturas")
+ * @ORM\Entity(repositoryClass="InteractiveValley\VentasBundle\Repository\FacturaRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Direccion
+class Factura
 {
     /**
      * @var integer
@@ -21,69 +21,104 @@ class Direccion
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="isFacturar", type="boolean")
+     */
+    private $isFacturar;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="calle", type="string", length=255)
+     * @ORM\Column(name="rfc", type="string", length=255, nullable=true)
+     */
+    private $rfc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="razon_social", type="string", length=255, nullable=true)
+     */
+    private $razonSocial;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="calle", type="string", length=255, nullable=true)
      */
     private $calle;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="num_exterior", type="string", length=255)
+     * @ORM\Column(name="num_exterior", type="string", length=255, nullable=true)
      */
     private $numExterior;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="num_interior", type="string", length=255)
+     * @ORM\Column(name="num_interior", type="string", length=255, nullable=true)
      */
     private $numInterior;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="cp", type="string", length=6)
+     * @ORM\Column(name="cp", type="string", length=6, nullable=true)
      */
     private $cp;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="colonia", type="string", length=255)
+     * @ORM\Column(name="colonia", type="string", length=255, nullable=true)
      */
     private $colonia;
     
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="municipio", type="string", length=255)
+     * @ORM\Column(name="municipio", type="string", length=255, nullable=true)
      */
     private $municipio;
     
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="estado", type="string", length=255)
+     * @ORM\Column(name="ciudad", type="string", length=255, nullable=true)
+     */
+    private $ciudad;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="estado", type="string", length=255, nullable=true)
      */
     private $estado;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="telefono", type="string", length=255)
+     * @ORM\Column(name="email_envio", type="string", length=255, nullable=true)
      */
-    private $telefono;
+    private $emailEnvio;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contacto", type="string", length=255, nullable=true)
+     */
+    private $contacto;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="observaciones", type="text")
+     * @ORM\Column(name="telefono_contacto", type="string", length=255, nullable=true)
      */
-    private $observaciones;
+    private $telefonoContacto;
     
     /**
      * @var \DateTime
@@ -103,12 +138,16 @@ class Direccion
      * @var InteractiveValley\BackendBundle\Entity\Usuario
      * @todo Usuario de la direccion
      *
-     * @ORM\ManyToOne(targetEntity="InteractiveValley\BackendBundle\Entity\Usuario", inversedBy="direcciones")
+     * @ORM\ManyToOne(targetEntity="InteractiveValley\BackendBundle\Entity\Usuario")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
      * })
      */
     private $usuario;
+    
+    public function __construct() {
+        $this->isFacturar = true;
+    }
     
     public function __toString() {
         return $this->getDireccionCompleta();
@@ -158,13 +197,58 @@ class Direccion
     {
         return $this->id;
     }
-    
+
+    /**
+     * Set rfc
+     *
+     * @param string $rfc
+     * @return Factura
+     */
+    public function setRfc($rfc)
+    {
+        $this->rfc = $rfc;
+
+        return $this;
+    }
+
+    /**
+     * Get rfc
+     *
+     * @return string 
+     */
+    public function getRfc()
+    {
+        return $this->rfc;
+    }
+
+    /**
+     * Set razonSocial
+     *
+     * @param string $razonSocial
+     * @return Factura
+     */
+    public function setRazonSocial($razonSocial)
+    {
+        $this->razonSocial = $razonSocial;
+
+        return $this;
+    }
+
+    /**
+     * Get razonSocial
+     *
+     * @return string 
+     */
+    public function getRazonSocial()
+    {
+        return $this->razonSocial;
+    }
 
     /**
      * Set calle
      *
      * @param string $calle
-     * @return Direccion
+     * @return Factura
      */
     public function setCalle($calle)
     {
@@ -187,7 +271,7 @@ class Direccion
      * Set numExterior
      *
      * @param string $numExterior
-     * @return Direccion
+     * @return Factura
      */
     public function setNumExterior($numExterior)
     {
@@ -210,7 +294,7 @@ class Direccion
      * Set numInterior
      *
      * @param string $numInterior
-     * @return Direccion
+     * @return Factura
      */
     public function setNumInterior($numInterior)
     {
@@ -233,7 +317,7 @@ class Direccion
      * Set cp
      *
      * @param string $cp
-     * @return Direccion
+     * @return Factura
      */
     public function setCp($cp)
     {
@@ -256,7 +340,7 @@ class Direccion
      * Set colonia
      *
      * @param string $colonia
-     * @return Direccion
+     * @return Factura
      */
     public function setColonia($colonia)
     {
@@ -279,7 +363,7 @@ class Direccion
      * Set municipio
      *
      * @param string $municipio
-     * @return Direccion
+     * @return Factura
      */
     public function setMunicipio($municipio)
     {
@@ -299,10 +383,33 @@ class Direccion
     }
 
     /**
+     * Set ciudad
+     *
+     * @param string $ciudad
+     * @return Factura
+     */
+    public function setCiudad($ciudad)
+    {
+        $this->ciudad = $ciudad;
+
+        return $this;
+    }
+
+    /**
+     * Get ciudad
+     *
+     * @return string 
+     */
+    public function getCiudad()
+    {
+        return $this->ciudad;
+    }
+
+    /**
      * Set estado
      *
      * @param string $estado
-     * @return Direccion
+     * @return Factura
      */
     public function setEstado($estado)
     {
@@ -322,56 +429,79 @@ class Direccion
     }
 
     /**
-     * Set telefono
+     * Set emailEnvio
      *
-     * @param string $telefono
-     * @return Direccion
+     * @param string $emailEnvio
+     * @return Factura
      */
-    public function setTelefono($telefono)
+    public function setEmailEnvio($emailEnvio)
     {
-        $this->telefono = $telefono;
+        $this->emailEnvio = $emailEnvio;
 
         return $this;
     }
 
     /**
-     * Get telefono
+     * Get emailEnvio
      *
      * @return string 
      */
-    public function getTelefono()
+    public function getEmailEnvio()
     {
-        return $this->telefono;
+        return $this->emailEnvio;
     }
 
     /**
-     * Set observaciones
+     * Set contacto
      *
-     * @param string $observaciones
-     * @return Direccion
+     * @param string $contacto
+     * @return Factura
      */
-    public function setObservaciones($observaciones)
+    public function setContacto($contacto)
     {
-        $this->observaciones = $observaciones;
+        $this->contacto = $contacto;
 
         return $this;
     }
 
     /**
-     * Get observaciones
+     * Get contacto
      *
      * @return string 
      */
-    public function getObservaciones()
+    public function getContacto()
     {
-        return $this->observaciones;
+        return $this->contacto;
+    }
+
+    /**
+     * Set telefonoContacto
+     *
+     * @param string $telefonoContacto
+     * @return Factura
+     */
+    public function setTelefonoContacto($telefonoContacto)
+    {
+        $this->telefonoContacto = $telefonoContacto;
+
+        return $this;
+    }
+
+    /**
+     * Get telefonoContacto
+     *
+     * @return string 
+     */
+    public function getTelefonoContacto()
+    {
+        return $this->telefonoContacto;
     }
 
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return Direccion
+     * @return Factura
      */
     public function setCreatedAt($createdAt)
     {
@@ -394,7 +524,7 @@ class Direccion
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
-     * @return Direccion
+     * @return Factura
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -417,7 +547,7 @@ class Direccion
      * Set usuario
      *
      * @param \InteractiveValley\BackendBundle\Entity\Usuario $usuario
-     * @return Direccion
+     * @return Factura
      */
     public function setUsuario(\InteractiveValley\BackendBundle\Entity\Usuario $usuario = null)
     {
@@ -434,5 +564,28 @@ class Direccion
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set isFacturar
+     *
+     * @param boolean $isFacturar
+     * @return Factura
+     */
+    public function setIsFacturar($isFacturar)
+    {
+        $this->isFacturar = $isFacturar;
+
+        return $this;
+    }
+
+    /**
+     * Get isFacturar
+     *
+     * @return boolean 
+     */
+    public function getIsFacturar()
+    {
+        return $this->isFacturar;
     }
 }

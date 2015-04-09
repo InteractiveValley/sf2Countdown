@@ -20,8 +20,7 @@ class UsuarioType extends AbstractType
             ->add('password','password',array('attr'=>array('class'=>'form-control')))
             ->add('salt','hidden')
             ->add('nombre','text',array('attr'=>array('class'=>'form-control')))
-            ->add('telefono','text',array('attr'=>array('class'=>'form-control')))
-            ->add('rfc','text',array('attr'=>array('class'=>'form-control')))    
+            ->add('telefono','text',array('attr'=>array('class'=>'form-control')))  
             ->add('imagen','hidden')
             ->add('isActive',null,array('label'=>'Activo?','attr'=>array(
                 'class'=>'checkbox-inline',

@@ -6,16 +6,13 @@ define([
             var FacturacionModel = Backbone.Model.extend({
                 urlRoot: app.root + "/facturacion",
                 defaults: {
-                    'tipoDireccion': 1,
                     'calle': '',
                     'numExterior': '',
                     'numInterior': '',
                     'cp': '',
                     'municipio': '',
                     'colonia': '',
-                    'estado': '',
-                    'contacto': '',
-                    'paqueteria': ''
+                    'estado': ''
                 }
             });
             return FacturacionModel;

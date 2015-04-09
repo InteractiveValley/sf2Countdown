@@ -18,25 +18,15 @@ class DireccionType extends AbstractType
     {
         
         $builder
-            ->add('tipoDireccion','choice',array(
-                'label'=>'Tipo de direccion',
-                'empty_value'=>false,
-                'choices'=>  Direccion::getArrayTipoDireccion(),
-                'preferred_choices'=>  Direccion::getPreferedTipoDireccion(),
-                'attr'=>array(
-                    'class'=>'validate[required] form-control placeholder',
-                    'placeholder'=>'Tipo de direccion',
-                    'data-bind'=>'value: tipoDireccion'
-                )))
             ->add('calle','text',array('attr'=>array('class'=>'form-control')))
             ->add('numExterior','text',array('attr'=>array('class'=>'form-control')))
             ->add('numInterior','text',array('attr'=>array('class'=>'form-control')))
             ->add('cp','text',array('attr'=>array('class'=>'form-control')))
-            ->add('municipio','text',array('label'=>'Delegacion/Municipio','attr'=>array('class'=>'form-control')))
             ->add('colonia','text',array('attr'=>array('class'=>'form-control')))
+            ->add('municipio','text',array('label'=>'Delegacion/Municipio','attr'=>array('class'=>'form-control')))
             ->add('estado','text',array('attr'=>array('class'=>'form-control')))
-            ->add('contacto','text',array('attr'=>array('class'=>'form-control')))
-            ->add('paqueteria','text',array('attr'=>array('class'=>'form-control')))
+            ->add('telefono','text',array('attr'=>array('class'=>'form-control')))
+            ->add('observaciones',null,array('attr'=>array('class'=>'form-control')))
             ->add('usuario','entity',array(
                 'class'=> 'BackendBundle:Usuario',
                 'label'=>'Usuario',
@@ -53,6 +43,7 @@ class DireccionType extends AbstractType
                     )
                 ))
         ;
+    
     }
     
     /**

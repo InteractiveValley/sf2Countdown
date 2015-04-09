@@ -67,13 +67,6 @@ class Usuario implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="rfc", type="string", length=255, nullable=true)
-     */
-    private $rfc;
-    
-    /**
-     * @var string
-     *
      * @ORM\Column(name="imagen", type="string", length=255, nullable=true)
      */
     private $imagen;
@@ -476,29 +469,6 @@ class Usuario implements UserInterface, \Serializable
     public function getTelefono()
     {
         return $this->telefono;
-    }
-
-    /**
-     * Set rfc
-     *
-     * @param string $rfc
-     * @return Usuario
-     */
-    public function setRfc($rfc)
-    {
-        $this->rfc = $rfc;
-
-        return $this;
-    }
-
-    /**
-     * Get rfc
-     *
-     * @return string 
-     */
-    public function getRfc()
-    {
-        return $this->rfc;
     }
 
     /**

@@ -34,7 +34,7 @@ security:
                     service: my_user_provider
             logout:
                 path: logout
-                target: login
+                target: homepage
             remember_me:
                 key:        countdown1234
                 lifetime:   604800  # 604.800 = 3.600 * 24 * 7 = 1 semana
@@ -52,7 +52,7 @@ security:
         - { path: ^/usuarios, roles: [ROLE_USER] }
 
     encoders:
-        InteractiveValley\BackendBundle\Entity\Usuario:        { algorithm: sha512, iterations: 10 }
+        InteractiveValley\BackendBundle\Entity\Usuario:  { algorithm: sha512, iterations: 10 }
 
 
     providers:

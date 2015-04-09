@@ -3,6 +3,7 @@
 namespace InteractiveValley\FrontendBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use InteractiveValley\BackendBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -15,6 +16,7 @@ use InteractiveValley\ProductosBundle\Entity\Producto;
 use InteractiveValley\ProductosBundle\Entity\Apartado;
 use InteractiveValley\ProductosBundle\Entity\Color;
 use InteractiveValley\VentasBundle\Entity\Direccion;
+use InteractiveValley\VentasBundle\Entity\Factura;
 
 class ApiController extends BaseController {
 
@@ -35,6 +37,87 @@ class ApiController extends BaseController {
     }
 
     /**
+     * @Route("/api/usuario", name="api_get_usuario")
+     * @Method({"GET"})
+     */
+    public function getUsuarioAction(Request $request) {
+        $user = $this->getUser();
+        if($user){
+            $arreglo = array(
+                'id' => $user->getId(),
+                'nombre' => $user->getNombre(),
+                'username' => $user->getUsername(),
+                'password' => $user->getPassword(),
+                'email' => $user->getEmail(),
+                'telefono' => $user->getTelefono(),
+                'grupo' => $user->getGrupo(),
+                'isActive' => $user->getIsActive()
+            );
+        }else{
+            $arreglo = array();
+        }
+        return new JsonResponse($arreglo);
+    }
+    
+    /**
+     * @Route("/api/usuario", name="api_post_usuario")
+     * @Method({"POST"})
+     */
+    public function postUsuarioAction(Request $request) {
+        $data = $request->request->all();
+        $em = $this->getDoctrine()->getManager();
+        $usuario = $em->getRepository('BackendBundle:Usuario')
+                      ->findOneBy(array('email'=>$data['email']));
+        if(!$usuario){
+            $usuario = new \InteractiveValley\BackendBundle\Entity\Usuario();
+        }
+        $usuario->setNombre($data['nombre']);
+        $usuario->setPassword($data['password']);
+        $usuario->setEmail($data['email']);
+        $usuario->setTelefono($data['telefono']);
+        $usuario->setGrupo(\InteractiveValley\BackendBundle\Entity\Usuario::GRUPO_USUARIOS);
+        $usuario->setIsActive($data['isActive']);
+        $this->setSecurePassword($entity);
+        $em->persist($usuario);
+        $em->flush();
+        $response = new JsonResponse(array('id'=>$usuario->getId()), Response::HTTP_CREATED);
+        return $response;
+    }
+    
+    /**
+     * @Route("/api/usuario/id", name="api_put_usuario")
+     * @Method({"PUT"})
+     */
+    public function putUsuarioAction(Request $request, $id) {
+        $data = $request->request->all();
+        $em = $this->getDoctrine()->getManager();
+        $usuario = $em->getRepository('BackendBundle:Usuario')
+                      ->find($id);
+        if(!$usuario){
+            $response = new JsonResponse(null , Response::HTTP_NOT_FOUND);
+        }else{
+            $usuario->setNombre($data['nombre']);
+            $current_pass = $entity->getPassword();
+            $usuario->setEmail($data['email']);
+            $usuario->setTelefono($data['telefono']);
+            $usuario->setGrupo(\InteractiveValley\BackendBundle\Entity\Usuario::GRUPO_USUARIOS);
+            $usuario->setIsActive($data['isActive']);
+            if ('' == $data['password']) {
+                // El usuario no cambia su contraseña.
+                $entity->setPassword($current_pass);
+            } else {
+                $usuario->setPassword($data['password']);
+                // actualizamos la contraseña.
+                $this->setSecurePassword($entity);
+            }
+            $em->persist($usuario);
+            $em->flush();
+            $response = new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        }
+        return $response;
+    }
+    
+    /**
      * @Route("/api/colores", name="api_get_colores")
      * @Method({"GET"})
      */
@@ -52,29 +135,6 @@ class ApiController extends BaseController {
         return new JsonResponse($arreglo);
     }
     
-    /**
-     * @Route("/api/usuario", name="api_get_usuario")
-     * @Method({"GET"})
-     */
-    public function getUsuarioAction(Request $request) {
-        $user = $this->getUser();
-        if($user){
-            $arreglo = array(
-                'id' => $user->getId(),
-                'nombre' => $user->getNombre(),
-                'password' => $user->getPassword(),
-                'email' => $user->getEmail(),
-                'telefono' => $user->getTelefono(),
-                'rfc' => $user->getRfc(),
-                'grupo' => $user->getGrupo(),
-                'isActive' => $user->getIsActive()
-            );
-        }else{
-            $arreglo = array();
-        }
-        return new JsonResponse($arreglo);
-    }
-    
     private function getArrayColor(Color $color = null) {
         $arreglo = array();
         if ($color == null)
@@ -89,20 +149,18 @@ class ApiController extends BaseController {
     }
     
     /**
-     * @Route("/api/direcciones", name="api_get_direcciones")
+     * @Route("/api/envio", name="api_get_envio")
      * @Method({"GET"})
      */
-    public function getDireccionesAction(Request $request) {
-        $direcciones = $this->getDoctrine()
-                ->getRepository('VentasBundle:Direccion')
-                ->findBy(array('usuario'=>$this->getUser()));
-
+    public function getEnvioAction(Request $request) {
         $arreglo = array();
-        foreach ($direcciones as $direccion) {
-            $arregloCol = $this->getArrayDireccion($direccion);
-            $arreglo[] = $arregloCol;
+        $user = $this->getUser();
+        if($user){    
+            $direccion = $this->getDoctrine()
+                              ->getRepository('VentasBundle:Direccion')
+                              ->findOneBy(array('usuario'=>$user));
+            $arreglo = $this->getArrayDireccion($direccion);
         }
-
         return new JsonResponse($arreglo);
     }
 
@@ -111,16 +169,143 @@ class ApiController extends BaseController {
         if ($direccion == null)
             return $arreglo;
         $arreglo['id']              =   $direccion->getId();
-        $arreglo['tipoDireccion']   =   $direccion->getTipoDireccion();
         $arreglo['calle']           =   $direccion->getCalle();
         $arreglo['numExterior']     =   $direccion->getNumExterior();
         $arreglo['numInterior']     =   $direccion->getNumInterior();
-        $arreglo['municipio']       =   $direccion->getMunicipio();
         $arreglo['colonia']         =   $direccion->getColonia();
+        $arreglo['municipio']       =   $direccion->getMunicipio();
+        $arreglo['estado']          =   $direccion->getEstado();
+        $arreglo['telefono']        =   $direccion->getTelefono();
+        $arreglo['observaciones']   =   $direccion->getObservaciones();
+        return $arreglo;
+    }
+    
+    /**
+     * @Route("/api/envio", name="api_post_envio")
+     * @Method({"POST"})
+     */
+    public function postEnvioAction(Request $request) {
+        return $this->putEnvioAction($request, 0);
+    }
+    
+    /**
+     * @Route("/api/envio/{id}", name="api_put_envio")
+     * @Method({"PUT"})
+     */
+    public function putEnvioAction(Request $request,$id) {
+        $arreglo = $request->request->all();
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        if($user){    
+            $direccion = $em->getRepository('VentasBundle:Direccion')
+                            ->find($id);
+            if(!$direccion){
+                $direccion = new Direccion();
+                $direccion->setUsuario($user);
+            }
+            $direccion->setCalle($arreglo['calle']);
+            $direccion->setNumExterior($arreglo['numExterior']);
+            $direccion->setNumInterior($arreglo['numInterior']);
+            $direccion->setColonia($arreglo['colonia']);
+            $direccion->setMunicipio($arreglo['municipio']);
+            $direccion->setEstado($arreglo['estado']);
+            $direccion->setTelefono($arreglo['telefono']);
+            $direccion->setObservaciones($arreglo['observaciones']);
+            $em->persist($direccion);
+            $em->flush();
+            if($id == 0){
+                $response = new JsonResponse(array('id'=>$direccion->getId()),  Response::HTTP_CREATED);
+            }else{
+                $response = new JsonResponse(null, Response::HTTP_NO_CONTENT);
+            }
+            return $response;
+        }
+        return new JsonResponse($arreglo);
+    }
+    
+    /**
+     * @Route("/api/facturacion", name="api_get_facturacion")
+     * @Method({"GET"})
+     */
+    public function getFacturaAction(Request $request) {
+        $arreglo = array();
+        $user = $this->getUser();
+        if($user){    
+            $direccion = $this->getDoctrine()
+                              ->getRepository('VentasBundle:Factura')
+                              ->findOneBy(array('usuario'=>$user));
+            $arreglo = $this->getArrayFacturacion($direccion);
+        }
+        return new JsonResponse($arreglo);
+    }
+    
+    private function getArrayFacturacion(Factura $direccion = null) {
+        // direccion de envio
+        $arreglo = array();
+        if ($direccion == null)
+            return $arreglo;
+        $arreglo['id']              =   $direccion->getId();
+        $arreglo['isFacturar']      =   $direccion->getIsFacturar();
+        $arreglo['rfc']             =   $direccion->getRfc();
+        $arreglo['razonSocial']     =   $direccion->getRazonSocial();
+        $arreglo['calle']           =   $direccion->getCalle();
+        $arreglo['numExterior']     =   $direccion->getNumExterior();
+        $arreglo['numInterior']     =   $direccion->getNumInterior();
+        $arreglo['colonia']         =   $direccion->getColonia();
+        $arreglo['municipio']       =   $direccion->getMunicipio();
+        $arreglo['ciudad']          =   $direccion->getCiudad();
         $arreglo['estado']          =   $direccion->getEstado();
         $arreglo['contacto']        =   $direccion->getContacto();
-        $arreglo['paqueteria']      =   $direccion->getPaqueteria();
+        $arreglo['telefonoContacto']   =   $direccion->getTelefonoContacto();
         return $arreglo;
+    }
+    
+    /**
+     * @Route("/api/facturacion", name="api_post_factura")
+     * @Method({"POST"})
+     */
+    public function postFacturaAction(Request $request) {
+        return $this->putFacturaAction($request, 0);
+    }
+    
+    /**
+     * @Route("/api/facturacion/{id}", name="api_put_factura")
+     * @Method({"PUT"})
+     */
+    public function putFacturaAction(Request $request,$id) {
+        $arreglo = $request->request->all();
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        if($user){    
+            $direccion = $em->getRepository('VentasBundle:Factura')
+                            ->find($id);
+            if(!$direccion){
+                $direccion = new Factura();
+                $direccion->setUsuario($user);
+            }
+            $direccion->setIsFacturar($arreglo['isFacturar']);
+            $direccion->setRfc($arreglo['rfc']);
+            $direccion->setRazonSocial($arreglo['razonSocial']);
+            $direccion->setCalle($arreglo['calle']);
+            $direccion->setNumExterior($arreglo['numExterior']);
+            $direccion->setNumInterior($arreglo['numInterior']);
+            $direccion->setColonia($arreglo['colonia']);
+            $direccion->setMunicipio($arreglo['municipio']);
+            $direccion->setCiudad($arreglo['ciudad']);
+            $direccion->setEstado($arreglo['estado']);
+            $direccion->setEmailEnvio($arreglo['emailEnvio']);
+            $direccion->setContacto($arreglo['contacto']);
+            $direccion->setTelefonoContacto($arreglo['telefonoContacto']);
+            $em->persist($direccion);
+            $em->flush();
+            if($id == 0){
+                $response = new JsonResponse(array('id'=>$direccion->getId()),  Response::HTTP_CREATED);
+            }else{
+                $response = new JsonResponse(null, Response::HTTP_NO_CONTENT);
+            }
+            return $response;
+        }
+        return new JsonResponse($arreglo);
     }
 
     /**

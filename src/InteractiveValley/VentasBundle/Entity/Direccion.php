@@ -25,72 +25,65 @@ class Direccion
     /**
      * @var string
      *
-     * @ORM\Column(name="tipo_direccion", type="string", length=255)
-     */
-    private $tipoDireccion;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="calle", type="string", length=255)
+     * @ORM\Column(name="calle", type="string", length=255, nullable=true)
      */
     private $calle;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="num_exterior", type="string", length=255)
+     * @ORM\Column(name="num_exterior", type="string", length=255, nullable=true)
      */
     private $numExterior;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="num_interior", type="string", length=255)
+     * @ORM\Column(name="num_interior", type="string", length=255, nullable=true)
      */
     private $numInterior;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="cp", type="string", length=6)
+     * @ORM\Column(name="cp", type="string", length=6, nullable=true)
      */
     private $cp;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="municipio", type="string", length=255)
-     */
-    private $municipio;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="colonia", type="string", length=255)
+     * @ORM\Column(name="colonia", type="string", length=255, nullable=true)
      */
     private $colonia;
-
+    
     /**
      * @var integer
      *
-     * @ORM\Column(name="estado", type="string", length=255)
+     * @ORM\Column(name="municipio", type="string", length=255, nullable=true)
+     */
+    private $municipio;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="estado", type="string", length=255, nullable=true)
      */
     private $estado;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="contacto", type="string", length=255)
+     * @ORM\Column(name="telefono", type="string", length=255, nullable=true)
      */
-    private $contacto;
+    private $telefono;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="paqueteria", type="string", length=255)
+     * @ORM\Column(name="observaciones", type="text", nullable=true)
      */
-    private $paqueteria;
+    private $observaciones;
     
     /**
      * @var \DateTime
@@ -116,26 +109,6 @@ class Direccion
      * })
      */
     private $usuario;
-    
-    const TIPO_DIRECCION_FACTURACION=1;
-    const TIPO_DIRECCION_ENVIO=2;
-        
-    static public $sTipoDireccion=array(
-        self::TIPO_DIRECCION_FACTURACION=>'Facturacion',
-        self::TIPO_DIRECCION_ENVIO=>'Envio'
-    );
-	
-    public function getStringTipoDireccion(){
-        return self::$sTipoDireccion[$this->getTipoDireccion()];
-    }
-    
-    static function getArrayTipoDireccion(){
-        return self::$sTipoDireccion;
-    }
-    
-    static function getPreferedTipoDireccion(){
-        return array(self::TIPO_DIRECCION_ENVIO);
-    }
     
     public function __toString() {
         return $this->getDireccionCompleta();
@@ -176,7 +149,6 @@ class Direccion
         $this->updatedAt = new \DateTime();
     }
 
-
     /**
      * Get id
      *
@@ -186,29 +158,7 @@ class Direccion
     {
         return $this->id;
     }
-
-    /**
-     * Set tipoDireccion
-     *
-     * @param string $tipoDireccion
-     * @return Direccion
-     */
-    public function setTipoDireccion($tipoDireccion)
-    {
-        $this->tipoDireccion = $tipoDireccion;
-
-        return $this;
-    }
-
-    /**
-     * Get tipoDireccion
-     *
-     * @return string 
-     */
-    public function getTipoDireccion()
-    {
-        return $this->tipoDireccion;
-    }
+    
 
     /**
      * Set calle
@@ -257,7 +207,7 @@ class Direccion
     }
 
     /**
-     * Set num_interior
+     * Set numInterior
      *
      * @param string $numInterior
      * @return Direccion
@@ -270,7 +220,7 @@ class Direccion
     }
 
     /**
-     * Get num_interior
+     * Get numInterior
      *
      * @return string 
      */
@@ -303,32 +253,9 @@ class Direccion
     }
 
     /**
-     * Set municipio
-     *
-     * @param integer $municipio
-     * @return Direccion
-     */
-    public function setMunicipio($municipio)
-    {
-        $this->municipio = $municipio;
-
-        return $this;
-    }
-
-    /**
-     * Get municipio
-     *
-     * @return integer 
-     */
-    public function getMunicipio()
-    {
-        return $this->municipio;
-    }
-
-    /**
      * Set colonia
      *
-     * @param integer $colonia
+     * @param string $colonia
      * @return Direccion
      */
     public function setColonia($colonia)
@@ -341,7 +268,7 @@ class Direccion
     /**
      * Get colonia
      *
-     * @return integer 
+     * @return string 
      */
     public function getColonia()
     {
@@ -349,9 +276,32 @@ class Direccion
     }
 
     /**
+     * Set municipio
+     *
+     * @param string $municipio
+     * @return Direccion
+     */
+    public function setMunicipio($municipio)
+    {
+        $this->municipio = $municipio;
+
+        return $this;
+    }
+
+    /**
+     * Get municipio
+     *
+     * @return string 
+     */
+    public function getMunicipio()
+    {
+        return $this->municipio;
+    }
+
+    /**
      * Set estado
      *
-     * @param integer $estado
+     * @param string $estado
      * @return Direccion
      */
     public function setEstado($estado)
@@ -364,7 +314,7 @@ class Direccion
     /**
      * Get estado
      *
-     * @return integer 
+     * @return string 
      */
     public function getEstado()
     {
@@ -372,49 +322,49 @@ class Direccion
     }
 
     /**
-     * Set contacto
+     * Set telefono
      *
-     * @param string $contacto
+     * @param string $telefono
      * @return Direccion
      */
-    public function setContacto($contacto)
+    public function setTelefono($telefono)
     {
-        $this->contacto = $contacto;
+        $this->telefono = $telefono;
 
         return $this;
     }
 
     /**
-     * Get contacto
+     * Get telefono
      *
      * @return string 
      */
-    public function getContacto()
+    public function getTelefono()
     {
-        return $this->contacto;
+        return $this->telefono;
     }
 
     /**
-     * Set paqueteria
+     * Set observaciones
      *
-     * @param string $paqueteria
+     * @param string $observaciones
      * @return Direccion
      */
-    public function setPaqueteria($paqueteria)
+    public function setObservaciones($observaciones)
     {
-        $this->paqueteria = $paqueteria;
+        $this->observaciones = $observaciones;
 
         return $this;
     }
 
     /**
-     * Get paqueteria
+     * Get observaciones
      *
      * @return string 
      */
-    public function getPaqueteria()
+    public function getObservaciones()
     {
-        return $this->paqueteria;
+        return $this->observaciones;
     }
 
     /**
