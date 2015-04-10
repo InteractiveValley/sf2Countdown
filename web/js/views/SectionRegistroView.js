@@ -42,17 +42,20 @@ define([
                 // Apply the change to the model
                 var target = event.target;
                 var change = {};
-                
-                change[target.name] = target.value;
-                this.model.set(change);
-
-                // Run validation rule (if any) on changed item
-                var check = this.model.validateItem(target.id);
-                if (check.isValid === false) {
-                    utils.addValidationError(target.id, check.message);
-                } else {
-                    utils.removeValidationError(target.id);
+                var arreglo = target.name.split("_");
+                change[arreglo[1]] = target.value;
+                switch(arreglo[0]){
+                    case "usuario":
+                        this.model.set(change);
+                        break;
+                    case "envio":
+                        this.envio.set(change);
+                        break;
+                    case "facturacion": 
+                        this.facturacion.set(change);
+                        break;
                 }
+                console.log(arreglo);
             }
         });
         return SectionRegistroView;

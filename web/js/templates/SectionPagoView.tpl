@@ -54,9 +54,9 @@
                     <input type='hidden' name='amount' value='<%= carrito.total %>'>
                     <input type='hidden' name='page_style' value='primary'>
                     <input type='hidden' name='no_shipping' value='1'>
-                    <input type='hidden' name='return' value='http://test.countdown.mx/api/compra/exitosa'>
+                    <input type='hidden' name='return' value='http://localhost:8040/pago/realizado'>
                     <input type='hidden' name='rm' value='2'>
-                    <input type='hidden' name='cancel_return' value='http://test.countdown.mx/api/compra/cancelada'>
+                    <input type='hidden' name='cancel_return' value='http://localhost:8040/pago/cancelado'>
                     <input type='hidden' name='no_note' value='1'>
                     <input type='hidden' name='currency_code' value='MXN'>
                     <input type='hidden' name='cn' value='PP-BuyNowBF'>

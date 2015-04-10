@@ -5,26 +5,26 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="nombre">Nombre</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" value="<%= usuario.nombre %>" placeholder="Nombre">
+                                    <label for="usuario_nombre">Nombre</label>
+                                    <input type="text" class="form-control" id="usuario_nombre" name="usuario_nombre" value="<%= usuario.nombre %>" placeholder="Nombre">
                                 </div>
                                 <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="text" class="form-control" id="email" name="email" value="<%= usuario.email %>" placeholder="Email">
+                                    <label for="usuario_email">Email</label>
+                                    <input type="text" class="form-control" id="usuario_email" name="usuario_email" value="<%= usuario.email %>" placeholder="Email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="telefono">Telefono</label>
-                                    <input type="text" class="form-control" id="telefono" name="telefono" value="<%= usuario.telefono %>" placeholder="Telefono">
+                                    <label for="usuario_telefono">Telefono</label>
+                                    <input type="text" class="form-control" id="usuario_telefono" name="usuario_telefono" value="<%= usuario.telefono %>" placeholder="Telefono">
                                 </div>
                             </div>
                             <div class="col-md-6">
 				<div class="form-group">
-                                    <label for="password">Contraseña</label>
-                                    <input type="password" class="form-control" id="nombre" name="nombre" value="" placeholder="Password">
+                                    <label for="usuario_password">Contraseña</label>
+                                    <input type="password" class="form-control" id="usuario_password" name="usuario_password" value="" placeholder="Password">
                                 </div>
                                 <div class="form-group">
-                                    <label for="repetir">Repetir contraseña</label>
-                                    <input type="password" class="form-control" id="repetir" name="repetir" value="" placeholder="Repetir password">
+                                    <label for="usuario_repetir">Repetir contraseña</label>
+                                    <input type="password" class="form-control" id="usuario_repetir" name="usuario_repetir" value="" placeholder="Repetir password">
                                 </div>
                                 <div class="form-group">
                                     <button type="button" id="btnRegistro" class="btn btn-default" style="background: #DF2E72; padding: 10px 50px;">Siguiente</button>
@@ -96,7 +96,7 @@
                             <div class="col-md-12">
                                 <div class="checkbox">
                                     <label>
-                                      <input type="checkbox" id="facturacion_isFacturar" name="facturacion_isFacturar" value="<%= envio.isFacturar %>"> Desea recibir factura
+                                      <input type="checkbox" id="facturacion_isFacturar" name="facturacion_isFacturar" value="<%= facturacion.isFacturar %>"> Desea recibir factura
                                     </label>
                                 </div>
                                 <div class="form-group">

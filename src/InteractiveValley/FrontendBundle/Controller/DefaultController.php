@@ -55,6 +55,14 @@ class DefaultController extends BaseController {
     }
     
     /**
+     * @Route("/pago/realizado", name="pago_realizado")
+     * @Template("FrontendBundle:Default:pagoRealizado.html.twig")
+     */
+    public function pagoRealizadoAction(Request $request) {
+        return array();
+    }
+    
+    /**
      * @Route("/colores", name="filtro_colores")
      * @Template("FrontendBundle:Default:colores.html.twig")
      * @Method({"GET"})
