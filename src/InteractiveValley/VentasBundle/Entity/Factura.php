@@ -146,7 +146,7 @@ class Factura
     private $usuario;
     
     public function __construct() {
-        $this->isFacturar = true;
+        $this->isFacturar = false;
     }
     
     public function __toString() {

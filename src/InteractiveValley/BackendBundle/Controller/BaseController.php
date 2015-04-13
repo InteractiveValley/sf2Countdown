@@ -58,7 +58,7 @@ class BaseController extends Controller
         $isNew = true;
         $message = \Swift_Message::newInstance()
                 ->setSubject($asunto)
-                ->setFrom('no-reply@mosaicors.com')
+                ->setFrom($this->container->getParameter('richpolis.emails.to_email'))
                 ->setTo($usuario->getEmail())
                 ->setBody(
                 $this->renderView('FrontendBundle:Default:enviarCorreo.html.twig', 
@@ -73,7 +73,7 @@ class BaseController extends Controller
         $isNew = false;
         $message = \Swift_Message::newInstance()
                 ->setSubject($asunto)
-                ->setFrom('no-reply@mosaicors.com')
+                ->setFrom($this->container->getParameter('richpolis.emails.to_email'))
                 ->setTo($usuario->getEmail())
                 ->setBody(
                 $this->renderView('FrontendBundle:Default:enviarCorreo.html.twig', 

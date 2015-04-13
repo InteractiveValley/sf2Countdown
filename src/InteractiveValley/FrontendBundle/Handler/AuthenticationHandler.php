@@ -41,19 +41,8 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
     public function onAuthenticationSuccess(Request $request, TokenInterface $token) {
         // if AJAX login
         if ($request->isXmlHttpRequest()) {
-
             $array = array(
-                'success' => true,
-                'usuario' => array(
-                    'id' => $token->getUser()->getId(),
-                    'nombre' => $token->getUser()->getNombre(),
-                    'password' => $token->getUser()->getPassword(),
-                    'email' => $token->getUser()->getEmail(),
-                    'telefono' => $token->getUser()->getTelefono(),
-                    'rfc' => $token->getUser()->getRfc(),
-                    'grupo' => $token->getUser()->getGrupo(),
-                    'isActive' => $token->getUser()->getIsActive()
-                )
+                'success' => true
             ); // data to return via JSON
             $response = new Response(json_encode($array));
             $response->headers->set('Content-Type', 'application/json');
@@ -66,7 +55,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
             if ($this->session->get('_security.main.target_path')) {
                 $url = $this->session->get('_security.main.target_path');
             } else {
-                $url = $this->router->generate('home_page');
+                $url = $this->router->generate('homepage');
             } // end if
 
             return new RedirectResponse($url);
@@ -83,8 +72,9 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface, Au
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception) {
         // if AJAX login
+        $e = $exception;
         if ($request->isXmlHttpRequest()) {
-
+            
             $array = array('success' => false, 'message' => $exception->getMessage()); // data to return via JSON
             $response = new Response(json_encode($array));
             $response->headers->set('Content-Type', 'application/json');

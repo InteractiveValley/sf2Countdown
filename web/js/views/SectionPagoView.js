@@ -4,12 +4,16 @@ define([
     'Backbone',
     'collections/CarritoCollection',
     'views/ItemProductoPagoView',
-    'text!templates/SectionPagoView.tpl'
+    'text!templates/SectionPagoView.tpl',
+    'text!templates/PagoEnvioView.tpl',
+    'text!templates/PagoFacturacionView.tpl'
 ],
-    function ($, _, Backbone, CarritoCollection, ItemProductoPagoView, SectionPagoViewTemplate) {
+    function ($, _, Backbone, CarritoCollection, ItemProductoPagoView, SectionPagoViewTemplate, PagoEnvioViewTemplate, PagoFacturacionViewTemplate) {
         var PagoView = Backbone.View.extend({
             tagName: 'section',
             template: _.template( SectionPagoViewTemplate ),
+            templatePagoEnvio: _.template( PagoEnvioViewTemplate ),
+            templatePagoFacturacion: _.template( PagoFacturacionViewTemplate ),
             initialize: function() {
 		console.log('inicializando sectionpagoview');
                 this.status = '';
@@ -21,6 +25,9 @@ define([
                 this.collection.on('add', this.addOne, this);
                 this.collection.on('remove', this.renderTotales, this);
                 this.collection.on('reset', this.render, this);
+                
+                app.envio.on('change',this.renderEnvio(),this);
+                app.facturacion.on('change',this.renderFacturacion(),this);
             },
             events:{
                'click #hacerPago': 'hacerPago'
@@ -36,6 +43,8 @@ define([
                 this.renderCarrito();
                 this.collection.forEach(this.addOne,this);
                 this.renderTotales();
+                this.renderEnvio();
+                this.renderFacturacion();
                 this.status = '';
                 return this;
             },
@@ -60,6 +69,22 @@ define([
                 var carrito = this.collection.getTotalesCarrito();
                 var html = this.template({'carrito': carrito});
                 this.$el.html(html);
+            },
+            renderEnvio: function(){
+                var html = this.templatePagoEnvio({'envio': app.envio.toJSON()});
+                this.$el.find("#tableEnvio").html(html);
+            },
+            renderFacturacion: function(){
+                var html = this.templatePagoFacturacion({'facturacion': app.facturacion.toJSON()});
+                this.$el.find("#tableFacturacion").html(html);
+            },
+            destroy_view: function () {
+                // COMPLETELY UNBIND THE VIEW 
+                this.undelegateEvents();
+                this.$el.removeData().unbind();
+                // Remove view from DOM 
+                this.remove();
+                Backbone.View.prototype.remove.call(this);
             }
         });
         return PagoView;

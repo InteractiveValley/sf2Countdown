@@ -2,24 +2,22 @@ define([
     'jquery', 
     'underscore',
     'backbone.validation',
-    'models/UsuarioModel',
-    'text!templates/SectionRegistroView.tpl'
+    'text!templates/SectionEnvioView.tpl'
 ],
-    function ($, _, Backbone, UsuarioModel, SectionRegistroViewTemplate ) {
-        var SectionRegistroView = Backbone.View.extend({
+    function ($, _, Backbone,  SectionEnvioViewTemplate ) {
+        var SectionEnvioView = Backbone.View.extend({
             tagName: 'section',
             className: 'container',
-            templateRegistro:       _.template( SectionRegistroViewTemplate ),
+            templateEnvio:          _.template( SectionEnvioViewTemplate ),
             initialize: function() {
-                console.log('inicializando sectionregistroview');
-                this.id = 'registro';
+                debugger;
+                console.log('inicializando sectionenvioview');
+                this.id = 'envio';
+                this.model = app.envio;
                 var self = this;
-                if(!app.user.isLoggedIn()){
-                    this.model = new UsuarioModel();
-                }else{
-                    this.model = app.user;
+                if(app.envio.isNew()){
                     this.model.fetch({success: function(data){
-                        self.renderRegistro();
+                        self.renderEnvio();
                     }});
                 }
                 Backbone.Validation.bind(this);
@@ -27,25 +25,24 @@ define([
             },
             events:{
                 "change"                : "change",
-                "click #btnGuardar"     : "guardarRegistro",
+                "click #btnGuardar"     : "guardarEnvio",
                 "click #btnSiguiente"   : "siguiente"
             },
             render: function(){
-                this.renderRegistro();
+                this.renderEnvio();
                 return this;
             },
             siguiente: function(e){
-                debugger;
                 e.preventDefault();
                 if(this.statusGuardar){
                     this.guardar('envio');
                 }else if(app.user.isLoggedIn()){
-                    app.routers.router.navigate('envio',{trigger: true});
+                    app.routers.router.navigate('facturacion',{trigger: true});
                 }else{
                     return this.model.isValid(true);
                 }
             },
-            guardarRegistro: function(e){
+            guardarEnvio: function(e){
                 e.preventDefault();
                 if(this.statusGuardar){
                     this.guardar();
@@ -53,10 +50,10 @@ define([
                     alert("No hay cambios que guardar");
                 }
             },
-            guardar: function(irA){
+            guardar:function(irA){
                 var self = this;
+                var isNew = this.model.isNew();
                 irA = irA || "";
-                var isNew = !app.user.isLoggedIn();
                 app.views.appView.$el.find('#division-principal').html("").addClass('cargando');
                 if(this.model.isValid(true)){
                     this.model.save({}, {
@@ -64,35 +61,35 @@ define([
                             console.log("The model has been saved to the server");
                             if(isNew){
                                 debugger;
-                                app.user.set(model);
-                                app.user.fetch({success: function(data){
-                                  app.routers.router.navigate('envio',{trigger: true});
+                                app.envio.set(model);
+                                app.envio.fetch({success: function(data){
+                                  app.routers.router.navigate('facturacion',{trigger: true});
                                 }});
                             }else{
-                                if(irA == "envio"){
-                                    app.routers.router.navigate('envio',{trigger: true});
+                                if(irA == "facturacion"){
+                                    app.routers.router.navigate('facturacion',{trigger: true});
                                 }else{
-                                    app.views.appView.$el.find('#division-principal').html(app.views.registro.el);
-                                    self.renderRegistro();
+                                    app.views.appView.$el.find('#division-principal').html(app.views.envio.el);
+                                    self.renderEnvio();
                                 }
                             }
                         },
                         error: function (model, xhr, options) {
                             alert("Hay un error al grabar el registro");
-                            app.views.appView.$el.find('#division-principal').html(app.views.registro.el);
-                            self.renderRegistro();
+                            app.views.appView.$el.find('#division-principal').html(app.views.envio.el);
+                            self.renderEnvio();
                         }
                     });
                 }else{
                     alert('Favor de revisar los datos del formulario');
-                    app.views.appView.$el.find('#division-principal').html(app.views.registro.el);
-                    self.renderRegistro();
+                    app.views.appView.$el.find('#division-principal').html(app.views.envio.el);
+                    self.renderEnvio();
                 }
             },
-            renderRegistro: function(){
-                var usuarioData     = this.model.toJSON();
+            renderEnvio: function(){
+                var envioData     = this.model.toJSON();
                 app.views.appView.$el.find('#division-principal').removeClass('cargando');
-                this.$el.html(this.templateRegistro({usuario: usuarioData}));
+                this.$el.html(this.templateEnvio({envio: envioData}));
                 return this;
             },
             change: function (event) {
@@ -136,5 +133,5 @@ define([
                 Backbone.View.prototype.remove.call(this);
             }
         });
-        return SectionRegistroView;
+        return SectionEnvioView;
 });

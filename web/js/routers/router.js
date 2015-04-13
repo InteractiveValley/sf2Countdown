@@ -2,7 +2,6 @@ define([
     // Libraries
     'jquery', 
     'underscore',
-    'swig',
     'Backbone',
     // colleciones
     'collections/ProductosCollection',
@@ -15,10 +14,12 @@ define([
     'views/SectionPromoView',
     'views/SectionPagoView',
     'views/SectionLoginView',
-    'views/SectionRegistroView'
+    'views/SectionRegistroView',
+    'views/SectionEnvioView',
+    'views/SectionFacturacionView'
 ],
 
-function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoView, ModalProductoCarritoView, SectionPrincipalView, SectionSecundarioView, SectionPromoView, SectionPagoView, SectionLoginView, SectionRegistroView) {
+function($, _, Backbone, ProductosCollection, CarritoView, ModalProductoView, ModalProductoCarritoView, SectionPrincipalView, SectionSecundarioView, SectionPromoView, SectionPagoView, SectionLoginView, SectionRegistroView, SectionEnvioView, SectionFacturacionView) {
 
   var AppRouter = Backbone.Router.extend({
 
@@ -30,7 +31,9 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         "producto/:slug":           "showProducto",
         "pago":                     "pago",
         "login":                    "login",
-        "registro":                 "registro"
+        "registro":                 "registro",
+        "envio":                    "envio",
+        "facturacion":              "facturacion"
     },
 
     initialize: function () {
@@ -140,55 +143,112 @@ function($, _, swig, Backbone, ProductosCollection, CarritoView, ModalProductoVi
         app.views.productoCarrito.showModal();
     },
     pago: function(){
-        debugger;
         if(app.status != 'pago'){
             app.status = 'pago';
             $(".item-navbar-colores").fadeOut("fast");
             $(".item-navbar-precio").fadeOut("fast");
+            app.views.appView.$el.find('#division-principal').addClass('cargando');
         }
         app.status = 'pago';
         //renderiza una sola vez
         if(!app.views.pago){
             app.views.pago = new SectionPagoView({collection: app.collections.carrito});
             app.views.pago.render();
+        }else{
+            app.views.pago.destroy_view();
+            app.views.pago = new SectionPagoView({collection: app.collections.carrito});
+            app.views.pago.render();
         }
-        
         app.views.appView.$el.find('#division-principal').html(app.views.pago.el).fadeIn('fast');
-        //this.pageslider.slidePage(app.views.principal.el);
+        app.views.appView.$el.find('#division-principal').removeClass('cargando');
     },
     login: function(){
-        debugger;
-        if(app.status != 'login'){
+        if(!app.user.isLoggedIn()){
+            if(app.status != 'login'){
+                app.status = 'login';
+                $(".item-navbar-colores").fadeOut("fast");
+                $(".item-navbar-precio").fadeOut("fast");
+                app.views.appView.$el.find('#division-principal').addClass('cargando');
+            }
             app.status = 'login';
-            $(".item-navbar-colores").fadeOut("fast");
-            $(".item-navbar-precio").fadeOut("fast");
+            //renderiza una sola vez
+            if(!app.views.login){
+                app.views.login = new SectionLoginView();
+                app.views.login.render();
+            }else{
+                app.views.login.destroy_view();
+                app.views.login = new SectionLoginView();
+                app.views.login.render();
+            }
+            app.views.appView.$el.find('#division-principal').html(app.views.login.el).fadeIn('fast');
+            app.views.appView.$el.find('#division-principal').removeClass('cargando');
+        }else{
+            this.registro();
         }
-        app.status = 'login';
-        //renderiza una sola vez
-        if(!app.views.login){
-            app.views.login = new SectionLoginView();
-            app.views.login.render();
-        }
-        
-        app.views.appView.$el.find('#division-principal').html(app.views.login.el).fadeIn('fast');
-        //this.pageslider.slidePage(app.views.principal.el);
     },
     registro: function(){
-        debugger;
         if(app.status != 'registro'){
             app.status = 'registro';
             $(".item-navbar-colores").fadeOut("fast");
             $(".item-navbar-precio").fadeOut("fast");
+            app.views.appView.$el.find('#division-principal').addClass('cargando');
         }
         app.status = 'registro';
         //renderiza una sola vez
         if(!app.views.registro){
             app.views.registro = new SectionRegistroView();
             app.views.registro.render();
+        }else{
+            app.views.registro.destroy_view();
+            app.views.registro = new SectionRegistroView();
+            app.views.registro.render();
         }
         
         app.views.appView.$el.find('#division-principal').html(app.views.registro.el).fadeIn('fast');
-        //this.pageslider.slidePage(app.views.principal.el);
+        app.views.appView.$el.find('#division-principal').removeClass('cargando');
+    },
+    envio: function(){
+        debugger;
+        if(app.status != 'envio'){
+            app.status = 'envio';
+            $(".item-navbar-colores").fadeOut("fast");
+            $(".item-navbar-precio").fadeOut("fast");
+            app.views.appView.$el.find('#division-principal').addClass('cargando');
+        }
+        app.status = 'envio';
+        //renderiza una sola vez
+        if(!app.views.envio){
+            app.views.envio = new SectionEnvioView();
+            app.views.envio.render();
+        }else{
+            app.views.envio.destroy_view();
+            app.views.envio = new SectionEnvioView();
+            app.views.envio.render();
+        }
+        
+        app.views.appView.$el.find('#division-principal').html(app.views.envio.el).fadeIn('fast');
+        app.views.appView.$el.find('#division-principal').removeClass('cargando');
+    },
+    facturacion: function(){
+        if(app.status != 'facturacion'){
+            app.status = 'facturacion';
+            $(".item-navbar-colores").fadeOut("fast");
+            $(".item-navbar-precio").fadeOut("fast");
+            app.views.appView.$el.find('#division-principal').addClass('cargando');
+        }
+        app.status = 'facturacion';
+        //renderiza una sola vez
+        if(!app.views.facturacion){
+            app.views.facturacion = new SectionFacturacionView();
+            app.views.facturacion.render();
+        }else{
+            app.views.facturacion.destroy_view();
+            app.views.facturacion = new SectionFacturacionView();
+            app.views.facturacion.render();
+        }
+        
+        app.views.appView.$el.find('#division-principal').html(app.views.facturacion.el).fadeIn('fast');
+        app.views.appView.$el.find('#division-principal').removeClass('cargando');
     },
     employeeDetails: function (id) {
         var employee = new Employee({id: id});

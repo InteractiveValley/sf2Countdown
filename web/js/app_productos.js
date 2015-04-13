@@ -6,10 +6,10 @@ require.config({
         domReady:'libs/require/domReady',
         // underscore library
         underscore:'libs/underscore-min',
-        // swig library
-        swig:'libs/swig',
         // Backbone.js library
         Backbone:'libs/backbone-min',
+        // backbone.validation
+        'backbone.validation': 'libs/backbone.validation',
         // jQuery
         jquery:'jquery',
         //router
@@ -22,6 +22,10 @@ require.config({
         },
         underscore:{
             exports:'_'
+        },
+        'backbone.validation': {
+            deps: ['Backbone'],
+            exports: 'Backbone'
         }
     }
 });
@@ -32,12 +36,14 @@ var app = {
     collections: {},
     routers: {},
     root: 'http://localhost:8040/app_dev.php/api',
-    login_check: '/login_check',
+    login_check: 'http://localhost:8040/app_dev.php/login_check',
     default: '/',
     status: '',
     showCarrito: false,
     categoria: 'lo-nuevo',
     user: {},
+    envio: {},
+    facturacion: {},
     ls: {}
 };
 

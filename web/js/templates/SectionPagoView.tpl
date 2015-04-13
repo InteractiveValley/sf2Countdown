@@ -11,14 +11,11 @@
             </table>
         </div>
         <div class="col-md-4">
-            <table class="table">
-                <tr><th>Enviar a:</th></tr>
-                <tr>
-                    <td>
-                        Direccion del cliente.
-                    </td>
-                </tr>
-                <tr><td><a href="#registro">Editar</a></td></tr>
+            <table id="tableEnvio" class="table">
+
+            </table>
+            <table id="tableFacturacion" class="table">
+                
             </table>
             <table class="table">
                 <tr>

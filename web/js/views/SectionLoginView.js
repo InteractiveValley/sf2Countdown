@@ -26,6 +26,7 @@ define([
                 e.preventDefault();
                 e.stopPropagation();
                 var form = $("#formLogin");
+                var self = this;
                $.ajax({
                    url: app.login_check,
                    data: form.serialize(),
@@ -33,13 +34,18 @@ define([
                    type: 'POST',
                    success: function(data){
                         if(data.success == true){
-                            app.views.appView.usuario.set(data.usuario);
-                            app.routers.router.navigate("registro",{trigger: true});
+                            console.log('login');
+                            console.log(data);
+                            app.user.fetch({success: function(data){
+                               app.routers.router.navigate("registro",{trigger: true});
+                            }});
                         }else{
-                            $("#mensajeError").text(data.message);
-                            $("#mensajeError").fadeIn('fast',function(){
+                            console.log('Otro mensaje');
+                            console.log(data);
+                            this.$el.find("#mensajeError").text(data.message);
+                            this.$el.find("#mensajeError").fadeIn('fast',function(){
                                setTimeout(function(){
-                                   $("#mensajeError").fadeOut('fast');
+                                   self.$el.find("#mensajeError").fadeOut('fast');
                                },2000); 
                             });
                         }
@@ -49,6 +55,14 @@ define([
                        alert("Error");
                    }
                });
+            },
+            destroy_view: function () {
+                // COMPLETELY UNBIND THE VIEW 
+                this.undelegateEvents();
+                this.$el.removeData().unbind();
+                // Remove view from DOM 
+                this.remove();
+                Backbone.View.prototype.remove.call(this);
             }
         });
         return SectionLoginView;

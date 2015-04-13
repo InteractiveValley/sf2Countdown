@@ -4,13 +4,15 @@ define([
     'Backbone',
     'models/FiltroPrecioModel',
     'models/UsuarioModel',
+    'models/EnvioModel',
+    'models/FacturacionModel',
     'collections/ColoresCollection',
     'views/ColorView',
     'text!templates/ContenedorUsuarioView.tpl',
     'bootstrap',
     'bootstrap-slider'
 ],
-    function ($, _, Backbone, FiltroPrecioModel, UsuarioModel, ColoresCollection, ColorView, ContenedorUsuarioViewTemplate) {
+    function ($, _, Backbone, FiltroPrecioModel, UsuarioModel, EnvioModel, FacturacionModel, ColoresCollection, ColorView, ContenedorUsuarioViewTemplate) {
         var AppView = Backbone.View.extend({
             el: '#app',
             tagName: 'div',
@@ -20,6 +22,10 @@ define([
                 this.filtroPrecio = new FiltroPrecioModel();
                 this.colores = new ColoresCollection();
                 app.user = new UsuarioModel();
+                app.envio = new EnvioModel();
+                app.envio.fetch();
+                app.facturacion = new FacturacionModel();
+                app.facturacion.fetch();
                 var xhr = this.colores.fetch();
                 var self = this;
                 xhr.done(function(){

@@ -10,7 +10,6 @@ define([
         var CarritoView = Backbone.View.extend({
             el: $('#carrito'),
             template: _.template( CarritoViewTemplate ),
-            //template: swig.compile( CarritoViewTemplate ),
             initialize: function() {
 		console.log('inicializando carritoview');
                 this.status = '';
@@ -24,12 +23,20 @@ define([
                 app.collections.carrito.fetch();
             },
             events:{
-               'click #hacerPedido': 'hacerPedido'
+               'click #hacerPedido': 'hacerPedido',
+               'mouseleave  ':    'hideCarrito'
+            },
+            hideCarrito: function(){
+                app.views.appView.$el.find("#showCarrito").click();
             },
             hacerPedido: function(e){
                 e.preventDefault();
                 e.stopPropagation();
-                app.routers.router.navigate('pago',{trigger: true});
+                if(app.user.isLoggedIn()){
+                    app.routers.router.navigate('pago',{trigger: true});
+                }else{
+                    app.routers.router.navigate('login',{trigger: true});
+                }
             },
             render:function () {
                 console.log("render carritoview");

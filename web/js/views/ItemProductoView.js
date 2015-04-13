@@ -48,7 +48,8 @@ define([
                                 alert(data.message);
                             } else {
                                 alert('El producto fu agregado');
-                                debugger;
+                                app.views.appView.$el.find("#showCarrito").click();
+                                
                                 console.log(data);
                                 // self.model.set({'cantidad': cantidad});
                                 app.collections.carrito.addApartado(data.apartado);

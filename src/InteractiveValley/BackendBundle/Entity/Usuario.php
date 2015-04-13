@@ -138,7 +138,11 @@ class Usuario implements UserInterface, \Serializable
     }
     
     public function getStringTipoGrupo(){
-        $arreglo = $this->getArrayTipoGrupo();
+        $arreglo=array(
+            self::GRUPO_USUARIOS=>'Usuarios',
+            self::GRUPO_ADMIN=>'Administrador',
+            self::GRUPO_SUPER_ADMIN=>'Superadmin',
+        );
         return $arreglo[$this->getGrupo()];
     }
     
@@ -338,8 +342,7 @@ class Usuario implements UserInterface, \Serializable
             $this->id,
             $this->nombre,
             $this->email,
-            $this->telefono,
-            $this->rfc
+            $this->telefono
         ));
     }
 
@@ -352,8 +355,7 @@ class Usuario implements UserInterface, \Serializable
             $this->id,
             $this->nombre,
             $this->email,
-            $this->telefono,
-            $this->rfc
+            $this->telefono
         ) = unserialize($serialized);
     }
 

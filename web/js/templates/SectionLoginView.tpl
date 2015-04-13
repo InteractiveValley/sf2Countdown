@@ -13,6 +13,7 @@
             </div>
             <div class="contenido row border-top-gradiente">
                 <div class="col-md-6 bloque-login" style="padding-top: 30px; padding-bottom: 100px;">
+                    <div class="alert alert-danger" style="display: none;" id="mensajeError"></div>
                     <!-- Login form -->
                     <form id="formLogin" class="form-horizontal" action='/login_check' role="form"  method="post" style="padding-left: 20px; padding-right: 20px;">
                         <!-- Email -->

@@ -48,7 +48,7 @@
                                         <th>Id</th>
                                         <th>Nombre</th>
                                         <th>Email</th>
-                                        <th>RFC</th>
+                                        <th>Grupo</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -58,7 +58,7 @@
                                             <td><a href="{{ path('usuarios_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                                             <td>{{ entity.nombre }}</td>
                                             <td>{{ entity.email }}</td>
-                                            <td>{{ entity.rfc }}</td>
+                                            <td>{{ entity.stringTipoGrupo }}</td>
                                             <td>
                                                 <button onclick="javascript:editarRegistro('{{ path('usuarios_edit', { 'id': entity.id }) }}')" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i> </button>
                                                 <button onclick="javascript:editarRegistro('{{ path('usuarios_show', { 'id': entity.id }) }}', '#registro-{{entity.id}}')" class="btn btn-xs btn-info"><i class="fa fa-folder-open"></i> </button>

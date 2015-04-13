@@ -17,7 +17,16 @@ class SecurityController extends Controller
     {
         $request = $this->getRequest();
         $session = $request->getSession();
-
+        
+        if (null != $this->getUser()){
+            if($this->getUser()->getIsActive()) {
+                $irA = $this->router->generate('homepage')."#registro";
+            }else{
+                $irA = $this->router->generate('logout');
+            }
+            $this->redirect($irA);
+        }
+        
         // obtiene el error de inicio de sesión si lo hay
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(

@@ -28,33 +28,6 @@ class DefaultController extends BaseController {
     }
 
     /**
-     * @Route("/lo/mas/nuevo", name="lo_mas_nuevo")
-     * @Template("FrontendBundle:Default:productos.html.twig")
-     */
-    public function loMasNuevoAction(Request $request) {
-        $productos = $this->getDoctrine()
-                        ->getRepository('ProductosBundle:Producto')->findBy(array(
-            'isNew' => true
-        ));
-        $categoria = array('id' => 0, 'nombre' => 'Lo nuevo');
-        return array(
-            'productos' => $productos,
-            'categoria' => $categoria
-        );
-    }
-
-    /**
-     * @Route("/recomendaciones", name="recomendaciones")
-     * @Template("FrontendBundle:Default:productos.html.twig")
-     */
-    public function recomendacionesAction(Request $request) {
-        $productos = $this->getDoctrine()
-                        ->getRepository('ProductosBundle:Producto')->findAll();
-
-        return array('productos' => $productos);
-    }
-    
-    /**
      * @Route("/pago/realizado", name="pago_realizado")
      * @Template("FrontendBundle:Default:pagoRealizado.html.twig")
      */

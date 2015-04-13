@@ -17,6 +17,7 @@ use InteractiveValley\ProductosBundle\Entity\Apartado;
 use InteractiveValley\ProductosBundle\Entity\Color;
 use InteractiveValley\VentasBundle\Entity\Direccion;
 use InteractiveValley\VentasBundle\Entity\Factura;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ApiController extends BaseController {
 
@@ -35,12 +36,20 @@ class ApiController extends BaseController {
         }
         return $this->claveApartado;
     }
-
+    
     /**
-     * @Route("/api/usuario", name="api_get_usuario")
+     * @Route("/api/usuario/{id}", name="api_get_usuario")
      * @Method({"GET"})
      */
-    public function getUsuarioAction(Request $request) {
+    public function getUsuarioAction(Request $request,$id) {
+        return $this->getUsuariosAction($request);
+    }
+    
+    /**
+     * @Route("/api/usuario", name="api_get_usuarios")
+     * @Method({"GET"})
+     */
+    public function getUsuariosAction(Request $request) {
         $user = $this->getUser();
         if($user){
             $arreglo = array(
@@ -48,6 +57,7 @@ class ApiController extends BaseController {
                 'nombre' => $user->getNombre(),
                 'username' => $user->getUsername(),
                 'password' => $user->getPassword(),
+                'repetir' => $user->getPassword(),
                 'email' => $user->getEmail(),
                 'telefono' => $user->getTelefono(),
                 'grupo' => $user->getGrupo(),
@@ -77,15 +87,27 @@ class ApiController extends BaseController {
         $usuario->setTelefono($data['telefono']);
         $usuario->setGrupo(\InteractiveValley\BackendBundle\Entity\Usuario::GRUPO_USUARIOS);
         $usuario->setIsActive($data['isActive']);
-        $this->setSecurePassword($entity);
+        $this->setSecurePassword($usuario);
         $em->persist($usuario);
         $em->flush();
         $response = new JsonResponse(array('id'=>$usuario->getId()), Response::HTTP_CREATED);
+        $this->enviarUsuarioCreado($data['email'], $data['password'], $usuario);
+        //logear al usuario nuevo
+        $this->logearUsuario($usuario);
         return $response;
     }
     
+    private function logearUsuario($usuario){
+        $providerKey = 'frontend';
+        $roles = $usuario->getRoles();
+        // Finalmente logueamos al usuario
+        $token = new UsernamePasswordToken($usuario, null, $providerKey, $roles);
+        $this->container->get('security.context')->setToken($token);
+        return true;
+    }
+    
     /**
-     * @Route("/api/usuario/id", name="api_put_usuario")
+     * @Route("/api/usuario/{id}", name="api_put_usuario")
      * @Method({"PUT"})
      */
     public function putUsuarioAction(Request $request, $id) {
@@ -97,22 +119,24 @@ class ApiController extends BaseController {
             $response = new JsonResponse(null , Response::HTTP_NOT_FOUND);
         }else{
             $usuario->setNombre($data['nombre']);
-            $current_pass = $entity->getPassword();
+            $current_pass = $usuario->getPassword();
             $usuario->setEmail($data['email']);
             $usuario->setTelefono($data['telefono']);
             $usuario->setGrupo(\InteractiveValley\BackendBundle\Entity\Usuario::GRUPO_USUARIOS);
             $usuario->setIsActive($data['isActive']);
-            if ('' == $data['password']) {
+            if (!isset($data['password'])) {
                 // El usuario no cambia su contraseña.
-                $entity->setPassword($current_pass);
+                $usuario->setPassword($current_pass);
+                $data['password']="";
             } else {
                 $usuario->setPassword($data['password']);
                 // actualizamos la contraseña.
-                $this->setSecurePassword($entity);
+                $this->setSecurePassword($usuario);
             }
             $em->persist($usuario);
             $em->flush();
             $response = new JsonResponse(null, Response::HTTP_NO_CONTENT);
+            $this->enviarUsuarioUpdate($data['email'], $data['password'], $usuario);
         }
         return $response;
     }
@@ -172,6 +196,7 @@ class ApiController extends BaseController {
         $arreglo['calle']           =   $direccion->getCalle();
         $arreglo['numExterior']     =   $direccion->getNumExterior();
         $arreglo['numInterior']     =   $direccion->getNumInterior();
+        $arreglo['cp']              =   $direccion->getCp();
         $arreglo['colonia']         =   $direccion->getColonia();
         $arreglo['municipio']       =   $direccion->getMunicipio();
         $arreglo['estado']          =   $direccion->getEstado();
@@ -206,6 +231,7 @@ class ApiController extends BaseController {
             $direccion->setCalle($arreglo['calle']);
             $direccion->setNumExterior($arreglo['numExterior']);
             $direccion->setNumInterior($arreglo['numInterior']);
+            $direccion->setCp($arreglo['cp']);
             $direccion->setColonia($arreglo['colonia']);
             $direccion->setMunicipio($arreglo['municipio']);
             $direccion->setEstado($arreglo['estado']);
@@ -240,7 +266,7 @@ class ApiController extends BaseController {
     }
     
     private function getArrayFacturacion(Factura $direccion = null) {
-        // direccion de envio
+        // direccion de facturacion
         $arreglo = array();
         if ($direccion == null)
             return $arreglo;
@@ -252,6 +278,7 @@ class ApiController extends BaseController {
         $arreglo['numExterior']     =   $direccion->getNumExterior();
         $arreglo['numInterior']     =   $direccion->getNumInterior();
         $arreglo['colonia']         =   $direccion->getColonia();
+        $arreglo['cp']              =   $direccion->getCp();
         $arreglo['municipio']       =   $direccion->getMunicipio();
         $arreglo['ciudad']          =   $direccion->getCiudad();
         $arreglo['estado']          =   $direccion->getEstado();
@@ -289,6 +316,7 @@ class ApiController extends BaseController {
             $direccion->setCalle($arreglo['calle']);
             $direccion->setNumExterior($arreglo['numExterior']);
             $direccion->setNumInterior($arreglo['numInterior']);
+            $direccion->setCp($arreglo['cp']);
             $direccion->setColonia($arreglo['colonia']);
             $direccion->setMunicipio($arreglo['municipio']);
             $direccion->setCiudad($arreglo['ciudad']);
