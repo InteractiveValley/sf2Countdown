@@ -82,4 +82,20 @@ class BaseController extends Controller
         );
         $this->get('mailer')->send($message);
     }
+    
+    private $claveApartado = null;
+    
+    protected function getClaveApartado() {
+        $this->claveApartado = $this->get('session')->get('claveApartado', null);
+        if ($this->claveApartado == null) {
+            //$this->claveApartado = $this->get('session')->get('claveApartado', null);
+            do {
+                $this->claveApartado = sha1(rand(11111, 99999));
+                $resultado = $this->getDoctrine()->getRepository('ProductosBundle:Apartado')
+                        ->findOneBy(array('clave' => $this->claveApartado));
+            } while ($resultado != null);
+            $this->get('session')->set('claveApartado', $this->claveApartado);
+        }
+        return $this->claveApartado;
+    }
 }

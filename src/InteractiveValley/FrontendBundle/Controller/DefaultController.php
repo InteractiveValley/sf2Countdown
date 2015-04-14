@@ -12,6 +12,8 @@ use InteractiveValley\FrontendBundle\Entity\Contacto;
 use InteractiveValley\FrontendBundle\Form\ContactoType;
 use InteractiveValley\BackendBundle\Entity\Usuario;
 use InteractiveValley\BackendBundle\Form\Frontend\UsuarioType;
+use InteractiveValley\VentasBundle\Entity\Venta;
+use InteractiveValley\VentasBundle\Entity\DetVenta;
 
 class DefaultController extends BaseController {
 
@@ -29,10 +31,46 @@ class DefaultController extends BaseController {
 
     /**
      * @Route("/pago/realizado", name="pago_realizado")
-     * @Template("FrontendBundle:Default:pagoRealizado.html.twig")
      */
     public function pagoRealizadoAction(Request $request) {
-        return array();
+        $clave = $this->getClaveApartado();
+        $usuario = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $apartados = $em->getRepository('ProductosBundle:Apartado')->findBy(array(
+            'clave' => $clave
+        ));
+        $envio = $em->getRepository('ProductosBundle:Direccion')->findBy(array(
+            'usuario' => $usuario
+        ));
+        $venta = new Venta();
+        $venta->setUsuario($usuario);
+        $venta->setEnvio($envio);
+        $venta->setFechaCompra(new \DateTime());
+        $importe = 0.0;
+        $em->persist($venta);
+        foreach($apartados as $apartado){
+            $detVenta = new DetVenta();
+            $detVenta->setProducto($apartado->getProducto());
+            $detVenta->setCantidad($apartado->getCantidad());
+            $detVenta->setPrecio($apartado->getModelo()->getPrecio());
+            $detVenta->setIva($apartado->getModelo()->getIva());
+            $detVenta->setImporte($detVenta->getCantidad()*$detVenta->getPrecio());
+            $importe += $detVenta->getImporte();
+            $venta->addDetVenta($detVenta);
+            $em->persist($detVenta);
+            $em->remove($apartado);
+        }
+        $em->flush();
+        $venta->setImporte($importe);
+        $em->flush();
+        return $this->redirect($this->generateUrl('homepage'));
+    }
+    
+    /**
+     * @Route("/pago/cancelado", name="pago_cancelado")
+     */
+    public function pagoCanceladoAction(Request $request) {
+        return $this->redirect($this->generateUrl('homepage'));
     }
     
     /**

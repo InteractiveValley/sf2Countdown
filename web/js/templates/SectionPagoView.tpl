@@ -43,32 +43,23 @@
                     </td>
                 </tr>
             </table>
-            <form name='formTpv' method='post' action='https://www.sandbox.paypal.com/cgi-bin/webscr'>
-                    <input type='hidden' name='cmd' value='_xclick'>
-                    <input type='hidden' name='business' value='mi_cuenta_sandbox@mi_pagina.com'>
-                    <input type='hidden' name='item_name' value='Nueva compra en mi web'>
-                    <input type='hidden' name='item_number' value='VENTA-X2561'>
-                    <input type='hidden' name='amount' value='<%= carrito.total %>'>
-                    <input type='hidden' name='page_style' value='primary'>
-                    <input type='hidden' name='no_shipping' value='1'>
-                    <input type='hidden' name='return' value='http://localhost:8040/pago/realizado'>
-                    <input type='hidden' name='rm' value='2'>
-                    <input type='hidden' name='cancel_return' value='http://localhost:8040/pago/cancelado'>
-                    <input type='hidden' name='no_note' value='1'>
-                    <input type='hidden' name='currency_code' value='MXN'>
-                    <input type='hidden' name='cn' value='PP-BuyNowBF'>
-                    <input type='hidden' name='custom' value=''>
-                    <input type='hidden' name='first_name' value='NOMBRE'>
-                    <input type='hidden' name='last_name' value='APELLIDOS'>
-                    <input type='hidden' name='address1' value='DIRECCIÓN'>
-                    <input type='hidden' name='city' value='POBLACIÓN'>
-                    <input type='hidden' name='zip' value='CÓDIGO POSTAL'>
-                    <input type='hidden' name='night_phone_a' value=''>
-                    <input type='hidden' name='night_phone_b' value='TELÉFONO'>
-                    <input type='hidden' name='night_phone_c' value=''>
-                    <input type='hidden' name='lc' value='es'>
-                    <input type='hidden' name='country' value='ES'>
-                    <input type="submit" value="Hacer pago"/>
+            
+            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_xclick">
+            <input type="hidden" name="business" value="9EKQ9SH4M83QQ">
+            <input type="hidden" name="lc" value="MX">
+            <input type="hidden" name="item_name" value="Compra desde countdown.mx">
+            <input type="hidden" name="item_number" value="7777">
+            <input type="hidden" name="amount" value="<%= carrito.total %>">
+            <input type='hidden' name='return' value='http://test.countdown.mx/pago/realizado'>
+            <input type='hidden' name='cancel_return' value='http://test.countdown.mx/pago/cancelado'>
+            <input type="hidden" name="currency_code" value="MXN">
+            <input type="hidden" name="button_subtype" value="services">
+            <input type="hidden" name="tax_rate" value="16.000">
+            <input type="hidden" name="shipping" value="50.00">
+            <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynow_LG.gif:NonHosted">
+            <input type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="PayPal, la forma más segura y rápida de pagar en línea.">
+            <img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
             </form>
         </div>
     </div>

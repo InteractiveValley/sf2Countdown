@@ -16,11 +16,7 @@ define([
                     this.model.on('change:visible', this.visible, this);
                     this.model.on('destroy', this.destroy_view, this);
                     this.model.on('change', this.render, this);
-                    if (this.model.get('isPromocional')) {
-                        this.$el.addClass('imagen_grande');
-                    } else {
-                        this.$el.addClass('imagen_chica');
-                    }
+                    this.$el.addClass(this.model.get('filtro_imagen'));
                 },
                 events: {
                     'click .agregar-carrito': 'agregarCarrito',

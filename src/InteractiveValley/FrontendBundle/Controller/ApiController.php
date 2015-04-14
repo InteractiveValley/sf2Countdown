@@ -21,22 +21,8 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ApiController extends BaseController {
 
-    private $claveApartado = null;
+    private $contModelos = 0;
 
-    protected function getClaveApartado() {
-        $this->claveApartado = $this->get('session')->get('claveApartado', null);
-        if ($this->claveApartado == null) {
-            //$this->claveApartado = $this->get('session')->get('claveApartado', null);
-            do {
-                $this->claveApartado = sha1(rand(11111, 99999));
-                $resultado = $this->getDoctrine()->getRepository('ProductosBundle:Apartado')
-                        ->findOneBy(array('clave' => $this->claveApartado));
-            } while ($resultado != null);
-            $this->get('session')->set('claveApartado', $this->claveApartado);
-        }
-        return $this->claveApartado;
-    }
-    
     /**
      * @Route("/api/usuario/{id}", name="api_get_usuario")
      * @Method({"GET"})
@@ -405,9 +391,11 @@ class ApiController extends BaseController {
                     ->modelosByCategoria(null);
         }
         $aModelos = array();
+        $this->contModelos = 0;
         $imagine = $this->container->get('liip_imagine.cache.manager');
         foreach ($modelos as $modelo) {
             if ($modelo->getInventario() > 0 && $modelo->getIsActive()) {
+                $this->contModelos++;
                 $aModelos[] = $this->getArrayModelo($modelo, $imagine);
             }
         }
@@ -431,11 +419,17 @@ class ApiController extends BaseController {
         $arreglo['isPromocional'] = $modelo->getIsPromocional();
         $arreglo['isNew'] = $modelo->getIsNew();
         $arreglo['isActive'] = $modelo->getIsActive();
-        if ($modelo->getIsPromocional()) {
-            $filtro = "imagen_grande";
-        } else {
-            $filtro = "imagen_chica";
+        $filtro = "imagen_chica";
+        switch($this->contModelos){
+            case 5:
+            case 6:
+                $filtro = "imagen_grande";
+                break;
+            case 10:
+                $this->contModelos = 0;
+                break;
         }
+        $arreglo['filtro_imagen'] = $filtro;
         foreach ($modelo->getProductos() as $producto) {
             if (count($producto->getGalerias()) > 0 && $producto->getInventario() > 0) {
                 $arreglo['imagen'] = $imagine->getBrowserPath($producto->getGalerias()[0]->getWebPath(), $filtro);
@@ -515,7 +509,6 @@ class ApiController extends BaseController {
         $imagine = $this->container->get('liip_imagine.cache.manager');
         foreach ($apartados as $apartado) {
             $segundos = $this->getSegundosForApartado($apartado);
-            
             if ($segundos > $this->container->getParameter('richpolis.tiempo.permitido')) {
                 $this->removeProductoCarrito($apartado->getProducto(), $apartado, $em);
             }else{
