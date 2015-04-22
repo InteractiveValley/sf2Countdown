@@ -78,6 +78,7 @@ function($, _, Backbone, ProductosCollection, CarritoView, ModalProductoView, Mo
         xhr.done(function(data){
             console.log(data);
             app.views.secundario.$el.find('section.productos').removeClass('cargando');
+            app.views.secundario.masonry();
         }).fail(function(data){
             console.log(data);
             console.log("Se no se obtuvieron datos");

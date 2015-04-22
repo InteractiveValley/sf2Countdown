@@ -15,8 +15,8 @@ define([
                     debugger;
                     //this.model = config.model;
                     console.log('inicializando itemproductocarritoview');
-                    this.model.on('change', this.render, this);
                     this.model.on('destroy', this.destroy_view, this);
+                    this.model.on('change', this.render, this);
                     this.reloj = new CronometroModel({contador: this.model.get('segundos')});
                     this.reloj.on('change:contador', this.renderReloj, this);
                     this.status = 'inicializacion';
@@ -51,7 +51,10 @@ define([
                                 app.collections.productos.actualizar(self.model.get('slug'));
                             }
                             var models = app.collections.carrito.where({'productoId':self.model.get('productoId')});
+                            
                             app.collections.carrito.remove(models);
+                            
+                            models[0].destroy();
                         },
                         error: function (data) {
                             console.log(data);
