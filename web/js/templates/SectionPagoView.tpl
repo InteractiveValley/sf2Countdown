@@ -44,15 +44,13 @@
                 </tr>
             </table>
             
-            <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
             <input type="hidden" name="cmd" value="_xclick">
-            <input type="hidden" name="business" value="9EKQ9SH4M83QQ">
+            <input type="hidden" name="business" value="richpolis@gmail.com">
             <input type="hidden" name="lc" value="MX">
-            <input type="hidden" name="item_name" value="Compra desde countdown.mx">
-            <input type="hidden" name="item_number" value="7777">
+            <input type="hidden" name="item_name" value="Compra en tienda online">
+            <input type="hidden" name="item_number" value="1234567">
             <input type="hidden" name="amount" value="<%= carrito.total %>">
-            <input type='hidden' name='return' value='http://test.countdown.mx/pago/realizado'>
-            <input type='hidden' name='cancel_return' value='http://test.countdown.mx/pago/cancelado'>
             <input type="hidden" name="currency_code" value="MXN">
             <input type="hidden" name="button_subtype" value="services">
             <input type="hidden" name="tax_rate" value="16.000">
@@ -61,6 +59,7 @@
             <input type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="PayPal, la forma más segura y rápida de pagar en línea.">
             <img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
             </form>
+
         </div>
     </div>
 </article>    
